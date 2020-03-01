@@ -3,6 +3,9 @@
   Program: MDCM. Based on GDCM (Grassroots DICOM) modified subset.
 
 Copyright (c) 2018-2020 Mikhail Isakov
+
+  GDCM (Grassroots DICOM)
+
 Copyright (c) 2006-2016 Mathieu Malaterre
 Copyright (c) 1993-2005 CREATIS
 (CREATIS = Centre de Recherche et d'Applications en Traitement de l'Image)
