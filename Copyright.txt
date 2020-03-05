@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Program: MDCM. Based on GDCM (Grassroots DICOM) modified subset.
+  Program: MDCM. Based on GDCM (Grassroots DICOM) subset.
 
 Copyright (c) 2018-2020 Mikhail Isakov
 
