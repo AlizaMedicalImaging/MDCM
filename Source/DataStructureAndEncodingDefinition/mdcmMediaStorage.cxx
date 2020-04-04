@@ -149,6 +149,7 @@ static const char * MSStrings[] =
   "1.2.840.10008.5.1.4.1.1.30", // Parametric Map Storage
   "1.2.840.10008.5.1.4.1.1.13.1.4", // Breast Projection X-Ray Image Storage - For Presentation
   "1.2.840.10008.5.1.4.1.1.13.1.5", // Breast Projection X-Ray Image Storage - For Processing
+  "1.2.840.10008.5.1.1.30",  // HardcopyColorImageStorage
   NULL
 };
 
@@ -340,6 +341,7 @@ static const MSModalityType MSModalityTypes[] =
   {"OT", 3, false},// ParametricMapImageStorage,
   {"MG", 3, false},// BreastProjectionXRayImageStorageForPresentation
   {"MG", 3, false},// BreastProjectionXRayImageStorageForProcessing
+  {"  ", 2, false},// HardcopyColorImageStorage
   {NULL, 0, false} // MS_END
 };
 

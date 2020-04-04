@@ -901,6 +901,7 @@ Tag ImageHelper::GetSpacingTagFromMediaStorage(MediaStorage const &ms)
     t = Tag(0x0018,0x1164);
     break;
   case MediaStorage::HardcopyGrayscaleImageStorage:
+  case MediaStorage::HardcopyColorImageStorage:
   case MediaStorage::UltrasoundMultiFrameImageStorage:
   case MediaStorage::UltrasoundImageStorage:
   case MediaStorage::UltrasoundImageStorageRetired:
@@ -958,6 +959,7 @@ Tag ImageHelper::GetZSpacingTagFromMediaStorage(MediaStorage const &ms)
   case MediaStorage::MultiframeGrayscaleWordSecondaryCaptureImageStorage:
   case MediaStorage::MultiframeTrueColorSecondaryCaptureImageStorage: //
   case MediaStorage::HardcopyGrayscaleImageStorage:
+  case MediaStorage::HardcopyColorImageStorage:
     t = Tag(0xffff,0xffff);
     break;
   case MediaStorage::RTDoseStorage:

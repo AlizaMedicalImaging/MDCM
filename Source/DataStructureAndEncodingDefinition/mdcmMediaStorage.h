@@ -146,6 +146,7 @@ typedef enum
   ParametricMapStorage,
   BreastProjectionXRayImageStorageForPresentation,
   BreastProjectionXRayImageStorageForProcessing,
+  HardcopyColorImageStorage,
   MS_END
 } MSType;
 
