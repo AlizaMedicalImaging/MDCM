@@ -16,22 +16,9 @@
 
 #include "mdcmTypes.h"
 #ifdef MDCM_USE_SYSTEM_CHARLS
-// version 2.0.0
-# include <CharLS/charls.h>
-# include <CharLS/publictypes.h>
-# include <CharLS/util.h>
-# include <CharLS/defaulttraits.h>
-# include <CharLS/losslesstraits.h>
-# include <CharLS/colortransform.h>
-# include <CharLS/processline.h>
+#include <CharLS/charls.h>
 #else
 #include "mdcmcharls/charls.h"
-#include "mdcmcharls/publictypes.h"
-#include "mdcmcharls/util.h"
-#include "mdcmcharls/defaulttraits.h"
-#include "mdcmcharls/losslesstraits.h"
-#include "mdcmcharls/colortransform.h"
-#include "mdcmcharls/processline.h"
 #endif
 
 #endif

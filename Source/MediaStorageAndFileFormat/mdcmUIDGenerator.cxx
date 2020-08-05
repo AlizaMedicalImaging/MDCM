@@ -14,11 +14,10 @@
 #include "mdcmUIDGenerator.h"
 #include "mdcmTrace.h"
 #include "mdcmSystem.h"
-
 #include <bitset>
 #include <cstring>
 
-// FIXME...
+// FIXME
 #if defined(_WIN32) || defined(__CYGWIN__)
 #define HAVE_UUIDCREATE
 #else
@@ -35,28 +34,27 @@
 
 namespace mdcm
 {
-
 /*
- * This is just plain bad luck. MDCM UID root is 26 byte long
- * And all implementation of the DCE UUID (Theodore Y. Ts'o)
- * are based on a uint128_t (unsigned char [16]). Which
- * means that converted to a base 10 number they require at
- * least 39 bytes to fit in memory, since the highest possible
- * number is 256**16 - 1 = 340282366920938463463374607431768211455
- * Unfortunately root + '.' + suffix should be at most 64 bytes
+ * MDCM UID root is 26 byte long. All implementation of the
+ * DCE UUID (Theodore Y. Ts'o)are based on a uint128_t
+ * (unsigned char [16]). Which means that converted to a
+ * base 10 number they require at least 39 bytes to fit in
+ * memory, since the highest possible number is
+ * 256**16 - 1 = 340282366920938463463374607431768211455,
+ * unfortunately root + '.' + suffix should be at most 64 bytes
  *
- * So to get a full UUID implementation as per RFC 4122
- * http://www.ietf.org/rfc/rfc4122.txt we need a shorter
- * root...
+ * RFC 4122 http://www.ietf.org/rfc/rfc4122.txt
  *
  */
 const char UIDGenerator::MDCM_UID[] = "1.2.826.0.1.3680043.10.135";
 std::string UIDGenerator::Root = GetMDCMUID();
-// The following contains the *encoded* hardware address
-// (not the raw as in ipconfig/ifconfig)
 std::string UIDGenerator::EncodedHardwareAddress;
 
-const char *UIDGenerator::GetRoot() { return Root.c_str(); }
+const char *UIDGenerator::GetRoot()
+{
+  return Root.c_str();
+}
+
 void UIDGenerator::SetRoot(const char * root)
 {
   assert(IsValid(root));
@@ -68,9 +66,7 @@ const char *UIDGenerator::GetMDCMUID()
   return MDCM_UID;
 }
 
-/*
- * http://www.isthe.com/chongo/tech/comp/fnv/
- */
+// http://www.isthe.com/chongo/tech/comp/fnv
 #define FNV1_64_INIT ((uint64_t)0xcbf29ce484222325ULL)
 struct fnv_hash
 {
@@ -106,27 +102,23 @@ const char* UIDGenerator::Generate()
   // set the suffix part which is sufficient to store a 2^(128-8+1)-1 number
   if(Unique.empty() || Unique.size() > 62) // 62 is simply the highest possible limit
   {
-    // I cannot go any further
     return NULL;
   }
   unsigned char uuid[16];
   bool r = UIDGenerator::GenerateUUID(uuid);
-  // This should only happen in some obscure cases. Since the creation of UUID failed
-  // I should try to go any further and make sure the user's computer crash and burn
-  // right away
   if(!r) return 0;
   char randbytesbuf[64];
   size_t len = System::EncodeBytes(randbytesbuf, uuid, sizeof(uuid));
   assert(len < 64);
-  Unique += "."; // This dot is compulsary to separate root from suffix
+  Unique += "."; // separate root from suffix
   if(Unique.size() + len > 64)
   {
     int idx = 0;
     bool found = false;
     std::bitset<8> x;
-    while(!found && idx < 16) /* 16 is insane ... oh well */
+    while(!found && idx < 16)
     {
-      // too bad ! randbytesbuf is too long, let's try to truncate the high bits a little
+      // randbytesbuf is too long, try to truncate the high bits
       x = uuid[idx];
       unsigned int i = 0;
       while((Unique.size() + len > 64) && i < 8)
@@ -138,8 +130,8 @@ const char* UIDGenerator::Generate()
       }
       if((Unique.size() + len > 64) && i == 8)
       {
-        // too bad only reducing the 8 bits from uuid[idx] was not enought,
-        // let's set to zero the following bits...
+        // reducing the 8 bits from uuid[idx] was not enought,
+        // set to zero the following bits
         idx++;
       }
       else
@@ -150,17 +142,12 @@ const char* UIDGenerator::Generate()
     }
     if(!found)
     {
-      // Technically this could only happen when root has a length >= 64 ... is it
-      // even remotely possible ?
       mdcmWarningMacro("Root is too long for current implementation");
       return NULL;
     }
   }
-  // can now safely use randbytesbuf as is, no need to truncate any more:
   Unique += randbytesbuf;
-
   assert(IsValid(Unique.c_str()));
-
   return Unique.c_str();
 }
 
@@ -207,19 +194,13 @@ bool UIDGenerator::IsValid(const char *uid_)
   - UID's, shall not exceed 64 total characters, including the digits of each component, separators
   between components, and the NULL (00H) padding character if needed.
   */
-
-  /*
-   * FIXME: This is not clear in the standard, but I believe a trailing '.' is not allowed since
-   * this is considered as a separator for components
-   */
-
   if(!uid_) return false;
   std::string uid = uid_;
   if(uid.size() > 64 || uid.empty())
   {
     return false;
   }
-  if(uid[0] == '.' || uid[uid.size()-1] == '.') // important to do that first
+  if(uid[0] == '.' || uid[uid.size()-1] == '.')
   {
     return false;
   }
@@ -237,7 +218,7 @@ bool UIDGenerator::IsValid(const char *uid_)
       }
       else if(uid[i+1] == '0') // character is garantee to exist since '.' is not last char
       {
-        // Need to check first if we are not at the end of string
+        // need to check first if we are not at the end of string
         if(i+2 != uid.size() && uid[i+2] != '.')
         {
           return false;
@@ -251,6 +232,5 @@ bool UIDGenerator::IsValid(const char *uid_)
   }
   return true;
 }
-
 
 } // end namespace mdcm

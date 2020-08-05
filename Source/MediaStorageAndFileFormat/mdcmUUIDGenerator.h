@@ -19,14 +19,10 @@
 namespace mdcm
 {
 
-/**
- * \brief Class for generating unique UUID
- */
 class MDCM_EXPORT UUIDGenerator
 {
 public:
-  // NOT THREAD SAFE
-  const char * Generate();
+  const char * Generate(); // Not thread safe
   static bool IsValid(const char * uid);
 
 private:

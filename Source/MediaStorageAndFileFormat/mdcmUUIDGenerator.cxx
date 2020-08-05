@@ -75,7 +75,7 @@ bool UUIDGenerator::IsValid(const char * suid)
   uint32_t status;
   uuid_t uuid;
   uuid_from_string(suid, &uuid, &status);
-  if(status != uuid_s_ok	) return false;
+  if(status != uuid_s_ok) return false;
 #elif defined(HAVE_UUIDCREATE)
   UUID uuid;
   if (FAILED(UuidFromString((unsigned char *)suid, &uuid)))

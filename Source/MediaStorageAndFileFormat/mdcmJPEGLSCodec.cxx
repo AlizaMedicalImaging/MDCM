@@ -288,7 +288,7 @@ bool JPEGLSCodec::CodeFrameIntoBuffer(char * outdata, size_t outlen, size_t & co
   provide the possiblity to tune the JPEG-LS internals for better compression
   ratios. Expect a lot of work and testing to achieve small improvements.
 
-  Lossy/lossless is controlled by the field allowedlossyerror. If you put in
+  Lossy/lossless is controlled by the field allowedlossyError. If you put in
   0, encoding is lossless. If it is non-zero, then encoding is lossy. The
   value of 3 is often suggested as a default.
 
