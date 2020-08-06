@@ -21,3 +21,6 @@ add_library(mdcmDICT ${DICT_SRCS})
 target_link_libraries(mdcmDICT LINK_PRIVATE mdcmDSED)
 set_target_properties(mdcmDICT PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
+install_library(mdcmDICT)
+install_pdb(mdcmDICT)
+install_includes("*.h")

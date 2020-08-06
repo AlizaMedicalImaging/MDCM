@@ -1,0 +1,3 @@
+#libmdcm: package-name-doesnt-match-sonames
+libmdcm: no-symbols-control-file
+

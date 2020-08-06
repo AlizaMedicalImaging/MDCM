@@ -183,3 +183,6 @@ endif()
 #target_link_libraries(mdcmMSFF mdcmrle)
 set_target_properties(mdcmMSFF PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
+install_library(mdcmMSFF)
+install_pdb(mdcmMSFF)
+install_includes("*.h" "*.txx")

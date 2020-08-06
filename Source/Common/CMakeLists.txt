@@ -156,3 +156,11 @@ if(MDCM_USE_SYSTEM_OPENSSL)
 endif()
 set_target_properties(mdcmCommon PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
+install_library(mdcmCommon)
+install_pdb(mdcmCommon)
+install_includes("*.h" "*.txx")
+if(NOT MDCM_INSTALL_NO_DEVELOPMENT)
+  install(FILES ${header_files}
+    "${MDCM_BINARY_DIR}/Source/Common/mdcmConfigure.h"
+    DESTINATION ${MDCM_INSTALL_INCLUDE_DIR} COMPONENT Headers)
+endif()

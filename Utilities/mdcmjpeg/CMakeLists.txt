@@ -11,7 +11,7 @@ if(NOT JPEG_NAMESPACE)
   option(JPEG_BUILD_SHARED_LIBS "Build IJG/JPEG with shared libraries." OFF)
   set(BUILD_SHARED_LIBS ${JPEG_BUILD_SHARED_LIBS})
 endif()
-# In all cases:
+
 string(TOLOWER ${JPEG_NAMESPACE} JPEG_LIBRARY_NAME)
 
 
@@ -19,17 +19,14 @@ project(${JPEG_NAMESPACE} C)
 
 foreach(p
     CMP0042
-    CMP0063
-    )
+    CMP0063)
   if(POLICY ${p})
     cmake_policy(SET ${p} NEW)
   endif()
 endforeach()
 
-# Do full dependency headers.
 include_regular_expression("^.*$")
 
-# let advanced user the option to define JPEG_API_VERSION:
 if(NOT DEFINED JPEG_API_VERSION)
   set(JPEG_API_VERSION "${MDCM_MAJOR_VERSION}.${MDCM_MINOR_VERSION}")
 endif()
@@ -55,10 +52,9 @@ set(compression_SRCS
 jcapimin.c jcapistd.c jctrans.c jcparam.c  jcinit.c
 jcmaster.c jcmarker.c jcmainct.c jcprepct.c jccoefct.c jccolor.c
 jcsample.c jchuff.c jcphuff.c jcdctmgr.c jfdctfst.c jfdctflt.c
-jdatadst.c
-)
+jdatadst.c)
 
-# Lossy (DCT) codec:
+# Lossy (DCT) codec
 set(comp_lossy_SRCS
 jfdctint.c
 jclossy.c
@@ -85,8 +81,8 @@ jdatasrc.c
 )
 
 set(decomp_lossy_SRCS
- jdlossls.c jdlossy.c
- #jcarith.c
+jdlossls.c jdlossy.c
+#jcarith.c
 jdlhuff.c
 jddiffct.c
 jdpred.c
@@ -106,8 +102,7 @@ set(JPEG_HEADER_FILES
   jpeglib.h
   jversion.h
   jlossy.h
-  jlossls.h
-  )
+  jlossls.h)
 
 set(JPEG_SOURCES)
 foreach(src
@@ -116,8 +111,7 @@ foreach(src
   ${compression_SRCS}
   ${decompression_SRCS}
   ${comp_lossy_SRCS}
-  ${decomp_lossy_SRCS}
-  )
+  ${decomp_lossy_SRCS})
   set(JPEG_SOURCES ${JPEG_SOURCES}
     "${CMAKE_CURRENT_SOURCE_DIR}/${src}")
 endforeach()
@@ -128,17 +122,15 @@ else()
   set(JPEGSTATIC 1)
 endif()
 
-# By default support DICOMObjects bug, if this is a speed penalty for you
-# you should consider disabling it
+# DICOMObjects bug
 set(SUPPORT_DICOMOBJECTS_BUG ON)
 
 # Generate three libraries: jpeg 8bits, 12bits and 16bits
 # using only one source directory
 
-#-----------------------------------------------------------------------------
 include (${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
-CHECK_INCLUDE_FILE("stddef.h"       HAVE_STDDEF_H)
-CHECK_INCLUDE_FILE("stdlib.h"       HAVE_STDLIB_H)
+CHECK_INCLUDE_FILE("stddef.h" HAVE_STDDEF_H)
+CHECK_INCLUDE_FILE("stdlib.h" HAVE_STDLIB_H)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # Particular case jpegcmake.h needs to be specified either 8, 12 or 16 bits:
@@ -152,9 +144,7 @@ foreach(bits 8 12 16)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mangle_jpeg.h.in
                  ${CMAKE_CURRENT_BINARY_DIR}/${bits}/mangle_jpeg${bits}bits.h
                  @ONLY)
-
-
-  # FIXME FIXME FIXME
+  # FIXME
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/jmorecfg.h
                  ${CMAKE_CURRENT_BINARY_DIR}/${bits}/jmorecfg.h
                  COPYONLY)
@@ -172,16 +162,13 @@ foreach(bits 8 12 16)
                  COPYONLY)
 endforeach()
 
-# I could not get the depencencies in CMake to work properly so instead
-# have multiple directory for each target that will ensure proper recompilation
-# of the objects files
 add_subdirectory(8)
 add_subdirectory(12)
 add_subdirectory(16)
 
+# FIXME
 if(NOT JPEG_INSTALL_NO_DEVELOPMENT)
   file(GLOB header_files "*.h")
   install(FILES ${header_files}
-    DESTINATION ${JPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers
-  )
+    DESTINATION ${JPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 endif()

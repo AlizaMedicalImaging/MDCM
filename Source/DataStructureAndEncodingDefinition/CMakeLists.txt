@@ -84,3 +84,6 @@ target_link_libraries(mdcmDSED LINK_PUBLIC mdcmCommon)
 target_link_libraries(mdcmDSED LINK_PRIVATE ${MDCM_ZLIB_LIBRARIES})
 set_target_properties(mdcmDSED PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
+install_library(mdcmDSED)
+install_pdb(mdcmDSED)
+install_includes("*.h" "*.txx")

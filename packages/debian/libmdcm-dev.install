@@ -1,0 +1,13 @@
+usr/lib/*/libmdcmCommon.so
+usr/lib/*/libmdcmDICT.so
+usr/lib/*/libmdcmDSED.so
+usr/lib/*/libmdcmMSFF.so
+usr/lib/*/libmdcmjpeg12.so
+usr/lib/*/libmdcmjpeg16.so
+usr/lib/*/libmdcmjpeg8.so
+usr/lib/*/mdcm/*.cmake
+usr/include/mdcm/mdcm*
+usr/include/mdcm/mdcmjpeg/12/*
+usr/include/mdcm/mdcmjpeg/16/*
+usr/include/mdcm/mdcmjpeg/8/*
+usr/include/mdcm/mdcmjpeg/j*.h

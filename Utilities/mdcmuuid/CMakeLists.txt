@@ -4,12 +4,11 @@ if(NOT UUID_NAMESPACE)
   set(UUID_NAMESPACE "UUID")
   set(UUID_STANDALONE 1)
 endif()
-# In all cases:
+
 string(TOLOWER ${UUID_NAMESPACE} UUID_LIBRARY_NAME)
 
 project(${UUID_NAMESPACE} C)
 
-# Do full dependency headers.
 include_regular_expression("^.*$")
 
 set(UUID_SRCS
@@ -21,12 +20,9 @@ unpack.c
 unparse.c
 uuid_time.c
 uuid.h
-uuidP.h
-)
+uuidP.h)
 
-#include (${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
-
-if (BUILD_SHARED_LIBS)
+if(BUILD_SHARED_LIBS)
   if(WIN32)
     add_definitions(-DUUID_DLL)
   endif ()
@@ -40,7 +36,6 @@ if(COMMAND CHECK_INCLUDE_FILE_CONCAT)
 else()
 include (${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
 include (${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake)
-
 macro(CHECK_INCLUDE_FILE_CONCAT FILE VARIABLE)
   CHECK_INCLUDE_FILES("${UUID_INCLUDES};${FILE}" ${VARIABLE})
   if(${VARIABLE})
@@ -49,22 +44,22 @@ macro(CHECK_INCLUDE_FILE_CONCAT FILE VARIABLE)
 endmacro()
 endif()
 
-CHECK_INCLUDE_FILE_CONCAT("stdlib.h"       HAVE_STDLIB_H)
-if(UNIX) #Avoid polluting Win32 cmakecache
-  CHECK_INCLUDE_FILE_CONCAT("unistd.h"       HAVE_UNISTD_H)
-  CHECK_INCLUDE_FILE_CONCAT("inttypes.h"     HAVE_INTTYPES_H)
-  CHECK_INCLUDE_FILE_CONCAT("sys/ioctl.h"    HAVE_SYS_IOCTL_H)
-  CHECK_INCLUDE_FILE_CONCAT("sys/time.h"     HAVE_SYS_TIME_H)
-  CHECK_INCLUDE_FILE_CONCAT("sys/file.h"     HAVE_SYS_FILE_H)
-  CHECK_INCLUDE_FILE_CONCAT("sys/socket.h"   HAVE_SYS_SOCKET_H)
-  CHECK_INCLUDE_FILE_CONCAT("sys/sockio.h"   HAVE_SYS_SOCKIO_H)
-  CHECK_INCLUDE_FILE_CONCAT("net/if.h"       HAVE_NET_IF_H)
-  CHECK_INCLUDE_FILE_CONCAT("netinet/in.h"   HAVE_NETINET_IN_H)
-  CHECK_INCLUDE_FILE_CONCAT("net/if_dl.h"    HAVE_NET_IF_DL_H)
-  CHECK_INCLUDE_FILE_CONCAT("net/if_arp.h"   HAVE_NET_IF_ARP_H)
+CHECK_INCLUDE_FILE_CONCAT("stdlib.h" HAVE_STDLIB_H)
+if(UNIX)
+  CHECK_INCLUDE_FILE_CONCAT("unistd.h"     HAVE_UNISTD_H)
+  CHECK_INCLUDE_FILE_CONCAT("inttypes.h"   HAVE_INTTYPES_H)
+  CHECK_INCLUDE_FILE_CONCAT("sys/ioctl.h"  HAVE_SYS_IOCTL_H)
+  CHECK_INCLUDE_FILE_CONCAT("sys/time.h"   HAVE_SYS_TIME_H)
+  CHECK_INCLUDE_FILE_CONCAT("sys/file.h"   HAVE_SYS_FILE_H)
+  CHECK_INCLUDE_FILE_CONCAT("sys/socket.h" HAVE_SYS_SOCKET_H)
+  CHECK_INCLUDE_FILE_CONCAT("sys/sockio.h" HAVE_SYS_SOCKIO_H)
+  CHECK_INCLUDE_FILE_CONCAT("net/if.h"     HAVE_NET_IF_H)
+  CHECK_INCLUDE_FILE_CONCAT("netinet/in.h" HAVE_NETINET_IN_H)
+  CHECK_INCLUDE_FILE_CONCAT("net/if_dl.h"  HAVE_NET_IF_DL_H)
+  CHECK_INCLUDE_FILE_CONCAT("net/if_arp.h" HAVE_NET_IF_ARP_H)
 endif()
-if(WIN32) #Avoid polluting UNIX cmakecache
-  CHECK_INCLUDE_FILE_CONCAT("winsock.h"       HAVE_WINSOCK_H)
+if(WIN32)
+  CHECK_INCLUDE_FILE_CONCAT("winsock.h" HAVE_WINSOCK_H)
 endif()
 
 set(UUID_HAVES_ALL
@@ -89,8 +84,8 @@ foreach(have ${UUID_HAVES_ALL})
     set(UUID_HAVES "${UUID_HAVES} -D${have}")
   endif()
 endforeach()
-# Pass all -D :
-if( UUID_HAVES )
+
+if(UUID_HAVES)
 set_source_files_properties( ${UUID_SRCS}
   PROPERTIES COMPILE_FLAGS ${UUID_HAVES})
 endif()
@@ -124,6 +119,5 @@ if(NOT UUID_INSTALL_NO_LIBRARIES)
     RUNTIME DESTINATION ${UUID_INSTALL_BIN_DIR} COMPONENT Applications
     LIBRARY DESTINATION ${UUID_INSTALL_LIB_DIR} COMPONENT Libraries
     ARCHIVE DESTINATION ${UUID_INSTALL_LIB_DIR} COMPONENT DebugDevel
-  ${CPACK_NAMELINK_TYPE}
-  )
+  ${CPACK_NAMELINK_TYPE})
 endif()

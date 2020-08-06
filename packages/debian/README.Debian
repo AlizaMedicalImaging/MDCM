@@ -1,0 +1,5 @@
+Debian packages of MDCM
+-----------------------
+
+There are 3 packages: libmdcm, libmdcm-dev and libmdcm-dbg, which provide
+the library, headers and debug symbols for the shared library.

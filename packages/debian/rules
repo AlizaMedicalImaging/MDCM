@@ -1,0 +1,43 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
+%:
+	dh $@ --buildsystem=cmake+ninja
+
+CMAKE_EXTRA_FLAGS += -DCMAKE_SKIP_RPATH=ON \
+		-DCMAKE_BUILD_TYPE:STRING=Release \
+		-DCMAKE_INSTALL_DIR:STRING=/usr \
+		-DMDCM_BUILD_SHARED_LIBS:BOOL=ON \
+		-DMDCM_USE_PVRG:BOOL=OFF \
+		-DMDCM_USE_SYSTEM_UUID:BOOL=ON \
+		-DMDCM_USE_SYSTEM_ZLIB:BOOL=ON \
+		-DMDCM_USE_SYSTEM_OPENJPEG:BOOL=ON \
+		-DMDCM_USE_SYSTEM_OPENSSL:BOOL=OFF \
+		-DMDCM_USE_SYSTEM_CHARLS:BOOL=ON \
+		-DMDCM_INSTALL_LIB_DIR:STRING=lib/$(DEB_HOST_MULTIARCH)
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(CMAKE_EXTRA_FLAGS)
+
+override_dh_auto_build-indep:
+
+override_dh_auto_build-arch:
+	dh_auto_build
+
+override_dh_auto_install-arch:
+	dh_auto_install
+
+override_dh_auto_install-indep:
+
+override_dh_strip_nondeterminism:
+	dh_strip_nondeterminism
+
+override_dh_auto_test-arch:
+
+override_dh_compress:
+

@@ -1,20 +1,10 @@
-#
-# This module is provided as MDCM_USE_FILE by MDCMConfig.cmake.
-# It can be INCLUDEd in a project to load the needed compiler and linker
-# settings to use MDCM:
+# MDCM_USE_FILE by MDCMConfig.cmake.
 #   find_package(MDCM REQUIRED)
 #   include(${MDCM_USE_FILE})
 
 if(NOT MDCM_USE_FILE_INCLUDED)
   set(MDCM_USE_FILE_INCLUDED 1)
-
-  # Add include directories needed to use MDCM.
   include_directories(${MDCM_INCLUDE_DIRS})
-
-  # Add link directories needed to use MDCM.
   link_directories(${MDCM_LIBRARY_DIRS})
-
-  # Add cmake module path.
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${MDCM_CMAKE_DIR}")
-
 endif()
