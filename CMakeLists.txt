@@ -31,9 +31,11 @@ set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES}
   SOVERSION "${MDCM_API_VERSION}"
 )
 
+set(MDCM_TARGETS_NAME MDCMTargets)
+
 include(${MDCM_SOURCE_DIR}/CMake/InstallMacros.cmake)
 
-# Disable deprecation warnings for standard C and STL functions in VS2005 and later
+# Disable warnings for standard C and STL functions in VS2005 and later
 if(MSVC_VERSION EQUAL 1400 OR MSVC_VERSION GREATER 1400)
   add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS)
   add_definitions(-D_SCL_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
@@ -41,7 +43,6 @@ endif()
 
 option(MDCM_BUILD_SHARED_LIBS "Build MDCM with shared libraries." OFF)
 set(BUILD_SHARED_LIBS ${MDCM_BUILD_SHARED_LIBS})
-#set(MDCM_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 
 if(BUILD_SHARED_LIBS)
   set(NAMELINK_ONLY NAMELINK_ONLY)

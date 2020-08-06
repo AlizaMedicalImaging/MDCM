@@ -14,9 +14,7 @@
 #include "mdcmSurface.h"
 #include "mdcmCodeString.h"
 #include "mdcmString.h"
-
 #include <cstring>
-
 
 namespace mdcm
 {
@@ -70,8 +68,7 @@ static const char * VIEWStrings[] = {
   "SURFACE",
   "WIREFRAME",
   "POINTS",
-
-  0
+  NULL
 };
 
 const char * Surface::GetVIEWTypeString(VIEWType type)
@@ -194,7 +191,6 @@ void Surface::SetRecommendedDisplayCIELabValue(const unsigned short vl, const un
 void Surface::SetRecommendedDisplayCIELabValue(const std::vector< unsigned short > & vl)
 {
   assert( vl.size() > 2 );
-
   RecommendedDisplayCIELabValue[0] = vl[0];
   RecommendedDisplayCIELabValue[1] = vl[1];
   RecommendedDisplayCIELabValue[2] = vl[2];
@@ -211,7 +207,6 @@ void Surface::SetRecommendedPresentationOpacity(float opacity)
   {
     RecommendedPresentationOpacity = opacity;
   }
-  //else keep default value : 1
 }
 
 Surface::VIEWType Surface::GetRecommendedPresentationType() const

@@ -14,7 +14,6 @@ endif()
 
 string(TOLOWER ${JPEG_NAMESPACE} JPEG_LIBRARY_NAME)
 
-
 project(${JPEG_NAMESPACE} C)
 
 foreach(p
@@ -42,10 +41,8 @@ set(JPEG_LIBRARY_PROPERTIES ${JPEG_LIBRARY_PROPERTIES}
 set(systemdependent_SRCS jmemnobs.c)
 
 # library object files common to compression and decompression
-set(common_SRCS
-jcomapi.c jutils.c jerror.c jmemmgr.c
+set(common_SRCS jcomapi.c jutils.c jerror.c jmemmgr.c)
 #jmemsrc.c
-)
 
 # compression library object files
 set(compression_SRCS
@@ -133,7 +130,7 @@ CHECK_INCLUDE_FILE("stddef.h" HAVE_STDDEF_H)
 CHECK_INCLUDE_FILE("stdlib.h" HAVE_STDLIB_H)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-# Particular case jpegcmake.h needs to be specified either 8, 12 or 16 bits:
+# jpegcmake.h needs to specify 8, 12 or 16 bits,
 # also configure the name mangling
 foreach(bits 8 12 16)
   set(CMAKE_BITS_IN_JSAMPLE ${bits})

@@ -56,14 +56,13 @@ bool PVRGCodec::CanCode(TransferSyntax const &) const
   return false;
 }
 
-/* PVRG command line is a bit tricky to use:
- *
+/*
  * ./bin/pvrg-jpeg -d -s jpeg.jpg -ci 0 out.raw
  *
  * means decompress input file: jpeg.jpg into out.raw
  * warning the -ci is important otherwise JFIF is assumed
- * and comp # is assumed to be 1...
- * -u reduce verbosity
+ * and comp # is assumed to be 1, -u reduce verbosity
+ *
  */
 bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
 {
@@ -72,88 +71,77 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
   (void)out;
   return false;
 #else
-  // First thing create a jpegls file from the fragment:
   const SequenceOfFragments *sf = in.GetSequenceOfFragments();
   if(!sf)
-    {
-    mdcmDebugMacro( "Could not find SequenceOfFragments" );
+  {
+    mdcmDebugMacro("Could not find SequenceOfFragments");
     return false;
-    }
-
+  }
 #ifdef MDCM_USE_SYSTEM_PVRG
   std::string pvrg_command = MDCM_PVRG_JPEG_EXECUTABLE;
 #else
-  Filename fn( System::GetCurrentProcessFileName() );
+  Filename fn(System::GetCurrentProcessFileName());
   std::string executable_path = fn.GetPath();
 
   std::string pvrg_command = executable_path + "/mdcmjpeg";
 #endif
-  if( !System::FileExists( pvrg_command.c_str() ) )
-    {
-    mdcmErrorMacro( "Could not find: " << pvrg_command );
+  if(!System::FileExists( pvrg_command.c_str()) )
+  {
+    mdcmErrorMacro("Could not find: " << pvrg_command);
     return false;
-    }
+  }
 
   // http://msdn.microsoft.com/en-us/library/hs3e7355.aspx
-  // -> check if tempnam needs the 'free'
   char *input  = tempnam(0, "mdcminpvrg");
   char *output = tempnam(0, "mdcmoutpvrg");
-  if( !input || !output )
-    {
-    //free(input);
-    //free(output);
+  if(!input || !output)
+  {
     return false;
-    }
+  }
 
   std::ofstream outfile(input, std::ios::binary);
   sf->WriteBuffer(outfile);
-  outfile.close(); // flush !
+  outfile.close();
 
-  // -u -> set Notify to 0 (less verbose)
-  //pvrg_command += " -ci 0 -d -u ";
+  // -u : set Notify to 0 (less verbose)
   pvrg_command += " -d -u ";
-  // ./bin/pvrgjpeg -d -s jpeg.jpg -ci 0 out.raw
   pvrg_command += "-s ";
   pvrg_command += input;
-  //pvrg_command += " -ci 0 ";
-  //pvrg_command += output;
 
-  //std::cerr << pvrg_command << std::endl;
-  mdcmDebugMacro( pvrg_command );
+  mdcmDebugMacro(pvrg_command);
   int ret = system(pvrg_command.c_str());
-  //std::cerr << "system: " << ret << std::endl;
-  if( ret )
-    {
-    mdcmErrorMacro( "Looks like pvrg gave up in input, with ret value: " << ret );
+  if(ret)
+  {
+    mdcmErrorMacro("PVRG error: " << ret);
     return false;
-    }
+  }
 
   int numoutfile = GetPixelFormat().GetSamplesPerPixel();
   std::string wholebuf;
-  for( int file = 0; file < numoutfile; ++file )
-    {
+  for(int file = 0; file < numoutfile; ++file)
+  {
     std::ostringstream os;
     os << input;
     os << ".";
-    os << file; // dont ask
+    os << file;
     const std::string altfile = os.str();
     const size_t len = System::FileSize(altfile.c_str());
-    if( !len )
-      {
-      mdcmDebugMacro( "Output file was really empty: " << altfile );
+    if(!len)
+    {
+      mdcmDebugMacro("Output file is empty: " << altfile);
       return false;
-      }
+    }
     const char *rawfile = altfile.c_str();
 
-    mdcmDebugMacro( "Processing: " << rawfile );
+    mdcmDebugMacro("Processing: " << rawfile);
     std::ifstream is(rawfile, std::ios::binary);
     std::string buf;
-    buf.resize( len );
+    buf.resize(len);
     is.read(&buf[0], len);
-    out.SetTag( Tag(0x7fe0,0x0010) );
+    out.SetTag(Tag(0x7fe0,0x0010));
 
-    if ( PF.GetBitsAllocated() == 16 )
-      {
+    if (PF.GetBitsAllocated() == 16)
+    {
       ByteSwap<uint16_t>::SwapRangeFromSwapCodeIntoSystem((uint16_t*)
         &buf[0],
 #ifdef MDCM_WORDS_BIGENDIAN
@@ -162,53 +150,42 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
         SwapCode::BigEndian,
 #endif
         len/2);
-      }
-    wholebuf.insert( wholebuf.end(), buf.begin(), buf.end() );
-    if( !System::RemoveFile(rawfile) )
-      {
-      mdcmErrorMacro( "Could not delete output: " << rawfile);
-      }
     }
-  out.SetByteValue( &wholebuf[0], (uint32_t)wholebuf.size() );
-  if( numoutfile == 3 )
+    wholebuf.insert(wholebuf.end(), buf.begin(), buf.end());
+    if(!System::RemoveFile(rawfile))
     {
+      mdcmErrorMacro("Could not delete output: " << rawfile);
+    }
+  }
+  out.SetByteValue(&wholebuf[0], (uint32_t)wholebuf.size());
+  if(numoutfile == 3)
+  {
     this->PlanarConfiguration = 1;
-    }
+  }
 
-  if( !System::RemoveFile(input) )
-    {
-    mdcmErrorMacro( "Could not delete input: " << input );
-    }
+  if(!System::RemoveFile(input))
+  {
+    mdcmErrorMacro("Could not delete input: " << input);
+  }
 
   free(input);
   free(output);
 
-  // FIXME:
+  // FIXME
   LossyFlag = true;
 
-  //return ImageCodec::Decode(in,out);
   return true;
 #endif
 }
 
-void PVRGCodec::SetLossyFlag( bool l )
+void PVRGCodec::SetLossyFlag(bool l)
 {
   LossyFlag = l;
 }
 
-// Compress into JPEG
-bool PVRGCodec::Code(DataElement const &in, DataElement &out)
+bool PVRGCodec::Code(DataElement const &, DataElement &)
 {
-#ifndef MDCM_USE_PVRG
-  (void)in;
-  (void)out;
   return false;
-#else
-  (void)in;
-  (void)out;
-  /* Do I really want to produce JPEG by PVRG ? Shouldn't IJG handle all cases nicely ? */
-  return false;
-#endif
 }
 
 ImageCodec * PVRGCodec::Clone() const
