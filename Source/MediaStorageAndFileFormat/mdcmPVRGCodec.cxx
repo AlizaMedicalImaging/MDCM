@@ -82,22 +82,17 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
 #else
   Filename fn(System::GetCurrentProcessFileName());
   std::string executable_path = fn.GetPath();
-
-  std::string pvrg_command = executable_path + "/mdcmjpeg";
+  std::string pvrg_command = executable_path + "/mdcmpvrg";
 #endif
-  if(!System::FileExists( pvrg_command.c_str()) )
+  if(!System::FileExists(pvrg_command.c_str()))
   {
     mdcmErrorMacro("Could not find: " << pvrg_command);
     return false;
   }
 
   // http://msdn.microsoft.com/en-us/library/hs3e7355.aspx
-  char *input  = tempnam(0, "mdcminpvrg");
-  char *output = tempnam(0, "mdcmoutpvrg");
-  if(!input || !output)
-  {
-    return false;
-  }
+  char * input = tempnam(0, "mdcminpvrg");
+  if(!input) return false;
 
   std::ofstream outfile(input, std::ios::binary);
   sf->WriteBuffer(outfile);
@@ -110,7 +105,7 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
 
   mdcmDebugMacro(pvrg_command);
   int ret = system(pvrg_command.c_str());
-  if(ret)
+  if(ret != 0)
   {
     mdcmErrorMacro("PVRG error: " << ret);
     return false;
@@ -131,7 +126,7 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
       mdcmDebugMacro("Output file is empty: " << altfile);
       return false;
     }
-    const char *rawfile = altfile.c_str();
+    const char * rawfile = altfile.c_str();
 
     mdcmDebugMacro("Processing: " << rawfile);
     std::ifstream is(rawfile, std::ios::binary);
@@ -167,13 +162,9 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
   {
     mdcmErrorMacro("Could not delete input: " << input);
   }
-
   free(input);
-  free(output);
 
-  // FIXME
-  LossyFlag = true;
-
+  LossyFlag = true; // FIXME
   return true;
 #endif
 }

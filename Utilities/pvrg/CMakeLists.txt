@@ -1,6 +1,4 @@
-
-set(
-  PVRG_SRCS
+set(PVRG_SRCS
   jpeg.c
   codec.c
   huffman.c
@@ -10,28 +8,26 @@ set(
   marker.c
   stream.c
   transform.c
-  lexer.c
-)
-
+  lexer.c)
 
 # might not be portable, so simply rename the function in the code itself...
 #set_source_files_properties(jpeg.c
 #  PROPERTIES
-#  COMPILE_FLAGS -Dmain=pvrgmain
-#)
+#  COMPILE_FLAGS -Dmain=pvrgmain)
+
 if(MSVC)
-add_definitions(-DNOTRUNCATE)
+  add_definitions(-DNOTRUNCATE)
 else()
-add_definitions(-DSYSV -DNOTRUNCATE)
+  add_definitions(-DSYSV -DNOTRUNCATE)
 endif()
+
 #add_definitions(-DIO_DEBUG)
 #add_library(pvrg ${PVRG_SRCS})
 
-add_executable(mdcmjpeg ${PVRG_SRCS})
+add_executable(mdcmpvrg ${PVRG_SRCS})
 #target_link_libraries(pvrgjpeg pvrg)
 
 
-#
 # Should you wish to modify the interpreter
 # modify this portion here.
 #

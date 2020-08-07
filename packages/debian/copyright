@@ -6,7 +6,7 @@ Source: https://github.com/AlizaMedicalImaging/AlizaMS
 Files: *
 Copyright:
  2018-2020 Mikhail Isakov
- 2006-2011 Mathieu Malaterre
+ 2006-2018 Mathieu Malaterre
  1993-2005 CREATIS
 License: BSD-3-clause-alike-CREATIS
  Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,7 @@ Files: Utilities/mdcmcharls/jpegimagedatasegment.h
  Utilities/mdcmcharls/jpegstreamwriter.cpp
  Utilities/mdcmcharls/jpegstreamwriter.h
 Copyright: (C) CharLS Team 2014
-License: BSD-3-clause-alike-Jan-de-Vaan
+License: BSD-3-clause
   .
 
 Files: Utilities/mdcmcharls/*
