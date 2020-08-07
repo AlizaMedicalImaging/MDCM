@@ -27,7 +27,7 @@ either generate a 8bits jpeg lib, 12bits jpeg library or 16bits jpeg library:
 
 Index: jmorecfg.h
 ===================================================================
-RCS file: /cvs/public/mdcm/src/jpeg/libijg8/jmorecfg.h,v
+RCS file: /cvs/public/gdcm/src/jpeg/libijg8/jmorecfg.h,v
 retrieving revision 1.4
 diff -u -3 -p -r1.4 jmorecfg.h
 --- jmorecfg.h  31 Oct 2003 14:59:50 -0000      1.4
@@ -38,7 +38,7 @@ diff -u -3 -p -r1.4 jmorecfg.h
 
 -#define BITS_IN_JSAMPLE  8     /* use 8 or 12 */
 +//#define BITS_IN_JSAMPLE  8   /* use 8 or 12 */
-+#define BITS_IN_JSAMPLE @MDCM_BITS_IN_JSAMPLE@
++#define BITS_IN_JSAMPLE @GDCM_BITS_IN_JSAMPLE@
 
  /*
   * Maximum number of components (color channels) allowed in JPEG image.

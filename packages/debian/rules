@@ -1,6 +1,5 @@
 #!/usr/bin/make -f
-
-export DH_VERBOSE=1
+#export DH_VERBOSE=1
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
@@ -27,19 +26,4 @@ override_dh_auto_configure:
 
 override_dh_auto_test-arch:
 
-#override_dh_auto_build-indep:
-#
-#override_dh_auto_build-arch:
-#	dh_auto_build
-#
-#override_dh_auto_install-arch:
-#	dh_auto_install
-#
-#override_dh_auto_install-indep:
-#
-#override_dh_strip_nondeterminism:
-#	dh_strip_nondeterminism
-#
-#override_dh_compress:
-#	dh_compress
 

@@ -147,9 +147,9 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
  *
  * Steps:
  *
- * $ mdcmconv --raw -i PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm -o bla.dcm
- * $ mdcmraw -i bla.dcm -o bla.raw
- * $ mdcmraw -i PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm -o philips.jpg
+ * $ gdcmconv --raw -i PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm -o bla.dcm
+ * $ gdcmraw -i bla.dcm -o bla.raw
+ * $ gdcmraw -i PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm -o philips.jpg
  * $ pvrgjpeg -d philips
  * $ dd conv=swab if=philips.jpg.0 of=philips.raw
  * $ vbindiff bla.raw philips.raw

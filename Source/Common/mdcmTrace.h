@@ -14,6 +14,9 @@
 #ifndef MDCMTRACE_H
 #define MDCMTRACE_H
 
+// TODO
+#define MDCM_SUPRESS_OUTPUT
+
 #include "mdcmTypes.h"
 #include "mdcmSystem.h"
 #include <iosfwd>
@@ -22,62 +25,46 @@
 namespace mdcm
 {
 
-/**
- * \brief Trace
- * \details Debug / Warning and Error are encapsulated in this class
- * by default the Trace class will redirect any debug/warning/error
- * to std::cerr. Unless SetStream was specified with another (open) stream or
- * SetStreamToFile was specified to a writable file on the system.
- *
- * \warning
- * All string messages are removed during compilation time when compiled with
- * CMAKE_BUILD_TYPE being set to either:
- * - Release
- * - MinSizeRel
- * It is recommended to compile with RelWithDebInfo and/or Debug during
- * prototyping of applications.
- */
-
 class MDCM_EXPORT Trace
 {
 public :
   Trace();
   ~Trace();
 
-  /// Explicitly set the ostream for mdcm::Trace to report to
-  /// This will set the DebugStream, WarningStream and ErrorStream at once:
+  // Explicitly set the ostream for mdcm::Trace to report to
+  // This will set the DebugStream, WarningStream and ErrorStream at once:
   static void SetStream(std::ostream & os);
   static std::ostream & GetStream();
 
-  /// Explicitly set the stream which receive Debug messages:
+  // Explicitly set the stream which receive Debug messages:
   static void SetDebugStream(std::ostream & os);
   static std::ostream & GetDebugStream();
 
-  /// Explicitly set the stream which receive Warning messages:
+  // Explicitly set the stream which receive Warning messages:
   static void SetWarningStream(std::ostream & os);
   static std::ostream & GetWarningStream();
 
-  /// Explicitly set the stream which receive Error messages:
+  // Explicitly set the stream which receive Error messages:
   static void SetErrorStream(std::ostream & os);
   static std::ostream & GetErrorStream();
 
-  /// Explicitly set the filename for mdcm::Trace to report to
-  /// The file will be created (it will not append to existing file)
+  // Explicitly set the filename for mdcm::Trace to report to
+  // The file will be created (it will not append to existing file)
   static void SetStreamToFile(const char * filename);
 
-  /// Turn debug messages on (default: false)
+  // Turn debug messages on (default: false)
   static void SetDebug(bool debug);
   static void DebugOn();
   static void DebugOff();
   static bool GetDebugFlag();
 
-  /// Turn warning messages on (default: true)
+  // Turn warning messages on (default: true)
   static void SetWarning(bool debug);
   static void WarningOn();
   static void WarningOff();
   static bool GetWarningFlag();
 
-  /// Turn error messages on (default: true)
+  // Turn error messages on (default: true)
   static void SetError(bool debug);
   static void ErrorOn();
   static void ErrorOff();
@@ -107,10 +94,8 @@ public :
 #  define MDCM_FUNCTION "<unknown>"
 #endif //MDCM_CXX_HAS_FUNCTION
 
-/**
- * \brief   Debug
- * @param msg message part
- */
+#ifdef MDCM_SUPRESS_OUTPUT
+
 #if defined(NDEBUG)
 #define mdcmDebugMacro(msg) {}
 #else
@@ -221,7 +206,15 @@ public :
 #define mdcmAssertAlwaysMacro(arg) mdcmAssertMacro(arg)
 #endif //NDEBUG
 
-} // end namespace mdcm
+#else // MDCM_SUPRESS_OUTPUT
+
+#define mdcmDebugMacro(msg) {}
+#define mdcmWarningMacro(msg) {}
+#define mdcmErrorMacro(msg) {}
+#define mdcmAssertMacro(arg) {}
+#define mdcmAssertAlwaysMacro(arg) {}
+
+#endif // MDCM_SUPRESS_OUTPUT
 
 #define mdcmAlwaysWarnMacro(msg)                        \
 {                                                       \
@@ -233,5 +226,7 @@ public :
    _os << osmacro.str() << std::endl;                   \
    }                                                    \
 }
+
+} // end namespace mdcm
 
 #endif //MDCMTRACE_H

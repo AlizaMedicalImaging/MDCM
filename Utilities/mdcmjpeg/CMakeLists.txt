@@ -141,7 +141,6 @@ foreach(bits 8 12 16)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mangle_jpeg.h.in
                  ${CMAKE_CURRENT_BINARY_DIR}/${bits}/mangle_jpeg${bits}bits.h
                  @ONLY)
-  # FIXME
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/jmorecfg.h
                  ${CMAKE_CURRENT_BINARY_DIR}/${bits}/jmorecfg.h
                  COPYONLY)
@@ -150,6 +149,9 @@ foreach(bits 8 12 16)
                  COPYONLY)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/jpeglib.h
                  ${CMAKE_CURRENT_BINARY_DIR}/${bits}/jpeglib.h
+                 COPYONLY)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/jpegint.h
+                 ${CMAKE_CURRENT_BINARY_DIR}/${bits}/jpegint.h
                  COPYONLY)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/jerror.h
                  ${CMAKE_CURRENT_BINARY_DIR}/${bits}/jerror.h
@@ -163,9 +165,8 @@ add_subdirectory(8)
 add_subdirectory(12)
 add_subdirectory(16)
 
-# FIXME
 if(NOT JPEG_INSTALL_NO_DEVELOPMENT)
-  file(GLOB header_files "*.h")
+  file(GLOB header_files "jversion.h")
   install(FILES ${header_files}
     DESTINATION ${JPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 endif()

@@ -7,6 +7,7 @@ usr/lib/*/libmdcmjpeg16.so
 usr/lib/*/libmdcmjpeg8.so
 usr/lib/*/mdcm/*.cmake
 usr/include/mdcm/mdcm*
+usr/include/mdcm/zip*
 usr/include/mdcm/mdcmjpeg/12/*
 usr/include/mdcm/mdcmjpeg/16/*
 usr/include/mdcm/mdcmjpeg/8/*

@@ -224,7 +224,7 @@ static bool ComputeZSpacingFromIPP(const DataSet &ds, double &zspacing)
       const double current = distances[i] - prev;
       if(fabs(current - zspacing) > ZTolerance)
       {
-        mdcmErrorMacro("This Enhanced Multiframe is not supported for now. Sorry");
+        mdcmErrorMacro("z-spacing error: probably non-uniform");
         return false;
       }
       prev = distances[i];
