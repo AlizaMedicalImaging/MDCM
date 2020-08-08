@@ -107,32 +107,32 @@ if(MDCM_USE_SYSTEM_OPENSSL AND MDCM_HAVE_CMS_RECIPIENT_PASSWORD)
   set(Common_SRCS ${Common_SRCS} mdcmOpenSSLCryptoFactory.cxx mdcmOpenSSLCryptographicMessageSyntax.cxx)
 endif()
 
-add_library(mdcmCommon ${Common_SRCS})
+add_library(mdcmcommon ${Common_SRCS})
 
 if(APPLE)
   if(MDCM_USE_COREFOUNDATION_LIBRARY)
-    target_link_libraries(mdcmCommon LINK_PRIVATE ${COREFOUNDATION_LIBRARY})
+    target_link_libraries(mdcmcommon LINK_PRIVATE ${COREFOUNDATION_LIBRARY})
   endif()
 endif()
 
 if(UNIX)
-  target_link_libraries(mdcmCommon LINK_PRIVATE ${CMAKE_DL_LIBS})
+  target_link_libraries(mdcmcommon LINK_PRIVATE ${CMAKE_DL_LIBS})
 endif()
 
 if(WIN32)
-  target_link_libraries(mdcmCommon LINK_PRIVATE ws2_32)
-  target_link_libraries(mdcmCommon LINK_PRIVATE crypt32)
+  target_link_libraries(mdcmcommon LINK_PRIVATE ws2_32)
+  target_link_libraries(mdcmcommon LINK_PRIVATE crypt32)
 endif()
 
 if(MDCM_USE_SYSTEM_OPENSSL)
   include_directories(${OPENSSL_INCLUDE_DIR})
-  target_link_libraries(mdcmCommon LINK_PRIVATE ${OPENSSL_LIBRARIES})
+  target_link_libraries(mdcmcommon LINK_PRIVATE ${OPENSSL_LIBRARIES})
 endif()
 
-set_target_properties(mdcmCommon PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
+set_target_properties(mdcmcommon PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
-install_library(mdcmCommon)
-install_pdb(mdcmCommon)
+install_library(mdcmcommon)
+install_pdb(mdcmcommon)
 install_includes("*.h" "*.txx")
 if(NOT MDCM_INSTALL_NO_DEVELOPMENT)
   install(FILES ${header_files}

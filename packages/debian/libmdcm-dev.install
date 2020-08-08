@@ -1,7 +1,7 @@
-usr/lib/*/libmdcmCommon.so
-usr/lib/*/libmdcmDICT.so
-usr/lib/*/libmdcmDSED.so
-usr/lib/*/libmdcmMSFF.so
+usr/lib/*/libmdcmcommon.so
+usr/lib/*/libmdcmdict.so
+usr/lib/*/libmdcmdsed.so
+usr/lib/*/libmdcmmsff.so
 usr/lib/*/libmdcmjpeg12.so
 usr/lib/*/libmdcmjpeg16.so
 usr/lib/*/libmdcmjpeg8.so

@@ -2,8 +2,7 @@ include_directories(
   "${MDCM_SOURCE_DIR}/Source/Common"
   "${MDCM_BINARY_DIR}/Source/Common"
   "${MDCM_SOURCE_DIR}/Source/DataStructureAndEncodingDefinition"
-  "${MDCM_SOURCE_DIR}/Source/DataDictionary"
-  )
+  "${MDCM_SOURCE_DIR}/Source/DataDictionary")
 
 set(DICT_SRCS
   mdcmDicts.cxx
@@ -14,13 +13,12 @@ set(DICT_SRCS
   mdcmGroupDict.cxx
   mdcmDefaultGroupNames.cxx
   mdcmUIDs.cxx
-  mdcmCSAHeaderDefaultDicts.cxx
-  )
+  mdcmCSAHeaderDefaultDicts.cxx)
 
-add_library(mdcmDICT ${DICT_SRCS})
-target_link_libraries(mdcmDICT LINK_PRIVATE mdcmDSED)
-set_target_properties(mdcmDICT PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
+add_library(mdcmdict ${DICT_SRCS})
+target_link_libraries(mdcmdict LINK_PRIVATE mdcmdsed)
+set_target_properties(mdcmdict PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
-install_library(mdcmDICT)
-install_pdb(mdcmDICT)
+install_library(mdcmdict)
+install_pdb(mdcmdict)
 install_includes("*.h")

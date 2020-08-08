@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: mdcm
 Upstream-Contact: mihail.isakov@gmail.com
-Source: https://github.com/AlizaMedicalImaging/AlizaMS
+Source: https://github.com/AlizaMedicalImaging/MDCM
 
 Files: *
 Copyright:

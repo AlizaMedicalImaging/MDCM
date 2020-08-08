@@ -96,6 +96,7 @@ else()
 endif()
 #
 
+#FIXME
 include_directories(
   "${MDCM_SOURCE_DIR}/Source/Common"
   "${MDCM_BINARY_DIR}/Source/Common"
@@ -103,7 +104,6 @@ include_directories(
   "${MDCM_SOURCE_DIR}/Source/DataDictionary"
   "${MDCM_SOURCE_DIR}/Source/InformationObjectDefinition"
   ${CMAKE_CURRENT_SOURCE_DIR}
-  # FIXME
   "${MDCM_SOURCE_DIR}/Utilities"
   "${MDCM_BINARY_DIR}/Utilities")
 
@@ -137,35 +137,35 @@ else()
   set(MDCMUUID mdcmuuid)
 endif()
 
-add_library(mdcmMSFF ${MSFF_SRCS})
+add_library(mdcmmsff ${MSFF_SRCS})
 # PVRG codec calls mdcmpvrg executable
 if(MDCM_USE_PVRG)
   if(NOT MDCM_USE_SYSTEM_PVRG)
-    add_dependencies(mdcmMSFF mdcmpvrg)
+    add_dependencies(mdcmmsff mdcmpvrg)
   endif()
 endif()
 
-target_link_libraries(mdcmMSFF LINK_PUBLIC mdcmDSED mdcmDICT)
-target_link_libraries(mdcmMSFF LINK_PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})
+target_link_libraries(mdcmmsff LINK_PUBLIC mdcmdsed mdcmdict)
+target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})
 if(MDCM_USE_JPEGLS)
-  target_link_libraries(mdcmMSFF LINK_PRIVATE ${MDCM_CHARLS_LIBRARIES})
+  target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_CHARLS_LIBRARIES})
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX AND MINGW)
   # not tested
-  set_target_properties(mdcmMSFF PROPERTIES LINK_FLAGS "-Wl,--enable-runtime-pseudo-reloc")
+  set_target_properties(mdcmmsff PROPERTIES LINK_FLAGS "-Wl,--enable-runtime-pseudo-reloc")
 endif()
 
 if(WIN32)
   # For UuidCreate
   # http://msdn.microsoft.com/en-us/library/aa379205(VS.85).aspx
-  target_link_libraries(mdcmMSFF LINK_PRIVATE rpcrt4)
+  target_link_libraries(mdcmmsff LINK_PRIVATE rpcrt4)
 else()
-  target_link_libraries(mdcmMSFF LINK_PRIVATE ${MDCMUUID})
+  target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCMUUID})
 endif()
 
-set_target_properties(mdcmMSFF PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
+set_target_properties(mdcmmsff PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
-install_library(mdcmMSFF)
-install_pdb(mdcmMSFF)
+install_library(mdcmmsff)
+install_pdb(mdcmmsff)
 install_includes("*.h" "*.txx")

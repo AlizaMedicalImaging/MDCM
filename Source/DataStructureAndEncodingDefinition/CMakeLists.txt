@@ -1,6 +1,3 @@
-# Define the srcs for Data Structure and Encoding Definitions
-# DSED
-
 # dual compilation (namespace mdcm_ns), all the following either directly
 # reference code using MDCM_SUPPORT_BROKEN_IMPLEMENTATION or indirectly
 set(DSED2_SRCS
@@ -26,15 +23,12 @@ foreach(src ${DSED2_SRCS})
   configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/${src}
     ${CMAKE_CURRENT_BINARY_DIR}/strict_${src}
-    COPYONLY
-    )
+    COPYONLY)
   list(APPEND DSED3_SRCS
-    ${CMAKE_CURRENT_BINARY_DIR}/strict_${src}
-    )
+    ${CMAKE_CURRENT_BINARY_DIR}/strict_${src})
   set_property(
     SOURCE ${CMAKE_CURRENT_BINARY_DIR}/strict_${src}
-    PROPERTY COMPILE_DEFINITIONS "MDCM_OVERRIDE_BROKEN_IMPLEMENTATION" "mdcm_ns=mdcmstrict"
-    )
+    PROPERTY COMPILE_DEFINITIONS "MDCM_OVERRIDE_BROKEN_IMPLEMENTATION" "mdcm_ns=mdcmstrict")
 endforeach()
 
 # the following source code do not need a duplicate compilation to handle
@@ -72,12 +66,12 @@ if(NOT MDCM_USE_SYSTEM_ZLIB)
   include_directories("${MDCM_BINARY_DIR}/Utilities/mdcmzlib")
 endif()
 
-add_library(mdcmDSED ${DSED_SRCS} ${DSED3_SRCS})
-target_link_libraries(mdcmDSED LINK_PUBLIC mdcmCommon)
+add_library(mdcmdsed ${DSED_SRCS} ${DSED3_SRCS})
+target_link_libraries(mdcmdsed LINK_PUBLIC mdcmcommon)
 # zlib stuff are actually included (template) so we need to link them here.
-target_link_libraries(mdcmDSED LINK_PRIVATE ${MDCM_ZLIB_LIBRARIES})
-set_target_properties(mdcmDSED PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
+target_link_libraries(mdcmdsed LINK_PRIVATE ${MDCM_ZLIB_LIBRARIES})
+set_target_properties(mdcmdsed PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
-install_library(mdcmDSED)
-install_pdb(mdcmDSED)
+install_library(mdcmdsed)
+install_pdb(mdcmdsed)
 install_includes("*.h" "*.txx")

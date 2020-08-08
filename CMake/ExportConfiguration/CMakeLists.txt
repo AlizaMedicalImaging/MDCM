@@ -19,10 +19,10 @@ install(FILES ${MDCM_BINARY_DIR}/UseMDCM.cmake
 install(EXPORT ${MDCM_TARGETS_NAME} DESTINATION ${MDCM_INSTALL_PACKAGE_DIR} COMPONENT Headers)
 
 set(targets
-  mdcmCommon
-  mdcmDICT
-  mdcmDSED
-  mdcmMSFF
+  mdcmcommon
+  mdcmdict
+  mdcmdsed
+  mdcmmsff
   mdcmjpeg8
   mdcmjpeg12
   mdcmjpeg16
