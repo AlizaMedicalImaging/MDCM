@@ -71,12 +71,6 @@ public :
     ZEROED_OUT
   } CSAHeaderType;
 
-  template <typename TSwap>
-  MDCM_LEGACY(std::istream & Read(std::istream & is));
-
-  template <typename TSwap>
-  MDCM_LEGACY(const std::ostream & Write(std::ostream & os) const);
-
   /// Decode the CSAHeader from element 'de'
   bool LoadFromDataElement(DataElement const &de);
 

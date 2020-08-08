@@ -27,7 +27,7 @@
  * and official publication at:
  * http://www.medicalconnections.co.uk/html/lossless_bug.html
  */
-#cmakedefine SUPPORT_DICOMOBJECTS_BUG
+#cmakedefine SUPPORT_JPEG_PRED6_BUG
 
 #define BITS_IN_JSAMPLE @CMAKE_BITS_IN_JSAMPLE@
 

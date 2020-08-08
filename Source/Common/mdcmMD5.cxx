@@ -16,8 +16,6 @@
 #include "mdcmSystem.h"
 #ifdef MDCM_USE_SYSTEM_OPENSSL
 #include <openssl/md5.h>
-#elif defined(MDCM_BUILD_TESTING)
-#include "mdcm_md5.h"
 #endif
 #include <fstream>
 #include <vector>
@@ -35,18 +33,6 @@ bool MD5::Compute(const char * buffer, size_t buf_len, char digest_str[33])
   MD5_Init(&ctx);
   MD5_Update(&ctx, buffer, buf_len);
   MD5_Final(digest, &ctx);
-  for (int di = 0; di < 16; ++di)
-  {
-    sprintf(digest_str+2*di, "%02x", digest[di]);
-  }
-  digest_str[2*16] = '\0';
-  return true;
-#elif defined(MDCM_BUILD_TESTING)
-  md5_byte_t digest[16];
-  md5_state_t state;
-  md5_init(&state);
-  md5_append(&state, (const md5_byte_t *)buffer, (int)buf_len);
-  md5_finish(&state, digest);
   for (int di = 0; di < 16; ++di)
   {
     sprintf(digest_str+2*di, "%02x", digest[di]);
@@ -75,43 +61,17 @@ static bool process_file(const char * filename, unsigned char * digest)
   MD5_Final(digest, &ctx);
   return true;
 }
-
-#elif defined(MDCM_BUILD_TESTING)
-
-static bool process_file(const char * filename, md5_byte_t * digest)
-{
-  if(!filename || !digest) return false;
-  std::ifstream file(filename, std::ios::binary);
-  if(!file) return false;
-  const size_t file_size = System::FileSize(filename);
-  std::vector<char> v(file_size);
-  char * buffer = &v[0];
-  file.read(buffer, file_size);
-  md5_state_t state;
-  md5_init(&state);
-  md5_append(&state, (const md5_byte_t *)buffer, (int)file_size);
-  md5_finish(&state, digest);
-  return true;
-}
-
 #else
-
 static inline bool process_file(const char *, unsigned char *)
 {
   return false;
 }
-
 #endif
 
 bool MD5::ComputeFile(const char * filename, char digest_str[33])
 {
 #ifdef MDCM_USE_SYSTEM_OPENSSL
   unsigned char digest[16];
-#elif defined(MDCM_BUILD_TESTING)
-  md5_byte_t digest[16];
-#else
-  unsigned char digest[16] = {};
-#endif
   if(!process_file(filename, digest)) return false;
   for (int di = 0; di < 16; ++di)
   {
@@ -119,6 +79,11 @@ bool MD5::ComputeFile(const char * filename, char digest_str[33])
   }
   digest_str[2*16] = '\0';
   return true;
+#else
+  (void)filename;
+  (void)digest_str;
+  return false;
+#endif
 }
 
 } // end namespace mdcm

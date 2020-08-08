@@ -16,7 +16,8 @@
 
 #include "mdcmConfigure.h"
 #include "mdcmWin32.h"
-#include "mdcmLegacyMacro.h"
+#include "mdcmException.h"
+#include "mdcmTrace.h"
 
 #ifdef MDCM_HAVE_STDINT_H
 #ifndef __STDC_LIMIT_MACROS

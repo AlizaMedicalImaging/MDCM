@@ -119,8 +119,8 @@ else()
   set(JPEGSTATIC 1)
 endif()
 
-# DICOMObjects bug
-option(SUPPORT_DICOMOBJECTS_BUG "Workaround JPEG signed short lossless bug" ON)
+# JPEG_PRED6_BUG bug
+option(SUPPORT_JPEG_PRED6_BUG "Workaround Jpeg pred. 6 bug" ON)
 
 # Generate three libraries: jpeg 8bits, 12bits and 16bits
 # using only one source directory

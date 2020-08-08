@@ -44,8 +44,6 @@
 #define MDCM_EXECUTABLE_OUTPUT_PATH "@EXECUTABLE_OUTPUT_PATH@"
 #define MDCM_LIBRARY_OUTPUT_PATH    "@LIBRARY_OUTPUT_PATH@"
 
-#cmakedefine MDCM_BUILD_TESTING
-
 #cmakedefine MDCM_USE_SYSTEM_ZLIB
 #cmakedefine MDCM_USE_SYSTEM_UUID
 #cmakedefine MDCM_USE_SYSTEM_OPENSSL
@@ -61,19 +59,16 @@
 #define OPENJPEG_VERSION_MAJOR 2
 #else
 #define OPENJPEG_VERSION_MAJOR @OPENJPEG_VERSION_MAJOR@
-#endif //MDCM_USE_SYSTEM_OPENJPEG
+#endif
 
 #ifndef OPENJPEG_VERSION_MAJOR
 #error problem with openjpeg major version
-#endif // OPENJPEG_VERSION_MAJOR
+#endif
 
 #cmakedefine MDCM_USE_PVRG
 #cmakedefine MDCM_USE_KAKADU
 #cmakedefine MDCM_USE_JPEGLS
-
 #cmakedefine MDCM_AUTOLOAD_MDCMJNI
-
-/* I guess something important */
 #cmakedefine MDCM_HAVE_STDINT_H
 #cmakedefine MDCM_HAVE_INTTYPES_H
 
@@ -87,13 +82,11 @@
 #define MDCM_INSTALL_INCLUDE_DIR "@MDCM_INSTALL_INCLUDE_DIR@"
 #define MDCM_INSTALL_DATA_DIR "@MDCM_INSTALL_DATA_DIR@"
 
-/* Whether we are building shared libraries.  */
 #cmakedefine MDCM_BUILD_SHARED_LIBS
 
 /* MDCM uses __FUNCTION__ which is not ANSI C, but C99 */
 #cmakedefine MDCM_CXX_HAS_FUNCTION
 
-/* Special time structure support */
 #cmakedefine MDCM_HAVE_SYS_TIME_H
 #cmakedefine MDCM_HAVE_WINSOCK_H
 #cmakedefine MDCM_HAVE_BYTESWAP_H
@@ -135,24 +128,13 @@
 #define MDCM_PVRG_JPEG_EXECUTABLE "@PVRGJPEG_EXECUTABLE@"
 #define MDCM_KAKADU_EXPAND_EXECUTABLE "@KDU_EXPAND_EXECUTABLE@"
 
-/*--------------------------------------------------------------------------*/
-/* MDCM Versioning                                                          */
-
-/* Version number.  */
 #define MDCM_MAJOR_VERSION @MDCM_MAJOR_VERSION@
 #define MDCM_MINOR_VERSION @MDCM_MINOR_VERSION@
 #define MDCM_BUILD_VERSION @MDCM_BUILD_VERSION@
 #define MDCM_VERSION "@MDCM_VERSION@"
 #define MDCM_API_VERSION "@MDCM_API_VERSION@"
 
-/*--------------------------------------------------------------------------*/
-/* MDCM deprecation mechanism                                               */
-#cmakedefine MDCM_LEGACY_REMOVE
-#cmakedefine MDCM_LEGACY_SILENT
-
 #cmakedefine MDCM_ALWAYS_TRACE_MACRO
-
-/* ITK Specific */
 #cmakedefine MDCM_USE_COREFOUNDATION_LIBRARY
 
 #endif

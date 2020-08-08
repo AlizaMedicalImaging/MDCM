@@ -94,8 +94,6 @@ protected:
   double ZTolerance;
   double DirCosTolerance;
 
-private:
-  MDCM_LEGACY(bool ComputeSpacing(std::vector<std::string> const & filenames))
 };
 
 } // end namespace mdcm

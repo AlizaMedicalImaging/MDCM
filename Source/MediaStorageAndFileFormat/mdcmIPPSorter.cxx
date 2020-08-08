@@ -276,12 +276,4 @@ bool IPPSorter::Sort(std::vector<std::string> const & filenames)
   return true;
 }
 
-#if !defined(MDCM_LEGACY_REMOVE)
-bool IPPSorter::ComputeSpacing(std::vector<std::string> const & filenames)
-{
-  (void)filenames;
-  return false;
-}
-#endif
-
 } // end namespace mdcm

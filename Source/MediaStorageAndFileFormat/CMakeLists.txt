@@ -71,23 +71,30 @@ set(MSFF_SRCS
   mdcmJPEG2000Codec.cxx
   mdcmSerieHelper.cxx)
 
-  list(APPEND MSFF_SRCS
-    ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/rle.cxx
-    ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/info.cxx
-    ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/io.cxx)
+list(APPEND MSFF_SRCS
+  ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/rle.cxx
+  ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/info.cxx
+  ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/io.cxx)
 
+if(NOT MDCM_USE_SYSTEM_OPENJPEG)
+  if(NOT BUILD_SHARED_LIBS)
+    set_source_files_properties(mdcmJPEG2000Codec.cxx
+      PROPERTIES
+      COMPILE_FLAGS -DOPJ_STATIC)
+  endif()
+endif()
+
+#FIXME
 if(NOT BUILD_SHARED_LIBS)
-  set_source_files_properties(mdcmJPEG2000Codec.cxx
-                            PROPERTIES
-                            COMPILE_FLAGS -DOPJ_STATIC)
   set_source_files_properties(mdcmJPEGLSCodec.cxx
-                            PROPERTIES
-                            COMPILE_DEFINITIONS CHARLS_STATIC)
+    PROPERTIES
+    COMPILE_DEFINITIONS CHARLS_STATIC)
 else()
   set_source_files_properties(mdcmJPEGLSCodec.cxx
-                              PROPERTIES
-                              COMPILE_FLAGS -DCHARLS_DLL)
+    PROPERTIES
+    COMPILE_FLAGS -DCHARLS_DLL)
 endif()
+#
 
 include_directories(
   "${MDCM_SOURCE_DIR}/Source/Common"
@@ -131,7 +138,7 @@ else()
 endif()
 
 add_library(mdcmMSFF ${MSFF_SRCS})
-# PVRG codec calls mdcmjpeg executable
+# PVRG codec calls mdcmpvrg executable
 if(MDCM_USE_PVRG)
   if(NOT MDCM_USE_SYSTEM_PVRG)
     add_dependencies(mdcmMSFF mdcmpvrg)

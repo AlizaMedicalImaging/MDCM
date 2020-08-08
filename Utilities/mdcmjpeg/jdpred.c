@@ -153,9 +153,9 @@ jpeg_undifference5(j_decompress_ptr cinfo, int comp_index,
   (void)cinfo;(void)comp_index;(void)diff_buf;(void)prev_row;(void)undiff_buf;(void)width;
 }
 
-#ifdef SUPPORT_DICOMOBJECTS_BUG
+#ifdef SUPPORT_JPEG_PRED6_BUG
 /* uninitialized */
-static int dicomobjectsbug = -1; /* 0 == nobug, 1 == bug */
+static int pred6_bug = -1; /* 0 == nobug, 1 == bug */
 #endif
 
 METHODDEF(void)
@@ -163,14 +163,14 @@ jpeg_undifference6(j_decompress_ptr cinfo, int comp_index,
        JDIFFROW diff_buf, JDIFFROW prev_row,
        JDIFFROW undiff_buf, JDIMENSION width)
 {
-#ifdef SUPPORT_DICOMOBJECTS_BUG
+#ifdef SUPPORT_JPEG_PRED6_BUG
   unsigned int xindex;
   int Ra, Rb, Rc;
   int min, max, temp;
   SHIFT_TEMPS
-  if( dicomobjectsbug == -1 )
+  if( pred6_bug == -1 )
     {
-    dicomobjectsbug = 0; /* no bug by default */
+    pred6_bug = 0; /* no bug by default */
 
     Rb = GETJSAMPLE(prev_row[0]);
     Ra = (diff_buf[0] + PREDICTOR2) & 0xFFFF;
@@ -187,11 +187,11 @@ jpeg_undifference6(j_decompress_ptr cinfo, int comp_index,
     }
     if( (max - min) > 50000) /* magic number */
       {
-      dicomobjectsbug = 1;
+      pred6_bug = 1;
       WARNMS(cinfo, JWRN_SIGNED_ARITH);
       }
     }
-  if(dicomobjectsbug)
+  if(pred6_bug)
     {
     UNDIFFERENCE_2D_BUG(PREDICTOR6_BUG);
     }
