@@ -120,7 +120,7 @@ else()
 endif()
 
 # DICOMObjects bug
-set(SUPPORT_DICOMOBJECTS_BUG ON)
+option(SUPPORT_DICOMOBJECTS_BUG "Workaround JPEG signed short lossless bug" ON)
 
 # Generate three libraries: jpeg 8bits, 12bits and 16bits
 # using only one source directory

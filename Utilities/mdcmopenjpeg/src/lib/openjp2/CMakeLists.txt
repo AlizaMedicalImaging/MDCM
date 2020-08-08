@@ -1,12 +1,10 @@
 include_regular_expression("^.*$")
 
-install( FILES  ${CMAKE_CURRENT_BINARY_DIR}/opj_config.h
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/opj_config.h
  DESTINATION ${OPENJPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 
-include_directories(
-  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/src/lib/openjp2 # opj_config.h and opj_config_private.h
-)
-# Defines the source code for the library
+include_directories(${${OPENJPEG_NAMESPACE}_BINARY_DIR}/src/lib/openjp2)
+
 set(OPENJPEG_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/thread.c
   ${CMAKE_CURRENT_SOURCE_DIR}/thread.h
@@ -54,8 +52,7 @@ set(OPENJPEG_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_malloc.h
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_stdint.h
   ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.h
-)
+  ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.h)
 
 option(OPJ_DISABLE_TPSOT_FIX "Disable TPsot==TNsot fix. See https://github.com/uclouvain/openjpeg/issues/254." OFF)
 if(OPJ_DISABLE_TPSOT_FIX)
@@ -63,7 +60,7 @@ if(OPJ_DISABLE_TPSOT_FIX)
 endif()
 
 # Special case for old i586-mingw32msvc-gcc cross compiler
-if(NOT WIN32 AND CMAKE_COMPILER_IS_GNUCC AND CMAKE_C_COMPILER MATCHES ".*mingw32msvc.*" )
+if(NOT WIN32 AND CMAKE_COMPILER_IS_GNUCC AND CMAKE_C_COMPILER MATCHES ".*mingw32msvc.*")
   set(WIN32 YES)
 endif()
 
@@ -107,13 +104,11 @@ install(TARGETS ${OPENJPEG_LIBRARY_NAME}
   EXPORT ${MDCM_TARGETS_NAME}
   RUNTIME DESTINATION ${OPENJPEG_INSTALL_BIN_DIR} COMPONENT Applications
   LIBRARY DESTINATION ${OPENJPEG_INSTALL_LIB_DIR} COMPONENT Libraries
-  ARCHIVE DESTINATION ${OPENJPEG_INSTALL_LIB_DIR} COMPONENT Libraries
-)
+  ARCHIVE DESTINATION ${OPENJPEG_INSTALL_LIB_DIR} COMPONENT Libraries)
 
 # Install includes files
 install(FILES openjpeg.h opj_stdint.h
-  DESTINATION ${OPENJPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers
-)
+  DESTINATION ${OPENJPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 
 if(BUILD_DOC)
 # install man page of the library
@@ -143,8 +138,7 @@ if(OPENJPEG_CPPCHECK)
   find_package(CPPCHECK REQUIRED)
   foreach(f ${OPENJPEG_SRCS})
     # cppcheck complains about too many configuration, pretend to be WIN32:
-    add_custom_command(TARGET ${OPENJPEG_LIBRARY_NAME}
-      COMMAND ${CPPCHECK_EXECUTABLE} -DWIN32 ${f})
+    add_custom_command(TARGET ${OPENJPEG_LIBRARY_NAME} COMMAND ${CPPCHECK_EXECUTABLE} -DWIN32 ${f})
   endforeach()
 endif()
 
@@ -164,30 +158,30 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 
 option(OPJ_USE_THREAD "Build with thread/mutex support " ON)
 if(NOT OPJ_USE_THREAD)
-   add_definitions( -DMUTEX_stub)
+  add_definitions(-DMUTEX_stub)
 endif(NOT OPJ_USE_THREAD)
 
 find_package(Threads QUIET)
 
-if(OPJ_USE_THREAD AND WIN32 AND NOT Threads_FOUND )
-    add_definitions( -DMUTEX_win32)
-    set(Threads_FOUND YES)
+if(OPJ_USE_THREAD AND WIN32 AND NOT Threads_FOUND)
+  add_definitions(-DMUTEX_win32)
+  set(Threads_FOUND YES)
 endif()
 
-if(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_WIN32_THREADS_INIT )
-   add_definitions( -DMUTEX_win32)
-endif(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_WIN32_THREADS_INIT )
+if(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_WIN32_THREADS_INIT)
+  add_definitions(-DMUTEX_win32)
+endif(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_WIN32_THREADS_INIT)
 
-if(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT )
-   add_definitions( -DMUTEX_pthread)
-endif(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT )
+if(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
+  add_definitions(-DMUTEX_pthread)
+endif(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
 
 if(OPJ_USE_THREAD AND NOT Threads_FOUND)
   message(FATAL_ERROR "No thread library found and thread/mutex support is required by OPJ_USE_THREAD option")
 endif(OPJ_USE_THREAD AND NOT Threads_FOUND)
 
 if(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
-   TARGET_LINK_LIBRARIES(${OPENJPEG_LIBRARY_NAME} ${CMAKE_THREAD_LIBS_INIT})
+  TARGET_LINK_LIBRARIES(${OPENJPEG_LIBRARY_NAME} ${CMAKE_THREAD_LIBS_INIT})
 endif(OPJ_USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
 
 #if(BUILD_UNIT_TESTS)

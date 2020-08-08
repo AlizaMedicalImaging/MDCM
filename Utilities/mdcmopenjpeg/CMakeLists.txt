@@ -7,6 +7,7 @@
 # For this purpose you can define a CMake var: OPENJPEG_NAMESPACE to whatever you like
 # e.g.:
 # set(OPENJPEG_NAMESPACE "MDCMOPENJPEG")
+
 cmake_minimum_required(VERSION 2.8.12)
 
 if(COMMAND CMAKE_POLICY)
@@ -25,10 +26,8 @@ set(OPENJPEG_LIBRARY_NAME mdcmopenjp2)
 
 project(${OPENJPEG_NAMESPACE} C)
 
-# Do full dependency headers.
 include_regular_expression("^.*$")
 
-#-----------------------------------------------------------------------------
 # OPENJPEG version number, useful for packaging and doxygen doc:
 set(OPENJPEG_VERSION_MAJOR 2)
 set(OPENJPEG_VERSION_MINOR 3)
@@ -43,8 +42,7 @@ if(NOT OPENJPEG_SOVERSION)
 endif(NOT OPENJPEG_SOVERSION)
 set(OPENJPEG_LIBRARY_PROPERTIES
   VERSION   "${OPENJPEG_VERSION_MAJOR}.${OPENJPEG_VERSION_MINOR}.${OPENJPEG_VERSION_BUILD}"
-  SOVERSION "${OPENJPEG_SOVERSION}"
-)
+  SOVERSION "${OPENJPEG_SOVERSION}")
 
 # --------------------------------------------------------------------------
 # Path to additional CMake modules
@@ -136,7 +134,7 @@ endif()
 
 #-----------------------------------------------------------------------------
 # Big endian test:
-include (${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
+include(${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
 TEST_BIG_ENDIAN(OPJ_BIG_ENDIAN)
 
 #-----------------------------------------------------------------------------
@@ -144,14 +142,13 @@ TEST_BIG_ENDIAN(OPJ_BIG_ENDIAN)
 configure_file(
   ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/CTestCustom.cmake.in
   ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/CTestCustom.cmake
-  @ONLY
-  )
+  @ONLY)
 
 #-----------------------------------------------------------------------------
 # OpenJPEG build configuration options.
 #option(BUILD_SHARED_LIBS "Build OpenJPEG shared library and link executables against it." ON)
-set (EXECUTABLE_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all executables.")
-set (LIBRARY_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all libraries.")
+set(EXECUTABLE_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all executables.")
+set(LIBRARY_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all libraries.")
 mark_as_advanced(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 
 # Compiler specific flags:
@@ -168,16 +165,16 @@ endif()
 # Check if some include files are provided by the system
 include(EnsureFileInclude)
 # These files are mandatory
-ensure_file_include("string.h"   HAVE_STRING_H YES)
-ensure_file_include("memory.h"   HAVE_MEMORY_H YES)
-ensure_file_include("stdlib.h"   HAVE_STDLIB_H YES)
-ensure_file_include("stdio.h"    HAVE_STDIO_H  YES)
-ensure_file_include("math.h"     HAVE_MATH_H   YES)
-ensure_file_include("float.h"    HAVE_FLOAT_H  YES)
-ensure_file_include("time.h"     HAVE_TIME_H   YES)
-ensure_file_include("stdarg.h"   HAVE_STDARG_H YES)
-ensure_file_include("ctype.h"    HAVE_CTYPE_H  YES)
-ensure_file_include("assert.h"   HAVE_ASSERT_H YES)
+ensure_file_include("string.h" HAVE_STRING_H YES)
+ensure_file_include("memory.h" HAVE_MEMORY_H YES)
+ensure_file_include("stdlib.h" HAVE_STDLIB_H YES)
+ensure_file_include("stdio.h"  HAVE_STDIO_H  YES)
+ensure_file_include("math.h"   HAVE_MATH_H   YES)
+ensure_file_include("float.h"  HAVE_FLOAT_H  YES)
+ensure_file_include("time.h"   HAVE_TIME_H   YES)
+ensure_file_include("stdarg.h" HAVE_STDARG_H YES)
+ensure_file_include("ctype.h"  HAVE_CTYPE_H  YES)
+ensure_file_include("assert.h" HAVE_ASSERT_H YES)
 
 # For the following files, we provide an alternative, they are not mandatory
 ensure_file_include("stdint.h"   OPJ_HAVE_STDINT_H   NO)
@@ -185,10 +182,10 @@ ensure_file_include("inttypes.h" OPJ_HAVE_INTTYPES_H NO)
 
 # why check this one ? for openjpip ?
 include (${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
-CHECK_INCLUDE_FILE("strings.h"      HAVE_STRINGS_H)
-CHECK_INCLUDE_FILE("sys/stat.h"     HAVE_SYS_STAT_H)
-CHECK_INCLUDE_FILE("sys/types.h"    HAVE_SYS_TYPES_H)
-CHECK_INCLUDE_FILE("unistd.h"       HAVE_UNISTD_H)
+CHECK_INCLUDE_FILE("strings.h"   HAVE_STRINGS_H)
+CHECK_INCLUDE_FILE("sys/stat.h"  HAVE_SYS_STAT_H)
+CHECK_INCLUDE_FILE("sys/types.h" HAVE_SYS_TYPES_H)
+CHECK_INCLUDE_FILE("unistd.h"    HAVE_UNISTD_H)
 
 # Enable Large file support
 include(TestLargeFiles)
@@ -214,14 +211,12 @@ add_subdirectory(src/lib)
 configure_file(
  ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/opj_config.h.cmake.in
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config.h
- @ONLY
- )
+ @ONLY)
 
  configure_file(
  ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/opj_config_private.h.cmake.in
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config_private.h
- @ONLY
- )
+ @ONLY)
 
 #-----------------------------------------------------------------------------
 # Buld Testing
@@ -236,8 +231,7 @@ configure_file(
 #    # git clone https://github.com/uclouvain/openjpeg-data.git
 #    find_path(OPJ_DATA_ROOT README-OPJ-Data
 #      PATHS $ENV{OPJ_DATA_ROOT} ${CMAKE_SOURCE_DIR}/../data
-#      NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH
-#      )
+#      NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
 #
 #    # Add repository where to find tests
 #    add_subdirectory(tests)
@@ -250,12 +244,37 @@ configure_file(
 #-----------------------------------------------------------------------------
 # install all targets referenced as OPENJPEGTargets
 #install(EXPORT OpenJPEGTargets DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
-configure_file( ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/OpenJPEGConfig.cmake.in
-  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
-  @ONLY
-)
-install( FILES ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
-  DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR}
-)
 
+configure_file(${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/OpenJPEGConfig.cmake.in
+  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
+  @ONLY)
+
+install(FILES ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
+  DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
+
+## install CHANGES and LICENSE
+#if(BUILD_DOC)
+#if(EXISTS ${OPENJPEG_SOURCE_DIR}/CHANGES)
+#  install(FILES CHANGES DESTINATION ${OPENJPEG_INSTALL_DOC_DIR})
+#endif()
+#
+#install(FILES LICENSE DESTINATION ${OPENJPEG_INSTALL_DOC_DIR})
+#endif()
+#
+##include (cmake/OpenJPEGCPack.cmake)
+#
+## pkgconfig support
+## enabled by default on Unix, disabled by default on other platforms
+#if(UNIX)
+#  option(BUILD_PKGCONFIG_FILES "Build and install pkg-config files" ON)
+#else()
+#  option(BUILD_PKGCONFIG_FILES "Build and install pkg-config files" OFF)
+#endif()
+#if(BUILD_PKGCONFIG_FILES)
+#  # install in lib and not share (see multi-arch note above)
+#  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/libopenjp2.pc.cmake.in
+#    ${CMAKE_CURRENT_BINARY_DIR}/libopenjp2.pc @ONLY)
+#  install( FILES  ${CMAKE_CURRENT_BINARY_DIR}/libopenjp2.pc DESTINATION
+#    ${OPENJPEG_INSTALL_LIB_DIR}/pkgconfig )
+#endif()
 

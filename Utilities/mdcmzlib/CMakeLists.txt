@@ -25,7 +25,6 @@ set(ZLIB_SRCS
   uncompr.c
   zutil.c)
 
-
 # for windows add the .def and .rc files to the source list if building shared libs
 if(WIN32)
   if(BUILD_SHARED_LIBS)
@@ -40,14 +39,21 @@ if(WIN32)
   endif()
 endif()
 
-  configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/zconf.in.h
-    ${CMAKE_CURRENT_BINARY_DIR}/zconf.h)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}
-)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/zconf.in.h
+  ${CMAKE_CURRENT_BINARY_DIR}/zconf.h)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(${ZLIB_LIBRARY_NAME} ${ZLIB_SRCS})
 set_target_properties(${ZLIB_LIBRARY_NAME} PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 set_target_properties(${ZLIB_LIBRARY_NAME} PROPERTIES LINKER_LANGUAGE C)
 
-
+if(NOT ZLIB_INSTALL_NO_LIBRARIES)
+  install(TARGETS ${ZLIB_LIBRARY_NAME}
+    EXPORT ${MDCM_TARGETS_NAME}
+    RUNTIME DESTINATION ${ZLIB_INSTALL_BIN_DIR} COMPONENT Applications
+    LIBRARY DESTINATION ${ZLIB_INSTALL_LIB_DIR} COMPONENT Libraries
+    ARCHIVE DESTINATION ${ZLIB_INSTALL_LIB_DIR} COMPONENT DebugDevel
+    ${CPACK_NAMELINK_TYPE})
+endif()

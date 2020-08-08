@@ -91,7 +91,8 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
   }
 
   // http://msdn.microsoft.com/en-us/library/hs3e7355.aspx
-  char * input = tempnam(0, "mdcminpvrg");
+  char name2[L_tmpnam];
+  char * input = std::tmpnam(name2);
   if(!input) return false;
 
   std::ofstream outfile(input, std::ios::binary);
@@ -135,7 +136,7 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
     is.read(&buf[0], len);
     out.SetTag(Tag(0x7fe0,0x0010));
 
-    if (PF.GetBitsAllocated() == 16)
+    if(PF.GetBitsAllocated() == 16)
     {
       ByteSwap<uint16_t>::SwapRangeFromSwapCodeIntoSystem((uint16_t*)
         &buf[0],
@@ -162,7 +163,6 @@ bool PVRGCodec::Decode(DataElement const &in, DataElement &out)
   {
     mdcmErrorMacro("Could not delete input: " << input);
   }
-  free(input);
 
   LossyFlag = true; // FIXME
   return true;

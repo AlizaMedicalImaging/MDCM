@@ -58,24 +58,18 @@ set(DSED_SRCS
   mdcmUNExplicitDataElement.cxx
   mdcmCP246ExplicitDataElement.cxx
   mdcmExplicitImplicitDataElement.cxx
-  mdcmVR16ExplicitDataElement.cxx
-  )
+  mdcmVR16ExplicitDataElement.cxx)
 
 # Add the include paths
 include_directories(
-  # Bin:
   "${MDCM_BINARY_DIR}/Source/Common"
-  # src:
   "${MDCM_SOURCE_DIR}/Source/Common"
   "${MDCM_SOURCE_DIR}/Source/DataDictionary"
   "${MDCM_SOURCE_DIR}/Source/DataStructureAndEncodingDefinition/"
-  "${MDCM_SOURCE_DIR}/Utilities"
- )
+  "${MDCM_SOURCE_DIR}/Utilities")
 
 if(NOT MDCM_USE_SYSTEM_ZLIB)
-  include_directories(
-    "${MDCM_BINARY_DIR}/Utilities/mdcmzlib"
-    )
+  include_directories("${MDCM_BINARY_DIR}/Utilities/mdcmzlib")
 endif()
 
 add_library(mdcmDSED ${DSED_SRCS} ${DSED3_SRCS})
