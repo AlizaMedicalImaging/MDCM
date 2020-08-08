@@ -67,7 +67,6 @@
 
 #cmakedefine MDCM_USE_PVRG
 #cmakedefine MDCM_USE_KAKADU
-#cmakedefine MDCM_USE_JPEGLS
 #cmakedefine MDCM_AUTOLOAD_MDCMJNI
 #cmakedefine MDCM_HAVE_STDINT_H
 #cmakedefine MDCM_HAVE_INTTYPES_H

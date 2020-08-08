@@ -147,9 +147,7 @@ endif()
 
 target_link_libraries(mdcmmsff LINK_PUBLIC mdcmdsed mdcmdict)
 target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})
-if(MDCM_USE_JPEGLS)
-  target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_CHARLS_LIBRARIES})
-endif()
+target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_CHARLS_LIBRARIES})
 
 if(CMAKE_COMPILER_IS_GNUCXX AND MINGW)
   # not tested

@@ -1,6 +1,3 @@
-# Wrapping and stuff
-
-# Do jpeg (8,12, 16 lossly lossless). From ijg
 if(NOT MDCM_USE_SYSTEM_LJPEG)
   set(JPEG_NAMESPACE "MDCMJPEG")
   set(JPEG_INSTALL_NO_LIBRARIES ${MDCM_INSTALL_NO_LIBRARIES})
@@ -10,7 +7,6 @@ if(NOT MDCM_USE_SYSTEM_LJPEG)
   add_subdirectory(mdcmjpeg)
 endif()
 
-# Do openjpeg (jpeg2000 implementation)
 if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   set(OPENJPEG_NAMESPACE "MDCMOPENJPEG")
   set(OPENJPEG_INSTALL_NO_LIBRARIES ${MDCM_INSTALL_NO_LIBRARIES})
@@ -21,8 +17,6 @@ if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   mark_as_advanced(BUILD_JPIP BUILD_JPWL BUILD_CODEC BUILD_DOC BUILD_MJ2 BUILD_PKGCONFIG_FILES BUILD_SHARED_LIBS BUILD_THIRDPARTY OPJ_DATA_ROOT OPJ_DISABLE_TPSOT_FIX)
 endif()
 
-# Do jpegls (JPEG-LS aka near lossless implementation)
-if(MDCM_USE_JPEGLS)
 if(NOT MDCM_USE_SYSTEM_CHARLS)
   set(CHARLS_NAMESPACE "MDCMCHARLS")
   set(CHARLS_INSTALL_NO_LIBRARIES ${MDCM_INSTALL_NO_LIBRARIES})
@@ -31,9 +25,7 @@ if(NOT MDCM_USE_SYSTEM_CHARLS)
   set(CHARLS_INSTALL_INCLUDE_DIR  ${MDCM_INSTALL_INCLUDE_DIR}/mdcmcharls)
   add_subdirectory(mdcmcharls)
 endif()
-endif()
 
-# Do zlib
 if(NOT MDCM_USE_SYSTEM_ZLIB)
   set(ZLIB_NAMESPACE "MDCMZLIB")
   set(ZLIB_INSTALL_NO_LIBRARIES ${MDCM_INSTALL_NO_LIBRARIES})
@@ -42,7 +34,7 @@ if(NOT MDCM_USE_SYSTEM_ZLIB)
   add_subdirectory(mdcmzlib)
 endif()
 
-# you could be running mingw32 on linux in which case you do NOT want the mdcmuuid lib
+# mingw32 on Linux in which case you do not want the mdcmuuid lib
 if(NOT WIN32 AND NOT MINGW)
   if(NOT MDCM_USE_SYSTEM_UUID)
     set(UUID_NAMESPACE "MDCMUUID")

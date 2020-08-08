@@ -49,9 +49,6 @@ bool JPEGLSCodec::GetLossless() const
 
 bool JPEGLSCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
 {
-#ifndef MDCM_USE_JPEGLS
-  return false;
-#else
   using namespace charls;
   is.seekg( 0, std::ios::end);
   size_t buf_size = (size_t)is.tellg();
@@ -127,27 +124,18 @@ bool JPEGLSCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
     }
 
   return true;
-#endif
 }
 
 bool JPEGLSCodec::CanDecode(TransferSyntax const &ts) const
 {
-#ifndef MDCM_USE_JPEGLS
-  return false;
-#else
   return ts == TransferSyntax::JPEGLSLossless
       || ts == TransferSyntax::JPEGLSNearLossless;
-#endif
 }
 
 bool JPEGLSCodec::CanCode(TransferSyntax const &ts) const
 {
-#ifndef MDCM_USE_JPEGLS
-  return false;
-#else
   return ts == TransferSyntax::JPEGLSLossless
       || ts == TransferSyntax::JPEGLSNearLossless;
-#endif
 }
 
 bool JPEGLSCodec::DecodeByStreamsCommon(char *buffer, size_t totalLen, std::vector<unsigned char> &rgbyteOut)
@@ -181,9 +169,6 @@ bool JPEGLSCodec::DecodeByStreamsCommon(char *buffer, size_t totalLen, std::vect
 
 bool JPEGLSCodec::Decode(DataElement const &in, DataElement &out)
 {
-#ifndef MDCM_USE_JPEGLS
-  return false;
-#else
   using namespace charls;
   if( NumberOfDimensions == 2 )
     {
@@ -263,15 +248,10 @@ bool JPEGLSCodec::Decode(DataElement const &in, DataElement &out)
     return true;
     }
   return false;
-
-#endif
 }
 
 bool JPEGLSCodec::CodeFrameIntoBuffer(char * outdata, size_t outlen, size_t & complen, const char * indata, size_t inlen )
 {
-#ifndef MDCM_USE_JPEGLS
-  return false;
-#else
   using namespace charls;
   const unsigned int *dims = this->GetDimensions();
   int image_width = dims[0];
@@ -347,17 +327,12 @@ bool JPEGLSCodec::CodeFrameIntoBuffer(char * outdata, size_t outlen, size_t & co
     }
 
   assert( complen < outlen );
-
   return true;
-#endif
 }
 
 // Compress into JPEG
 bool JPEGLSCodec::Code(DataElement const &in, DataElement &out)
 {
-#ifndef MDCM_USE_JPEGLS
-  return false;
-#else
   out = in;
   //
   // Create a Sequence Of Fragments:
@@ -393,8 +368,6 @@ bool JPEGLSCodec::Code(DataElement const &in, DataElement &out)
   out.SetValue( *sq );
 
   return true;
-
-#endif
 }
 
 void JPEGLSCodec::SetLossyError(int error)
@@ -587,6 +560,5 @@ bool JPEGLSCodec::StopEncode( std::ostream & )
 {
   return true;
 }
-
 
 } // end namespace mdcm
