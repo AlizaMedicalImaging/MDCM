@@ -14,7 +14,7 @@ if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   set(OPENJPEG_INSTALL_LIB_DIR      ${MDCM_INSTALL_LIB_DIR})
   set(OPENJPEG_INSTALL_INCLUDE_DIR  ${MDCM_INSTALL_INCLUDE_DIR}/mdcmopenjpeg)
   add_subdirectory(mdcmopenjpeg)
-  mark_as_advanced(BUILD_JPIP BUILD_JPWL BUILD_CODEC BUILD_DOC BUILD_MJ2 BUILD_PKGCONFIG_FILES BUILD_SHARED_LIBS BUILD_THIRDPARTY OPJ_DATA_ROOT OPJ_DISABLE_TPSOT_FIX)
+  mark_as_advanced(OPJ_DISABLE_TPSOT_FIX)
 endif()
 
 if(NOT MDCM_USE_SYSTEM_CHARLS)
@@ -34,7 +34,6 @@ if(NOT MDCM_USE_SYSTEM_ZLIB)
   add_subdirectory(mdcmzlib)
 endif()
 
-# mingw32 on Linux in which case you do not want the mdcmuuid lib
 if(NOT WIN32 AND NOT MINGW)
   if(NOT MDCM_USE_SYSTEM_UUID)
     set(UUID_NAMESPACE "MDCMUUID")

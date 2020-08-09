@@ -110,21 +110,21 @@ install(TARGETS ${OPENJPEG_LIBRARY_NAME}
 install(FILES openjpeg.h opj_stdint.h
   DESTINATION ${OPENJPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 
-if(BUILD_DOC)
-# install man page of the library
-install(
-  FILES       ${OPENJPEG_SOURCE_DIR}/doc/man/man3/libopenjp2.3
-  DESTINATION ${OPENJPEG_INSTALL_MAN_DIR}/man3)
-endif()
+#if(BUILD_DOC)
+## install man page of the library
+#install(
+#  FILES       ${OPENJPEG_SOURCE_DIR}/doc/man/man3/libopenjp2.3
+#  DESTINATION ${OPENJPEG_INSTALL_MAN_DIR}/man3)
+#endif()
 
-if(BUILD_LUTS_GENERATOR)
-# internal utility to generate t1_luts.h (part of the jp2 lib)
-# no need to install:
-  add_executable(t1_generate_luts t1_generate_luts.c)
-  if(UNIX)
-    target_link_libraries(t1_generate_luts m)
-  endif()
-endif()
+#if(BUILD_LUTS_GENERATOR)
+## internal utility to generate t1_luts.h (part of the jp2 lib)
+## no need to install:
+#  add_executable(t1_generate_luts t1_generate_luts.c)
+#  if(UNIX)
+#    target_link_libraries(t1_generate_luts m)
+#  endif()
+#endif()
 
 # Experimental option; let's how cppcheck performs
 # Implementation details:
