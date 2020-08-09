@@ -74,7 +74,7 @@ endif()
 if(NOT MDCM_HAVE_STDINT_H)
   if(MSVC OR "x${CMAKE_CXX_COMPILER_ID}x" MATCHES "Intel")
     include_directories("${MDCM_SOURCE_DIR}/Utilities/C99")
-    subdirs(Utilities/C99)
+    add_subdirectory(Utilities/C99)
   endif()
 endif()
 
@@ -240,7 +240,7 @@ if(WIN32)
   mark_as_advanced(MDCM_DEBUG_POSTFIX)
 endif()
 
-subdirs(Utilities)
+add_subdirectory(Utilities)
 add_subdirectory(Source)
 
 CHECK_INCLUDE_FILE("pthread.h" MDCM_HAVE_PTHREAD_H)
@@ -266,5 +266,5 @@ set(MDCM_LIBRARIES mdcmmsff mdcmdsed mdcmdict
   ${MDCM_UUID_LIBRARIES}
   ${MDCM_ZLIB_LIBRARIES})
 
-subdirs(CMake/ExportConfiguration)
+add_subdirectory(CMake/ExportConfiguration)
 
