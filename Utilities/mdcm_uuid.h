@@ -14,7 +14,6 @@
 #ifndef MDCM_UUID_H
 #define MDCM_UUID_H
 
-/* Use the uuid library configured for mdcm.  */
 #include "mdcmTypes.h"
 #ifdef MDCM_USE_SYSTEM_UUID
 # include <uuid/uuid.h>

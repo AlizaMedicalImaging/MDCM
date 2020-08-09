@@ -25,7 +25,7 @@ else()
 endif()
 
 if(CHARLS_FOUND)
-  message(STATUS "Found CHARLS lib: ${CHARLS_LIBRARIES}, incl: ${CHARLS_INCLUDE_DIR}")
+  message(STATUS "Found CHARLS lib: ${CHARLS_LIBRARIES}, incl: ${CHARLS_INCLUDE_DIRS}")
 else()
   message(FATAL_ERROR "CHARLS not found")
 endif()

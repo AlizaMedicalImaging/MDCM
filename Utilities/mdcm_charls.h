@@ -16,7 +16,12 @@
 
 #include "mdcmTypes.h"
 #ifdef MDCM_USE_SYSTEM_CHARLS
+// FIXME
+#if 1
 #include <CharLS/charls.h>
+#else
+#include <charls/charls.h>
+#endif
 #else
 #include "mdcmcharls/charls.h"
 #endif

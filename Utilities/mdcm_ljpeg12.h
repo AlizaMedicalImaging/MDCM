@@ -14,7 +14,6 @@
 #ifndef MDCM_LJPEG12_H
 #define MDCM_LJPEG12_H
 
-/* Use the ljpeg library configured for mdcm.  */
 #include "mdcmTypes.h"
 
 extern "C" {

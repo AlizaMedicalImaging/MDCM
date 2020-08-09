@@ -14,7 +14,6 @@
 #ifndef MDCM_LJPEG8_H
 #define MDCM_LJPEG8_H
 
-/* Use the ljpeg library configured for mdcm.  */
 #include "mdcmTypes.h"
 
 extern "C" {

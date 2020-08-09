@@ -14,7 +14,6 @@
 #ifndef MDCM_ZLIB_H
 #define MDCM_ZLIB_H
 
-/* Use the zlib library configured for mdcm.  */
 #include "mdcmTypes.h"
 #ifdef MDCM_USE_SYSTEM_ZLIB
 # include <zlib.h>

@@ -9,8 +9,7 @@ CHECK_INCLUDE_FILE_CONCAT("byteswap.h" MDCM_HAVE_BYTESWAP_FILE_H)
 # s. GDCM bug #324
 if(MDCM_HAVE_BYTESWAP_FILE_H)
   include(CheckCXXSourceCompiles)
-  CHECK_CXX_SOURCE_COMPILES(
-    "\#include <byteswap.h>\nint main() { return bswap_32( 42 ); }"
+  CHECK_CXX_SOURCE_COMPILES("\#include <byteswap.h>\nint main(){return bswap_32(42);}"
     MDCM_HAVE_BYTESWAP_H)
 endif()
 CHECK_INCLUDE_FILE("rpc.h"      MDCM_HAVE_RPC_H)
@@ -48,14 +47,14 @@ if(MDCM_USE_SYSTEM_JSON)
 endif()
 
 include(CheckCXXSourceCompiles)
-CHECK_CXX_SOURCE_COMPILES("int main() { const char *f = __FUNCTION__; return 0;}"
+CHECK_CXX_SOURCE_COMPILES("int main(){const char *f =__FUNCTION__;return 0;}"
   MDCM_CXX_HAS_FUNCTION)
-CHECK_CXX_SOURCE_COMPILES("\#include <fstream>\nint main() { const wchar_t fn[10] = {}; std::ifstream is( fn ); return 0;}"
+CHECK_CXX_SOURCE_COMPILES("\#include <fstream>\nint main(){const wchar_t fn[10]={};std::ifstream is(fn);return 0;}"
   MDCM_HAVE_WCHAR_IFSTREAM)
 if(MDCM_USE_SYSTEM_OPENSSL)
   set(CMAKE_REQUIRED_INCLUDES ${OPENSSL_INCLUDE_DIR})
   set(CMAKE_REQUIRED_LIBRARIES ${OPENSSL_LIBRARIES} ${CMAKE_DL_LIBS}) #FIXME
-  CHECK_CXX_SOURCE_COMPILES("\#include <openssl/cms.h>\nint main() { CMS_add0_recipient_password(0,0,0,0,0,0,0); return 0;}"
+  CHECK_CXX_SOURCE_COMPILES("\#include <openssl/cms.h>\nint main(){CMS_add0_recipient_password(0,0,0,0,0,0,0);return 0;}"
     MDCM_HAVE_CMS_RECIPIENT_PASSWORD)
 endif()
 # "\#include <openssl/cms.h>\nint main() { CMS_add0_recipient_key(0); return 0;}"

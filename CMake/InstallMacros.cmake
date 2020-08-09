@@ -1,7 +1,6 @@
 macro(install_library library)
   if(NOT MDCM_INSTALL_NO_LIBRARIES)
-    install(
-      TARGETS ${library}
+    install(TARGETS ${library}
       EXPORT ${MDCM_TARGETS_NAME}
       RUNTIME DESTINATION ${MDCM_INSTALL_BIN_DIR} COMPONENT Applications
       LIBRARY DESTINATION ${MDCM_INSTALL_LIB_DIR} COMPONENT Libraries ${NAMELINK_SKIP}
@@ -30,7 +29,6 @@ endmacro()
 macro(install_includes glob_expression)
   if(NOT MDCM_INSTALL_NO_DEVELOPMENT)
     file(GLOB header_files ${glob_expression} ${ARGN})
-    install(FILES ${header_files}
-      DESTINATION ${MDCM_INSTALL_INCLUDE_DIR} COMPONENT Headers)
+    install(FILES ${header_files} DESTINATION ${MDCM_INSTALL_INCLUDE_DIR} COMPONENT Headers)
   endif()
 endmacro()
