@@ -284,7 +284,6 @@ bool PixelFormat::IsValid() const
 bool PixelFormat::Validate()
 {
   if(!IsValid()) return false;
-  assert(PixelRepresentation == 0 || PixelRepresentation == 1);
   assert(SamplesPerPixel == 1 || SamplesPerPixel == 3 || SamplesPerPixel == 4);
   if (BitsStored == 0)
   {

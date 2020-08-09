@@ -5,7 +5,7 @@ usr/lib/*/libmdcmmsff.so
 usr/lib/*/libmdcmjpeg12.so
 usr/lib/*/libmdcmjpeg16.so
 usr/lib/*/libmdcmjpeg8.so
-usr/lib/*/mdcm/*.cmake
+usr/lib/*/cmake/mdcm/*.cmake
 usr/include/mdcm/mdcm*
 usr/include/mdcm/zip*
 usr/include/mdcm/mdcmjpeg/12/*

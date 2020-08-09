@@ -16,7 +16,7 @@ Standards-Version: 4.3.0
 Homepage: https://github.com/AlizaMedicalImaging/MDCM
 
 Package: libmdcm
-Architecture: any
+Architecture: amd64 i386
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Pre-Depends: ${misc:Pre-Depends}
