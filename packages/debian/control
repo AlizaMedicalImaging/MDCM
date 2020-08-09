@@ -11,7 +11,7 @@ Build-Depends: cmake,
                libopenjp2-7-dev,
                ninja-build
 Build-Depends-Indep:
-Build-Conflicts:
+Build-Conflicts: libopenjpeg-dev
 Standards-Version: 4.3.0
 Homepage: https://github.com/AlizaMedicalImaging/MDCM
 
