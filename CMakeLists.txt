@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(MDCM)
-set(CMAKE_CXX_STANDARD 11)
+#set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(POLICY CMP0022)
@@ -46,7 +46,7 @@ set(MDCM_TARGETS_NAME MDCMTargets)
 
 include(${MDCM_SOURCE_DIR}/CMake/InstallMacros.cmake)
 
-# Disable warnings for standard C and STL functions in VS2005 and later
+# Disable warnings for standard C and STL functions in VS
 if(MSVC_VERSION EQUAL 1400 OR MSVC_VERSION GREATER 1400)
   add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS)
   add_definitions(-D_SCL_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
@@ -89,28 +89,33 @@ if(NOT MDCM_HAVE_STDINT_H)
     add_subdirectory(Utilities/C99)
   endif()
 endif()
+#
 
-string(TOLOWER ${PROJECT_NAME} projectname)
-set(ISUBDIR "${projectname}")
+string(TOLOWER ${PROJECT_NAME} projname)
 
 if(NOT MDCM_INSTALL_BIN_DIR)
   set(MDCM_INSTALL_BIN_DIR "bin")
 endif()
 
-if(NOT MDCM_INSTALL_LIB_DIR)
-  set(MDCM_INSTALL_LIB_DIR "lib")
+if(NOT MDCM_INSTALL_LIBDIR)
+  if(NOT CMAKE_INSTALL_LIBDIR)
+    set(MDCM_INSTALL_LIBDIR "lib")
+  else()
+    set(MDCM_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+  endif()
 endif()
+message(STATUS "MDCM_INSTALL_LIBDIR: ${MDCM_INSTALL_LIBDIR}")
 
 if(NOT MDCM_INSTALL_DATA_DIR)
-  set(MDCM_INSTALL_DATA_DIR "share/${ISUBDIR}")
+  set(MDCM_INSTALL_DATA_DIR "share/${projname}")
 endif()
 
 if(NOT MDCM_INSTALL_INCLUDE_DIR)
-  set(MDCM_INSTALL_INCLUDE_DIR "include/${ISUBDIR}")
+  set(MDCM_INSTALL_INCLUDE_DIR "include/${projname}")
 endif()
 
 if(NOT MDCM_INSTALL_DOC_DIR)
-  set(MDCM_INSTALL_DOC_DIR "share/doc/${ISUBDIR}")
+  set(MDCM_INSTALL_DOC_DIR "share/doc/${projname}")
 endif()
 
 if(NOT MDCM_INSTALL_MAN_DIR)
@@ -118,7 +123,7 @@ if(NOT MDCM_INSTALL_MAN_DIR)
 endif()
 
 if(NOT MDCM_INSTALL_PACKAGE_DIR)
-  set(MDCM_INSTALL_PACKAGE_DIR "${MDCM_INSTALL_LIB_DIR}/cmake/${ISUBDIR}" CACHE INTERNAL "")
+  set(MDCM_INSTALL_PACKAGE_DIR "${MDCM_INSTALL_LIBDIR}/cmake/${projname}" CACHE INTERNAL "")
 endif()
 
 if(NOT MDCM_INSTALL_NO_DEVELOPMENT)
@@ -165,7 +170,7 @@ option(MDCM_USE_SYSTEM_CHARLS "Use system CharLS" OFF)
 mark_as_advanced(MDCM_USE_SYSTEM_CHARLS)
 
 #TODO
-#option(MDCM_USE_SYSTEM_LJPEG "Use system LJPEG (IJG)" OFF)
+#option(MDCM_USE_SYSTEM_LJPEG "Use system JPEG (IJG)" OFF)
 #mark_as_advanced(MDCM_USE_SYSTEM_LJPEG)
 #if(MDCM_USE_SYSTEM_LJPEG)
 #  find_package(LJPEG REQUIRED)
@@ -188,9 +193,17 @@ else()
   set(MDCM_OPENJPEG_LIBRARIES mdcmopenjp2)
 endif()
 
-# JPEG library released by the Standford PVRG group
+# JPEG library released by the Standford PVRG group,
+# build (or use system) binary to convert to raw tmp file
 option(MDCM_USE_PVRG "Use PVRG, advanced" OFF)
 mark_as_advanced(MDCM_USE_PVRG)
+if(MDCM_USE_PVRG)
+  option(MDCM_USE_SYSTEM_PVRG "Use system PVRG" OFF)
+  mark_as_advanced(MDCM_USE_SYSTEM_PVRG)
+  if(MDCM_USE_SYSTEM_PVRG)
+    find_package(PVRGJPEG REQUIRED)
+  endif()
+endif()
 
 #option(MDCM_USE_KAKADU "Use Kakadu, advanced" OFF)
 #mark_as_advanced(MDCM_USE_KAKADU)
@@ -203,14 +216,6 @@ mark_as_advanced(MDCM_USE_PVRG)
 #    message(FATAL_ERROR "Not Implemented")
 #  endif()
 #endif()
-
-if(MDCM_USE_PVRG)
-  option(MDCM_USE_SYSTEM_PVRG "Use system PVRG" OFF)
-  mark_as_advanced(MDCM_USE_SYSTEM_PVRG)
-  if(MDCM_USE_SYSTEM_PVRG)
-    find_package(PVRGJPEG REQUIRED)
-  endif()
-endif()
 
 if(MDCM_USE_SYSTEM_ZLIB)
   find_package(ZLIB REQUIRED)
