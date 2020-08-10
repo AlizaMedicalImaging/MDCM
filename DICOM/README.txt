@@ -1,11 +1,7 @@
 1. xsltproc Part6.xsl part06.xml > Part6.xml
 
-Edit:
-removed spaces in Part6.xml
-
 2. xsltproc TagKeywords.xsl Part6.xml > mdcmTagKeywords.h
 
-Edit:
 removed tags without name
 typedef mdcm::Attribute<0x0018, 0x0061> ;
 typedef mdcm::Attribute<0x0018, 0x9445> ;
@@ -19,7 +15,6 @@ typedef mdcm::Attribute<0x0400, 0x0315> ;
 5. xsltproc UIDToTemp.xsl Part6.xml > tmp.cxx
 
 Copy arrays to gdcmUIDs.h and gdcmUIDs.cxx
-Edit:
 Retired -> Retired0
 Retired -> Retired1
 // 12leadECGWaveformStorage -> ECG12leadWaveformStorage
