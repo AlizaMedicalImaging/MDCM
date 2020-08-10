@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(MDCM)
-#set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(POLICY CMP0022)
   cmake_policy(SET CMP0022 NEW)
@@ -15,11 +13,11 @@ endif()
 if(POLICY CMP0042)
   cmake_policy(SET CMP0042 NEW)
 endif()
-if( POLICY CMP0063 )
+if(POLICY CMP0063 )
   cmake_policy(SET CMP0063 NEW)
 endif()
 
-mark_as_advanced(CMAKE_BACKWARDS_COMPATIBILITY CMAKE_BUILD_TYPE CMAKE_INSTALL_PREFIX)
+mark_as_advanced(CMAKE_BACKWARDS_COMPATIBILITY)
 
 set(MDCM_CMAKE_DIR "${MDCM_SOURCE_DIR}/CMake" CACHE INTERNAL "")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${MDCM_CMAKE_DIR}")
@@ -30,11 +28,22 @@ set(MDCM_VERSION "${MDCM_MAJOR_VERSION}.${MDCM_MINOR_VERSION}.${MDCM_BUILD_VERSI
 set(MDCM_API_VERSION "${MDCM_MAJOR_VERSION}.${MDCM_MINOR_VERSION}")
 set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}" SOVERSION "${MDCM_API_VERSION}")
 
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# TMP
+# set "ON" to build with GCC 4.8
+option(MDCM_FORCE_CXX11 "Set standard to C++11" OFF)
+mark_as_advanced(MDCM_FORCE_CXX11)
+if(MDCM_FORCE_CXX11)
+  set(CMAKE_CXX_STANDARD 11)
+endif()
+#
+
 include(${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
 TEST_BIG_ENDIAN(MDCM_WORDS_BIGENDIAN)
 
 set(tmp0_build_type "None")
-if (CMAKE_BUILD_TYPE)
+if(CMAKE_BUILD_TYPE)
   set(tmp0_build_type "${CMAKE_BUILD_TYPE}")
 endif()
 string(TOUPPER ${tmp0_build_type} tmp1_build_type)
@@ -46,7 +55,6 @@ set(MDCM_TARGETS_NAME MDCMTargets)
 
 include(${MDCM_SOURCE_DIR}/CMake/InstallMacros.cmake)
 
-# Disable warnings for standard C and STL functions in VS
 if(MSVC_VERSION EQUAL 1400 OR MSVC_VERSION GREATER 1400)
   add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -D_CRT_SECURE_NO_WARNINGS)
   add_definitions(-D_SCL_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
@@ -93,10 +101,9 @@ endif()
 
 string(TOLOWER ${PROJECT_NAME} projname)
 
-if(NOT MDCM_INSTALL_BIN_DIR)
-  set(MDCM_INSTALL_BIN_DIR "bin")
-endif()
-
+###################################################
+#
+#
 if(NOT MDCM_INSTALL_LIBDIR)
   if(NOT CMAKE_INSTALL_LIBDIR)
     set(MDCM_INSTALL_LIBDIR "lib")
@@ -104,14 +111,24 @@ if(NOT MDCM_INSTALL_LIBDIR)
     set(MDCM_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
   endif()
 endif()
-message(STATUS "MDCM_INSTALL_LIBDIR: ${MDCM_INSTALL_LIBDIR}")
-
-if(NOT MDCM_INSTALL_DATA_DIR)
-  set(MDCM_INSTALL_DATA_DIR "share/${projname}")
-endif()
 
 if(NOT MDCM_INSTALL_INCLUDE_DIR)
   set(MDCM_INSTALL_INCLUDE_DIR "include/${projname}")
+endif()
+
+if(NOT MDCM_INSTALL_PACKAGE_DIR)
+  set(MDCM_INSTALL_PACKAGE_DIR "${MDCM_INSTALL_LIBDIR}/cmake/${projname}" CACHE INTERNAL "")
+endif()
+#
+#
+###################################################
+
+if(NOT MDCM_INSTALL_BIN_DIR)
+  set(MDCM_INSTALL_BIN_DIR "bin")
+endif()
+
+if(NOT MDCM_INSTALL_DATA_DIR)
+  set(MDCM_INSTALL_DATA_DIR "share/${projname}")
 endif()
 
 if(NOT MDCM_INSTALL_DOC_DIR)
@@ -120,10 +137,6 @@ endif()
 
 if(NOT MDCM_INSTALL_MAN_DIR)
   set(MDCM_INSTALL_MAN_DIR "share/man")
-endif()
-
-if(NOT MDCM_INSTALL_PACKAGE_DIR)
-  set(MDCM_INSTALL_PACKAGE_DIR "${MDCM_INSTALL_LIBDIR}/cmake/${projname}" CACHE INTERNAL "")
 endif()
 
 if(NOT MDCM_INSTALL_NO_DEVELOPMENT)
@@ -150,24 +163,20 @@ else()
 endif()
 
 option(MDCM_USE_SYSTEM_ZLIB "Use system zlib" OFF)
-mark_as_advanced(MDCM_USE_SYSTEM_ZLIB)
 
 #option(MDCM_USE_SYSTEM_OPENSSL "Use system OpenSSL" OFF)
 #mark_as_advanced(MDCM_USE_SYSTEM_OPENSSL)
 
 if(UNIX)
   option(MDCM_USE_SYSTEM_UUID "Use system uuid" OFF)
-  mark_as_advanced(MDCM_USE_SYSTEM_UUID)
 endif()
 
 #option(MDCM_USE_SYSTEM_PAPYRUS3 "Use system Papyrus3" OFF)
 #mark_as_advanced(MDCM_USE_SYSTEM_PAPYRUS3)
 
 option(MDCM_USE_SYSTEM_OPENJPEG "Use system OpenJPEG" OFF)
-mark_as_advanced(MDCM_USE_SYSTEM_OPENJPEG)
 
 option(MDCM_USE_SYSTEM_CHARLS "Use system CharLS" OFF)
-mark_as_advanced(MDCM_USE_SYSTEM_CHARLS)
 
 #TODO
 #option(MDCM_USE_SYSTEM_LJPEG "Use system JPEG (IJG)" OFF)
@@ -180,7 +189,7 @@ mark_as_advanced(MDCM_USE_SYSTEM_CHARLS)
 #endif()
 
 if(MDCM_USE_SYSTEM_CHARLS)
-  find_package(CharLS 2.0.0 REQUIRED)
+  find_package(CharLS REQUIRED)
   set(MDCM_CHARLS_LIBRARIES ${CHARLS_LIBRARIES})
 else()
   set(MDCM_CHARLS_LIBRARIES mdcmcharls)

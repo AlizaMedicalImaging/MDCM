@@ -1,4 +1,4 @@
-# MDCM_USE_FILE by MDCMConfig.cmake.
+# Usage:
 #   find_package(MDCM REQUIRED)
 #   include(${MDCM_USE_FILE})
 

@@ -55,6 +55,7 @@ set(OPENJPEG_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.h)
 
 option(OPJ_DISABLE_TPSOT_FIX "Disable TPsot==TNsot fix. See https://github.com/uclouvain/openjpeg/issues/254." OFF)
+mark_as_advanced(OPJ_DISABLE_TPSOT_FIX)
 if(OPJ_DISABLE_TPSOT_FIX)
   add_definitions(-DOPJ_DISABLE_TPSOT_FIX)
 endif()
@@ -157,6 +158,7 @@ endif()
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 
 option(OPJ_USE_THREAD "Build with thread/mutex support " ON)
+mark_as_advanced(OPJ_USE_THREAD)
 if(NOT OPJ_USE_THREAD)
   add_definitions(-DMUTEX_stub)
 endif(NOT OPJ_USE_THREAD)

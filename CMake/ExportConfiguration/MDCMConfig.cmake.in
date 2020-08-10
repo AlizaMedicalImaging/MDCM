@@ -1,25 +1,26 @@
-#
 # MDCMConfig.cmake - CMake configuration file for external projects.
-#
-# This file is configured by MDCM and used by the UseMDCM.cmake
-# module to load MDCM's settings for an external project.
 
 @MDCM_CONFIG_INSTALL_ONLY@
 
-set(MDCM_MAJOR_VERSION "@MDCM_MAJOR_VERSION@")
-set(MDCM_MINOR_VERSION "@MDCM_MINOR_VERSION@")
-set(MDCM_BUILD_VERSION "@MDCM_BUILD_VERSION@")
-set(MDCM_LIBRARIES     "@MDCM_LIBRARIES@")
-set(MDCM_CMAKE_DIR     "@MDCM_CMAKE_DIR_CONFIG@")
-set(MDCM_USE_FILE      "@MDCM_USE_FILE_CONFIG@")
+set(MDCM_MAJOR_VERSION     "@MDCM_MAJOR_VERSION@")
+set(MDCM_MINOR_VERSION     "@MDCM_MINOR_VERSION@")
+set(MDCM_BUILD_VERSION     "@MDCM_BUILD_VERSION@")
+set(MDCM_LIBRARIES         "@MDCM_LIBRARIES@")
+set(MDCM_BUILD_SHARED_LIBS "@MDCM_BUILD_SHARED_LIBS@")
+set(MDCM_CMAKE_DIR         "@MDCM_CMAKE_DIR_CONFIG@")
 
 get_filename_component(SELF_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
 if(EXISTS ${SELF_DIR}/MDCMTargets.cmake)
   include(${SELF_DIR}/MDCMTargets.cmake)
-  get_filename_component(MDCM_INCLUDE_ROOT "${SELF_DIR}/../../../@MDCM_INSTALL_INCLUDE_DIR@" ABSOLUTE)
-  set(MDCM_INCLUDE_DIRS ${MDCM_INCLUDE_ROOT})
-  get_filename_component(MDCM_LIB_ROOT "${SELF_DIR}/../../../@MDCM_INSTALL_LIBDIR@" ABSOLUTE)
-  set(MDCM_LIBRARY_DIRS ${MDCM_LIB_ROOT})
+  # TODO
+  # currently assumed multi-arch tree eg. Debian
+  # /usr/lib/x86_64-linux-gnu/cmake/mdcm/MDCMTargets.cmake
+  # /usr/lib/x86_64-linux-gnu/cmake/mdcm
+  # /usr/include/mdcm
+  # /usr/lib/x86_64-linux-gnu
+  get_filename_component(MDCM_INCLUDE_DIRS "${SELF_DIR}/../../../../@MDCM_INSTALL_INCLUDE_DIR@" ABSOLUTE)
+  get_filename_component(MDCM_LIBRARY_DIRS "${SELF_DIR}/../../../../@MDCM_INSTALL_LIBDIR@" ABSOLUTE)
 else()
   if(EXISTS ${SELF_DIR}/MDCMExports.cmake)
     set(MDCM_INCLUDE_DIRS "@MDCM_INCLUDE_PATH@")

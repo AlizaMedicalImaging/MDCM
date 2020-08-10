@@ -14,7 +14,6 @@ if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   set(OPENJPEG_INSTALL_LIB_DIR      ${MDCM_INSTALL_LIBDIR})
   set(OPENJPEG_INSTALL_INCLUDE_DIR  ${MDCM_INSTALL_INCLUDE_DIR}/mdcmopenjpeg)
   add_subdirectory(mdcmopenjpeg)
-  mark_as_advanced(OPJ_DISABLE_TPSOT_FIX)
 endif()
 
 if(NOT MDCM_USE_SYSTEM_CHARLS)

@@ -3,15 +3,15 @@ Maintainer: Mikhail Isakov <mihail.isakov@gmail.com>
 Section: libs
 Priority: optional
 Build-Depends: cmake,
+               make (>= 4.0.0),
                debhelper-compat (= 12),
                dh-strip-nondeterminism,
                uuid-dev,
                libz-dev,
                libcharls-dev (>= 2.0.0),
-               libopenjp2-7-dev,
-               ninja-build
+               libopenjp2-7-dev
 Build-Depends-Indep:
-Build-Conflicts: libopenjpeg-dev
+Build-Conflicts:
 Standards-Version: 4.3.0
 Homepage: https://github.com/AlizaMedicalImaging/MDCM
 
