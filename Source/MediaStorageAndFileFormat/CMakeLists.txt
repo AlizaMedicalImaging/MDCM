@@ -102,7 +102,6 @@ include_directories(
   "${MDCM_BINARY_DIR}/Source/Common"
   "${MDCM_SOURCE_DIR}/Source/DataStructureAndEncodingDefinition"
   "${MDCM_SOURCE_DIR}/Source/DataDictionary"
-  "${MDCM_SOURCE_DIR}/Source/InformationObjectDefinition"
   ${CMAKE_CURRENT_SOURCE_DIR}
   "${MDCM_SOURCE_DIR}/Utilities"
   "${MDCM_BINARY_DIR}/Utilities")

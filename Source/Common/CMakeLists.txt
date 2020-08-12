@@ -37,14 +37,7 @@ set(CMAKE_REQUIRED_INCLUDES math.h)
 set(CMAKE_REQUIRED_LIBRARIES m)
 check_function_exists(lround MDCM_HAVE_LROUND)
 
-#include(CheckSymbolExists)
 CHECK_FUNCTION_EXISTS(gettimeofday MDCM_HAVE_GETTIMEOFDAY)
-# json-c API changed
-if(MDCM_USE_SYSTEM_JSON)
-  set(CMAKE_REQUIRED_INCLUDES ${JSON_INCLUDE_DIRS})
-  set(CMAKE_REQUIRED_LIBRARIES ${JSON_LIBRARIES})
-  CHECK_SYMBOL_EXISTS(json_object_object_get_ex "json.h" MDCM_HAVE_JSON_OBJECT_OBJECT_GET_EX)
-endif()
 
 include(CheckCXXSourceCompiles)
 CHECK_CXX_SOURCE_COMPILES("int main(){const char *f =__FUNCTION__;return 0;}"
