@@ -43,8 +43,6 @@ if(NOT WIN32 AND NOT MINGW)
   endif()
 endif()
 
-add_subdirectory(mdcmrle)
-
 if(MDCM_USE_PVRG)
   if(NOT MDCM_USE_SYSTEM_PVRG)
     add_subdirectory(pvrg)

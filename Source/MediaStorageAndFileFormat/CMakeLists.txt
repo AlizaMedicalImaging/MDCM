@@ -69,12 +69,10 @@ set(MSFF_SRCS
   mdcmSurfaceHelper.cxx
   mdcmSegmentHelper.cxx
   mdcmJPEG2000Codec.cxx
-  mdcmSerieHelper.cxx)
-
-list(APPEND MSFF_SRCS
-  ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/rle.cxx
-  ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/info.cxx
-  ${MDCM_SOURCE_DIR}/Utilities/mdcmrle/io.cxx)
+  mdcmSerieHelper.cxx
+  mdcmrle/rle.cxx
+  mdcmrle/info.cxx
+  mdcmrle/io.cxx)
 
 if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   if(NOT BUILD_SHARED_LIBS)

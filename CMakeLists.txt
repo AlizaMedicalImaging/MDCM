@@ -1,18 +1,32 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(MDCM)
 
+# https://cmake.org/cmake/help/v3.0/policy/CMP0022.html
+# Link
 if(POLICY CMP0022)
   cmake_policy(SET CMP0022 NEW)
 endif()
+
+# https://cmake.org/cmake/help/v3.0/policy/CMP0025.html
+# AppleClang
 if(POLICY CMP0025)
   cmake_policy(SET CMP0025 NEW)
 endif()
+
+# https://cmake.org/cmake/help/v3.6/policy/CMP0026.html
+# Disallow LOCATION property
 if(POLICY CMP0026)
   cmake_policy(SET CMP0026 NEW)
 endif()
+
+# https://cmake.org/cmake/help/v3.0/policy/CMP0042.html
+# MACOSX_RPATH is enabled by default
 if(POLICY CMP0042)
   cmake_policy(SET CMP0042 NEW)
 endif()
+
+# https://cmake.org/cmake/help/v3.3/policy/CMP0063.html
+# Honor visibility properties for all target types.
 if(POLICY CMP0063 )
   cmake_policy(SET CMP0063 NEW)
 endif()
