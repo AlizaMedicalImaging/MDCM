@@ -1,5 +1,4 @@
 set(MSFF_SRCS
-  mdcmFileStreamer.cxx
   mdcmIconImageFilter.cxx
   mdcmIconImageGenerator.cxx
   mdcmDICOMDIRGenerator.cxx

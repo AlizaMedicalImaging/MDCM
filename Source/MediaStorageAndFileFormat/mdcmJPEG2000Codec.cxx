@@ -1010,7 +1010,7 @@ opj_image_t * rawtoimage(
   memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
   for(int i = 0; i < numcomps; i++)
   {
-    cmptparm[i].prec = bitsstored;
+    //cmptparm[i].prec = bitsstored;
     cmptparm[i].prec = bitsallocated; // FIXME
     cmptparm[i].bpp = bitsallocated;
     cmptparm[i].sgnd = sign;
@@ -1498,7 +1498,7 @@ bool JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size, Tr
   }
 #endif
   assert(PI != PhotometricInterpretation::UNKNOWN);
-  bool bmct = false;
+  const bool bmct = false; // FIXME
   if(bmct)
   {
     if(reversible)

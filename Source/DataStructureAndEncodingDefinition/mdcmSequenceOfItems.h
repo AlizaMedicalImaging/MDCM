@@ -24,13 +24,13 @@ namespace mdcm_ns
 {
 
 /**
- * \brief Class to represent a Sequence Of Items
- * \details (value representation : SQ)
+ * Class to represent a Sequence Of Items
+ * (value representation : SQ)
  *  - a Value Representation for Data Elements that contains a sequence of Data Sets.
  *  - Sequence of Item allows for Nested Data Sets
  *
  * See PS 3.5, 7.4.6 Data Element Type Within a Sequence
- * \note
+ *
  * SEQUENCE OF ITEMS (VALUE REPRESENTATION SQ)
  * A Value Representation for Data Elements that contain a sequence of
  * Data Sets. Sequence of Items allows for Nested Data Sets.
@@ -122,10 +122,12 @@ public:
               SequenceLengthField = newlength;
             }
           }
+#if 0
           else
           {
             throw ex;
           }
+#endif
         }
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
         if(item.GetTag() == seqDelItem)
@@ -149,7 +151,9 @@ public:
         if(l > SequenceLengthField)
         {
           mdcmDebugMacro("Found: Length of Item larger than expected")
+#if 0
           throw "Length of Item larger than expected";
+#endif
         }
         assert(l <= SequenceLengthField);
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
@@ -159,7 +163,9 @@ public:
         {
           mdcmWarningMacro("PMS: Super bad hack");
           SequenceLengthField = l;
+#if 0
           throw Exception("Wrong Length");
+#endif
         }
         // Bug_Philips_ItemTag_3F3F
         // (0x2005, 0x1080): Because we do not handle fully the bug at the item
@@ -228,9 +234,9 @@ public:
       Items == sqi.Items);
    }
 
-public:
   VL SequenceLengthField;
   ItemVector Items;
+  Item empty;
 };
 
 } // end namespace mdcm_ns
