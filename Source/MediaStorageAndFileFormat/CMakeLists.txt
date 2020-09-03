@@ -55,8 +55,6 @@ set(MSFF_SRCS
   mdcmPhotometricInterpretation.cxx
   mdcmPixelFormat.cxx
   mdcmSegmentedPaletteColorLookupTable.cxx
-  mdcmStreamImageReader.cxx
-  #mdcmImageRegionReader.cxx
   mdcmDirectoryHelper.cxx
   mdcmSegment.cxx
   mdcmSurface.cxx
