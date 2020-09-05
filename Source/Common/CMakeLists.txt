@@ -83,7 +83,6 @@ set(Common_SRCS
   mdcmFilenameGenerator.cxx
   mdcmSwapCode.cxx
   mdcmSystem.cxx
-  mdcmTrace.cxx
   mdcmUnpacker12Bits.cxx)
 
 if(WIN32)
