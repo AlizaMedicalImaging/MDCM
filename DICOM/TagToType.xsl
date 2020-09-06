@@ -22,6 +22,14 @@
 // GENERATED FILE DO NOT EDIT
 // $ xsltproc TagToType.xsl Part6.xml &gt; mdcmTagToType.h
 
+/*********************************************************
+ *
+ * MDCM
+ *
+ * Modifications github.com/issakomi
+ *
+ *********************************************************/
+
 /*=========================================================================
 
   Program: GDCM (Grassroots DICOM). A DICOM library

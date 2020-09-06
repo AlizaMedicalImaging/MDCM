@@ -19,6 +19,14 @@
   <xsl:key name="entries" match="entry" use="@group"/>
   <xsl:template match="/">
     <xsl:text>
+/*********************************************************
+ *
+ * MDCM
+ *
+ * Modifications github.com/issakomi
+ *
+ *********************************************************/
+
 /*=========================================================================
 
   Program: GDCM (Grassroots DICOM). A DICOM library
