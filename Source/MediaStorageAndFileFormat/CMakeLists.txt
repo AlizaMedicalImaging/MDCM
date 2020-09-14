@@ -27,7 +27,6 @@ set(MSFF_SRCS
   mdcmUIDGenerator.cxx
   mdcmUUIDGenerator.cxx
   mdcmScanner.cxx
-  mdcmStrictScanner.cxx
   mdcmPixmapReader.cxx
   mdcmImageReader.cxx
   mdcmPixmapWriter.cxx

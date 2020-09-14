@@ -100,18 +100,10 @@ macro(CHECK_INCLUDE_FILE_CONCAT FILE VARIABLE)
   endif()
 endmacro()
 
-#TODO remove
 CHECK_INCLUDE_FILE("stdint.h" MDCM_HAVE_STDINT_H)
 if(UNIX)
   CHECK_INCLUDE_FILE("inttypes.h" MDCM_HAVE_INTTYPES_H)
 endif()
-if(NOT MDCM_HAVE_STDINT_H)
-  if(MSVC OR "x${CMAKE_CXX_COMPILER_ID}x" MATCHES "Intel")
-    include_directories("${MDCM_SOURCE_DIR}/Utilities/C99")
-    add_subdirectory(Utilities/C99)
-  endif()
-endif()
-#
 
 string(TOLOWER ${PROJECT_NAME} projname)
 
@@ -283,9 +275,6 @@ set(MDCM_INCLUDE_PATH
   "${MDCM_SOURCE_DIR}/Source/DataStructureAndEncodingDefinition"
   "${MDCM_SOURCE_DIR}/Source/MediaStorageAndFileFormat"
   "${MDCM_SOURCE_DIR}/Source/DataDictionary")
-if(NOT MDCM_HAVE_STDINT_H AND MSVC)
-  set(MDCM_INCLUDE_PATH ${MDCM_INCLUDE_PATH} "${MDCM_SOURCE_DIR}/Utilities/C99")
-endif()
 
 add_subdirectory(Utilities)
 add_subdirectory(Source)
