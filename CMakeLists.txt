@@ -177,9 +177,6 @@ if(UNIX)
   option(MDCM_USE_SYSTEM_UUID "Use system uuid" OFF)
 endif()
 
-#option(MDCM_USE_SYSTEM_PAPYRUS3 "Use system Papyrus3" OFF)
-#mark_as_advanced(MDCM_USE_SYSTEM_PAPYRUS3)
-
 option(MDCM_USE_SYSTEM_OPENJPEG "Use system OpenJPEG" OFF)
 
 option(MDCM_USE_SYSTEM_CHARLS "Use system CharLS" OFF)

@@ -33,7 +33,6 @@ set(MSFF_SRCS
   mdcmImageWriter.cxx
   mdcmStringFilter.cxx
   mdcmImageHelper.cxx
-  mdcmValidate.cxx
   mdcmImage.cxx
   mdcmImageConverter.cxx
   mdcmImageCodec.cxx
