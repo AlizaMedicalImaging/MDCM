@@ -1,3 +1,5 @@
+Warning, the Readme is WIP, not complete!!
+
 1. xsltproc Part6.xsl part06.xml > Part6.xml
 
 2. xsltproc TagKeywords.xsl Part6.xml > mdcmTagKeywords.h
