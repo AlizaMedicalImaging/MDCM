@@ -56,25 +56,11 @@ Reader::~Reader()
   }
 }
 
-// "DICM" is found as position 128 (the file is a 'true dicom' one)
-// If not found then seek back at beginning of file (could be Mallinckrodt
-// or old ACRNEMA with no preamble)
-bool Reader::ReadPreamble()
-{
- return true;
-}
+bool Reader::ReadPreamble() { return true; }
 
-// read the DICOM Meta Information Header
-// Find out the TransferSyntax used (default: Little Endian Explicit)
-bool Reader::ReadMetaInformation()
-{
-  return true;
-}
+bool Reader::ReadMetaInformation() { return true; }
 
-bool Reader::ReadDataSet()
-{
-  return true;
-}
+bool Reader::ReadDataSet() { return true; }
 
 TransferSyntax Reader::GuessTransferSyntax()
 {
@@ -206,25 +192,22 @@ private:
 
 public:
   DefaultCaller(DataSet &ds): m_dataSet(ds) {}
-  template<class T1, class T2>
-  void ReadCommon(std::istream & is) const
+  template<class T1, class T2> void ReadCommon(std::istream & is) const
   { 
     m_dataSet.template Read<T1,T2>(is);
   }
 
-  template<class T1, class T2>
-  void ReadCommonWithLength(std::istream & is, VL & length) const
+  template<class T1, class T2> void ReadCommonWithLength(std::istream & is, VL & length) const
   {
-    m_dataSet.template ReadWithLength<T1,T2>(is,length);
-    // manually set eofbit:
+    m_dataSet.template ReadWithLength<T1,T2>(is, length);
     // https://groups.google.com/forum/?fromgroups#!topic/comp.lang.c++/yTW4ESh1IL8
     is.setstate(std::ios::eofbit);
   }
 
-  static void Check(bool b, std::istream &stream)
+  static void Check(bool b, std::istream & is)
   {
-    (void)stream;
-    if(b) assert(stream.eof());
+    if(b) { assert(is.eof()); }
+    (void)is;
   }
 };
 
@@ -249,7 +232,7 @@ public:
     m_dataSet.template ReadUpToTagWithLength<T1,T2>(is,m_tag,m_skipTags,length);
   }
 
-  static void Check(bool , std::istream &)  {}
+  static void Check(bool , std::istream &) {}
 };
 
 class ReadSelectedTagsCaller
@@ -273,7 +256,7 @@ public:
     m_dataSet.template ReadSelectedTagsWithLength<T1,T2>(is,m_tags,length,m_readvalues);
   }
 
-  static void Check(bool , std::istream &)  {}
+  static void Check(bool , std::istream &) {}
 };
 
 class ReadSelectedPrivateTagsCaller
@@ -285,17 +268,19 @@ private:
 
 public:
   ReadSelectedPrivateTagsCaller(DataSet &ds, std::set<PrivateTag> const & groups, const bool readvalues)
-    :
-  m_dataSet(ds),m_groups(groups),m_readvalues(readvalues) {}
+    : m_dataSet(ds),m_groups(groups),m_readvalues(readvalues) {}
+
   template<class T1, class T2> void ReadCommon(std::istream & is) const
   {
     m_dataSet.template ReadSelectedPrivateTags<T1,T2>(is,m_groups,m_readvalues);
   }
+
   template<class T1, class T2> void ReadCommonWithLength(std::istream & is, VL & length) const
   {
     m_dataSet.template ReadSelectedPrivateTagsWithLength<T1,T2>(is,m_groups,length,m_readvalues);
   }
-  static void Check(bool , std::istream &)  {}
+
+  static void Check(bool , std::istream &) {}
 };
 
 } // namespace details
@@ -365,11 +350,11 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         }
         catch(std::exception &ex)
         {
-          (void)ex;
           mdcmWarningMacro(ex.what());
-          // Weird implicit meta header
+          // weird implicit meta header
           is.seekg(128+4, std::ios::beg);
           assert(is.good());
+          (void)ex;
           try
           {
             F->GetHeader().ReadCompat(is);
@@ -377,8 +362,8 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           catch(std::exception &ex2)
           {
             // no meta header
-            (void)ex2;
             mdcmErrorMacro(ex2.what());
+            (void)ex2;
           }
         }
       }
@@ -435,7 +420,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           caller.template ReadCommon<ExplicitDataElement,SwapperDoOp>(is);
         }
       }
-      else // LittleEndian
+      else // little endian
       {
         if(ts.GetNegociatedType() == TransferSyntax::Implicit)
         {
@@ -621,14 +606,15 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         }
       }
 #else
-      mdcmDebugMacro(ex.what()); (void)ex;
+      mdcmDebugMacro(ex.what());
+      (void)ex;
       success = false;
 #endif /* MDCM_SUPPORT_BROKEN_IMPLEMENTATION */
     }
     catch(Exception &ex)
     {
-      (void)ex;
       mdcmDebugMacro(ex.what());
+      (void)ex;
       success = false;
     }
     catch(...)
@@ -640,8 +626,8 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
   }
   catch(Exception &ex)
   {
-    (void)ex;
     mdcmDebugMacro(ex.what());
+    (void)ex;
     success = false;
   }
   catch(...)
@@ -757,9 +743,7 @@ void Reader::SetFileName(const char * p)
   Ifstream = new std::ifstream();
   if (p && *p)
   {
-// FIXME
-//#ifdef _MSC_VER 
-#if 0
+#ifdef _MSC_VER 
     const std::wstring uncpath = System::ConvertToUNC(p);
     Ifstream->open(uncpath.c_str(), std::ios::binary);
 #else
