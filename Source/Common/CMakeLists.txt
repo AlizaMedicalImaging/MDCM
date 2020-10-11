@@ -62,11 +62,9 @@ set(Common_SRCS
   mdcmMD5.cxx
   mdcmBase64.cxx
   mdcmSHA1.cxx
-  mdcmDummyValueGenerator.cxx
   mdcmCryptoFactory.cxx
   mdcmASN1.cxx
   mdcmSubject.cxx
-  mdcmDirectory.cxx
   mdcmFilename.cxx
   mdcmFilenameGenerator.cxx
   mdcmSwapCode.cxx

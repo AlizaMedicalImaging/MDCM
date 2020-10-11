@@ -744,11 +744,15 @@ void Reader::SetFileName(const char * p)
   if (p && *p)
   {
 #if (defined(_MSC_VER) && defined(MDCM_WIN32_UNC)) 
-    const std::wstring uncpath = System::ConvertToUNC(p);
-    Ifstream->open(uncpath.c_str(), std::ios::binary);
+    const std::wstring uncpath = mdcm::System::ConvertToUtf16(p);
+    Ifstream->open(uncpath.c_str(), std::ios_base::in|std::ios::binary);
 #else
     Ifstream->open(p, std::ios::binary);
 #endif
+  }
+  else
+  {
+    mdcmAlwaysWarnMacro("Reader failed (1)");
   }
   if(Ifstream->is_open())
   {
@@ -757,6 +761,7 @@ void Reader::SetFileName(const char * p)
   }
   else
   {
+    mdcmAlwaysWarnMacro("Reader failed (2)");
     delete Ifstream;
     Ifstream = NULL;
     Stream = NULL;
@@ -771,3 +776,4 @@ size_t Reader::GetStreamCurrentPosition() const
 #endif
 
 } // end namespace mdcm
+

@@ -53,7 +53,6 @@ set(MSFF_SRCS
   mdcmPhotometricInterpretation.cxx
   mdcmPixelFormat.cxx
   mdcmSegmentedPaletteColorLookupTable.cxx
-  mdcmDirectoryHelper.cxx
   mdcmSegment.cxx
   mdcmSurface.cxx
   mdcmMeshPrimitive.cxx
@@ -64,7 +63,6 @@ set(MSFF_SRCS
   mdcmSurfaceHelper.cxx
   mdcmSegmentHelper.cxx
   mdcmJPEG2000Codec.cxx
-  mdcmSerieHelper.cxx
   mdcmrle/rle.cxx
   mdcmrle/info.cxx
   mdcmrle/io.cxx)
