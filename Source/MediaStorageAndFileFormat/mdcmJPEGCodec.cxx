@@ -90,9 +90,9 @@ void JPEGCodec::SetPixelFormat(PixelFormat const & pf)
 {
   ImageCodec::SetPixelFormat(pf);
 #if 0
-  SetBitSample(pt.GetBitsAllocated());
+  SetBitSample(pf.GetBitsAllocated());
 #else
-  SetBitSample(pt.GetBitsStored());
+  SetBitSample(pf.GetBitsStored());
 #endif
 }
 
