@@ -5,7 +5,6 @@ set(MSFF_SRCS
   mdcmFileExplicitFilter.cxx
   mdcmFileDerivation.cxx
   mdcmImageFragmentSplitter.cxx
-  mdcmTagPath.cxx
   mdcmSimpleSubjectWatcher.cxx
   mdcmPixmap.cxx
   mdcmBitmap.cxx
