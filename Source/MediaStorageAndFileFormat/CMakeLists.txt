@@ -34,7 +34,6 @@ set(MSFF_SRCS
   mdcmStringFilter.cxx
   mdcmImageHelper.cxx
   mdcmImage.cxx
-  mdcmImageConverter.cxx
   mdcmImageCodec.cxx
   mdcmJPEG12Codec.cxx
   mdcmRLECodec.cxx
