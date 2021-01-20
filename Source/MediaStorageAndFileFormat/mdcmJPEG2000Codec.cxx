@@ -1721,7 +1721,7 @@ bool JPEG2000Codec::IsFrameEncoder()
   return true;
 }
 
-bool JPEG2000Codec::AppendRowEncode(std::ostream &, const char * , size_t)
+bool JPEG2000Codec::AppendRowEncode(std::ostream &, const char *, size_t)
 {
   return false;
 }
