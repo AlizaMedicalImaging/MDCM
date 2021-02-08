@@ -10,8 +10,6 @@ set(DICT_SRCS
   mdcmDefaultDicts.cxx
   mdcmPrivateDefaultDicts.cxx
   mdcmGlobal.cxx
-  mdcmGroupDict.cxx
-  mdcmDefaultGroupNames.cxx
   mdcmUIDs.cxx
   mdcmCSAHeaderDefaultDicts.cxx)
 
