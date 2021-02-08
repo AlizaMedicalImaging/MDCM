@@ -1,9 +1,7 @@
 set(MSFF_SRCS
   mdcmIconImageFilter.cxx
-  mdcmIconImageGenerator.cxx
   mdcmDICOMDIRGenerator.cxx
   mdcmFileExplicitFilter.cxx
-  mdcmFileDerivation.cxx
   mdcmImageFragmentSplitter.cxx
   mdcmSimpleSubjectWatcher.cxx
   mdcmPixmap.cxx
@@ -20,8 +18,6 @@ set(MSFF_SRCS
   mdcmDataSetHelper.cxx
   mdcmImageChangePlanarConfiguration.cxx
   mdcmDirectionCosines.cxx
-  mdcmSorter.cxx
-  mdcmIPPSorter.cxx
   mdcmSplitMosaicFilter.cxx
   mdcmUIDGenerator.cxx
   mdcmUUIDGenerator.cxx
@@ -42,8 +38,6 @@ set(MSFF_SRCS
   mdcmJPEGCodec.cxx
   mdcmPVRGCodec.cxx
   mdcmKAKADUCodec.cxx
-  mdcmPNMCodec.cxx
-  mdcmPGXCodec.cxx
   mdcmRAWCodec.cxx
   mdcmLookupTable.cxx
   mdcmOverlay.cxx
