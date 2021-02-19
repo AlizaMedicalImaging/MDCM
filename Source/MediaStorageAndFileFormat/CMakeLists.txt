@@ -1,6 +1,5 @@
 set(MSFF_SRCS
   mdcmIconImageFilter.cxx
-  mdcmDICOMDIRGenerator.cxx
   mdcmFileExplicitFilter.cxx
   mdcmImageFragmentSplitter.cxx
   mdcmSimpleSubjectWatcher.cxx
@@ -26,7 +25,6 @@ set(MSFF_SRCS
   mdcmImageReader.cxx
   mdcmPixmapWriter.cxx
   mdcmImageWriter.cxx
-  mdcmStringFilter.cxx
   mdcmImageHelper.cxx
   mdcmImage.cxx
   mdcmImageCodec.cxx
