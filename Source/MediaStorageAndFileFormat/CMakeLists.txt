@@ -35,7 +35,6 @@ set(MSFF_SRCS
   mdcmJPEG8Codec.cxx
   mdcmJPEGCodec.cxx
   mdcmPVRGCodec.cxx
-  mdcmKAKADUCodec.cxx
   mdcmRAWCodec.cxx
   mdcmLookupTable.cxx
   mdcmOverlay.cxx

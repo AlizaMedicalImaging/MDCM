@@ -8,7 +8,9 @@
 # e.g.:
 # set(OPENJPEG_NAMESPACE "MDCMOPENJPEG")
 
-cmake_minimum_required(VERSION 2.8.12)
+if(NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION)
+  cmake_minimum_required(VERSION 3.0.0)
+endif()
 
 if(COMMAND CMAKE_POLICY)
   cmake_policy(SET CMP0003 NEW)

@@ -16,7 +16,6 @@ set(DSED_SRCS
   mdcmTag.cxx
   mdcmTagToVR.cxx
   mdcmCodeString.cxx
-  mdcmFileSet.cxx
   mdcmByteSwapFilter.cxx
   mdcmUNExplicitImplicitDataElement.cxx
   mdcmWriter.cxx
