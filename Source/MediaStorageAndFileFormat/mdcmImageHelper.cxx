@@ -1803,7 +1803,7 @@ void ImageHelper::SetOriginValue(DataSet & ds, const Image & image)
           DataSet &subds4 = item4.GetNestedDataSet();
           Attribute<0x0008,0x1150> atReferencedSOPClassUID;
           if(ms == MediaStorage::LegacyConvertedEnhancedCTImageStorage)
-            atReferencedSOPClassUID.SetValue("1.2.840.10008.5.1.4.1.1.2"); 	
+            atReferencedSOPClassUID.SetValue("1.2.840.10008.5.1.4.1.1.2");
           else if(ms == MediaStorage::LegacyConvertedEnhancedMRImageStorage)
             atReferencedSOPClassUID.SetValue("1.2.840.10008.5.1.4.1.1.4");
           else if(ms == MediaStorage::LegacyConvertedEnhancedPETImageStorage)
@@ -2270,18 +2270,27 @@ void ImageHelper::SetVOILUT(File & f, const Image & img)
      ms == MediaStorage::MultiframeGrayscaleByteSecondaryCaptureImageStorage)
   {
     DataElement center(Tag(0x0028,0x1050));
-    center.SetByteValue(scenter.c_str(), scenter.size());
-	center.SetVR(VR::DS);
+    std::stringstream oscenter;
+    oscenter << scenter;
+    if((oscenter.str().size() % 2) != 0) oscenter << " ";
+    center.SetByteValue(oscenter.str().c_str(), (VL::Type)oscenter.str().size());
+    center.SetVR(VR::DS);
     ds.Replace(center);
     DataElement width(Tag(0x0028,0x1051));
-    width.SetByteValue(swidth.c_str(), swidth.size());
-	width.SetVR(VR::DS);
+    std::stringstream oswidth;
+    oswidth << swidth;
+    if((oswidth.str().size() % 2) != 0) oswidth << " ";
+    width.SetByteValue(oswidth.str().c_str(), (VL::Type)oswidth.str().size());
+    width.SetVR(VR::DS);
     ds.Replace(width);
-	if (!sfunc.empty())
+    if(!sfunc.empty())
     {
       DataElement func(Tag(0x0028,0x1056));
-      func.SetByteValue(sfunc.c_str(), sfunc.size());
-	  func.SetVR(VR::CS);
+      std::stringstream osfunc;
+      osfunc << sfunc;
+      if((osfunc.str().size() % 2) != 0) osfunc << " ";
+      func.SetByteValue(osfunc.str().c_str(), (VL::Type)osfunc.str().size());
+      func.SetVR(VR::CS);
       ds.Replace(func);
     }
   }
@@ -2336,18 +2345,27 @@ void ImageHelper::SetVOILUT(File & f, const Image & img)
       Item & i2 = sq1->GetItem(1);
       DataSet & nds1 = i2.GetNestedDataSet();
       DataElement center(Tag(0x0028,0x1050));
-      center.SetByteValue(scenter.c_str(), scenter.size());
-	  center.SetVR(VR::DS);
+      std::stringstream oscenter;
+      oscenter << scenter;
+      if((oscenter.str().size() % 2) != 0) oscenter << " ";
+      center.SetByteValue(oscenter.str().c_str(), (VL::Type)oscenter.str().size());
+      center.SetVR(VR::DS);
       nds1.Replace(center);
       DataElement width(Tag(0x0028,0x1051));
-      width.SetByteValue(swidth.c_str(), swidth.size());
-	  width.SetVR(VR::DS);
+      std::stringstream oswidth;
+      oswidth << swidth;
+      if((oswidth.str().size() % 2) != 0) oswidth << " ";
+      width.SetByteValue(oswidth.str().c_str(), (VL::Type)oswidth.str().size());
+      width.SetVR(VR::DS);
       nds1.Replace(width);
-	  if (!sfunc.empty())
+      if(!sfunc.empty())
       {
         DataElement func(Tag(0x0028,0x1056));
-        func.SetByteValue(sfunc.c_str(), sfunc.size());
-	    func.SetVR(VR::CS);
+        std::stringstream osfunc;
+        osfunc << sfunc;
+        if((osfunc.str().size() % 2) != 0) osfunc << " ";
+        func.SetByteValue(osfunc.str().c_str(), (VL::Type)osfunc.str().size());
+        func.SetVR(VR::CS);
         nds1.Replace(func);
       }
   }
