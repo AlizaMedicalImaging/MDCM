@@ -2265,7 +2265,9 @@ void ImageHelper::SetVOILUT(File & f, const Image & img)
   if(ms == MediaStorage::CTImageStorage ||
      ms == MediaStorage::MRImageStorage ||
      ms == MediaStorage::PETImageStorage ||
-     ms == MediaStorage::SecondaryCaptureImageStorage)
+     ms == MediaStorage::SecondaryCaptureImageStorage ||
+     ms == MediaStorage::MultiframeGrayscaleWordSecondaryCaptureImageStorage ||
+     ms == MediaStorage::MultiframeGrayscaleByteSecondaryCaptureImageStorage ||
   {
     DataElement center(Tag(0x0028,0x1050));
     center.SetByteValue(scenter.c_str(), scenter.size());
@@ -2284,8 +2286,6 @@ void ImageHelper::SetVOILUT(File & f, const Image & img)
     }
   }
   else if(
-    ms == MediaStorage::MultiframeGrayscaleWordSecondaryCaptureImageStorage ||
-    ms == MediaStorage::MultiframeGrayscaleByteSecondaryCaptureImageStorage ||
     ms == MediaStorage::EnhancedMRImageStorage ||
     ms == MediaStorage::EnhancedCTImageStorage ||
     ms == MediaStorage::EnhancedPETImageStorage ||
