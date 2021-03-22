@@ -2253,6 +2253,7 @@ void ImageHelper::SetRescaleInterceptSlopeValue(File & f, const Image & img)
 
 void ImageHelper::SetVOILUT(File & f, const Image & img)
 {
+  // TODO more IODs
   std::string swidth = img.GetWindowWidth();
   std::string scenter = img.GetWindowCenter();
   if (swidth.empty() || scenter.empty()) return;
@@ -2261,13 +2262,12 @@ void ImageHelper::SetVOILUT(File & f, const Image & img)
   ms.SetFromFile(f);
   if(!MediaStorage::IsImage(ms)) return;
   DataSet & ds = f.GetDataSet();
-  // TODO
   if(ms == MediaStorage::CTImageStorage ||
      ms == MediaStorage::MRImageStorage ||
      ms == MediaStorage::PETImageStorage ||
      ms == MediaStorage::SecondaryCaptureImageStorage ||
      ms == MediaStorage::MultiframeGrayscaleWordSecondaryCaptureImageStorage ||
-     ms == MediaStorage::MultiframeGrayscaleByteSecondaryCaptureImageStorage ||
+     ms == MediaStorage::MultiframeGrayscaleByteSecondaryCaptureImageStorage)
   {
     DataElement center(Tag(0x0028,0x1050));
     center.SetByteValue(scenter.c_str(), scenter.size());
