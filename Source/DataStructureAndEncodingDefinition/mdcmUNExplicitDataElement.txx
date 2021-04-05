@@ -87,9 +87,8 @@ std::istream & UNExplicitDataElement::ReadPreValue(std::istream & is)
       return is;
     }
   }
-  catch(Exception & ex)
+  catch(std::logic_error & ex)
   {
-#ifndef MDCM_DONT_THROW
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     // mdcm-MR-PHILIPS-16-Multi-Seq.dcm
     // assert(TagField == Tag(0xfffe, 0xe000));
@@ -105,9 +104,6 @@ std::istream & UNExplicitDataElement::ReadPreValue(std::istream & is)
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
-#else
-    throw ex;
-#endif
 #endif
   }
   if(VRField == VR::UN)
@@ -144,7 +140,6 @@ std::istream & UNExplicitDataElement::ReadValue(std::istream & is, bool readvalu
     ValueField = 0;
     return is;
   }
-
   if(VRField == VR::SQ)
   {
     // Check whether or not this is an undefined length sequence
@@ -175,9 +170,7 @@ std::istream & UNExplicitDataElement::ReadValue(std::istream & is, bool readvalu
         // Must be one of those non-cp246 file...
         // but for some reason seekg back to previous offset + Read
         // as UNExplicit does not work
-#ifndef MDCM_DONT_THROW
-        throw Exception("CP 246");
-#endif
+        throw std::logic_error("CP 246");
       }
       return is;
     }
@@ -195,7 +188,7 @@ std::istream & UNExplicitDataElement::ReadValue(std::istream & is, bool readvalu
   }
   // We have the length we should be able to read the value
   ValueField->SetLength(ValueLengthField);
-  if(TagField == Tag(0x2001,0xe05f)
+  if(  TagField == Tag(0x2001,0xe05f)
     || TagField == Tag(0x2001,0xe100)
     || TagField == Tag(0x2005,0xe080)
     || TagField == Tag(0x2005,0xe083)
@@ -209,12 +202,9 @@ std::istream & UNExplicitDataElement::ReadValue(std::istream & is, bool readvalu
   }
   if(!ValueIO<UNExplicitDataElement,TSwap>::Read(is,*ValueField,readvalues))
   {
-#ifndef MDCM_DONT_THROW
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
-#endif
-    return is;
   }
   return is;
 }

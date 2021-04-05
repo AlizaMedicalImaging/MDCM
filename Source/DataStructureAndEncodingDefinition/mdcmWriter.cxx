@@ -64,10 +64,9 @@ bool Writer::Write()
     mdcmErrorMacro("No Filename");
     return false;
   }
-
-  std::ostream &os = *Stream;
+  std::ostream & os = *Stream;
   FileMetaInformation &Header = F->GetHeader();
-  DataSet &DS = F->GetDataSet();
+  DataSet & DS = F->GetDataSet();
   if(DS.IsEmpty())
   {
     mdcmErrorMacro("DS empty");
@@ -83,13 +82,9 @@ bool Writer::Write()
       {
         duplicate.FillFromDataSet(DS);
       }
-      catch(mdcm::Exception & ex)
+      catch(std::logic_error & ex)
       {
-#if defined(NDEBUG)
-        (void)ex;
-#else
-        mdcmErrorMacro("Could not recreate the File Meta Header, please report:" << ex.what());
-#endif
+        mdcmAlwaysWarnMacro("Could not recreate the File Meta Header, please report:" << ex.what());
         return false;
       }
       duplicate.Write(os);
@@ -151,16 +146,12 @@ bool Writer::Write()
   }
   catch(std::exception & ex)
   {
-#if defined(NDEBUG)
-    (void)ex;
-#else
-    mdcmErrorMacro(ex.what());
-#endif
+    mdcmAlwaysWarnMacro(ex.what());
     return false;
   }
   catch(...)
   {
-    mdcmErrorMacro("unknown exception");
+    mdcmAlwaysWarnMacro("Unknown exception");
     return false;
   }
   os.flush();

@@ -58,24 +58,19 @@ public:
     TagField.Read<TSwap>(is);
     if(!is)
     {
-#ifndef MDCM_DONT_THROW
-      throw Exception("Problem #1");
-#endif
+      throw std::logic_error("Problem #1");
       return is;
     }
     if(!ValueLengthField.Read<TSwap>(is))
     {
-#ifndef MDCM_DONT_THROW
-      throw Exception("Problem #2");
-#endif
+      throw std::logic_error("Problem #2");
       return is;
     }
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     if(TagField != itemStart && TagField != seqDelItem)
     {
-#ifndef MDCM_DONT_THROW
-      throw Exception("Problem #3");
-#endif
+      throw std::logic_error("Problem #3");
+      return is;
     }
 #endif
     return is;
@@ -93,11 +88,9 @@ public:
       // Fragment is incomplete, but is a itemStart, let's try to push it anyway
       mdcmWarningMacro("Fragment could not be read");
       ValueField = bv;
-#ifndef MDCM_DONT_THROW
       ParseException pe;
       pe.SetLastElement(*this);
       throw pe;
-#endif
       return is;
     }
     ValueField = bv;
@@ -109,7 +102,6 @@ public:
   {
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
-
     bool cont = true;
     const std::streampos start = is.tellg();
     const int max = 10;
@@ -126,9 +118,7 @@ public:
         if(offset > max)
         {
           mdcmErrorMacro("Giving up");
-#ifndef MDCM_DONT_THROW
-          throw "Impossible to backtrack";
-#endif
+          throw std::logic_error("Impossible to backtrack");
           return is;
         }
       }
@@ -149,11 +139,9 @@ public:
       // Fragment is incomplete, but is a itemStart, let's try to push it anyway
       mdcmWarningMacro("Fragment could not be read");
       ValueField = bv;
-#ifndef MDCM_DONT_THROW
       ParseException pe;
       pe.SetLastElement(*this);
       throw pe;
-#endif
       return is;
     }
     ValueField = bv;

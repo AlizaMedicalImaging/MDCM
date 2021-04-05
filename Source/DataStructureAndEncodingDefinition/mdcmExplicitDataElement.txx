@@ -54,11 +54,9 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
   }
   if(TagField == Tag(0xfffe,0xe0dd))
   {
-#ifndef MDCM_DONT_THROW
-    ParseException pe;
+    ParseException pe("");
     pe.SetLastElement(*this);
     throw pe;
-#endif
   }
   const Tag itemDelItem(0xfffe,0xe00d);
   if(TagField == itemDelItem)
@@ -95,11 +93,9 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
     ValueField->SetLength((int32_t)(e - s));
     ValueLengthField = ValueField->GetLength();
     const bool failed = !ValueIO<ExplicitDataElement,TSwap,uint16_t>::Read(is,*ValueField,true);
-    if (failed)
+    if(failed)
     {
-#ifndef MDCM_DONT_THROW
-      throw Exception("Exception");
-#endif
+      throw std::logic_error("Exception");
     }
     return is;
   }
@@ -112,9 +108,8 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
       return is;
     }
   }
-  catch(Exception &ex)
+  catch(std::logic_error & ex)
   {
-#ifndef MDCM_DONT_THROW
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     // mdcm-MR-PHILIPS-16-Multi-Seq.dcm
     // assert(TagField == Tag(0xfffe, 0xe000));
@@ -127,13 +122,9 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
     //mdcmWarningMacro("Assuming 16 bits VR for Tag=" <<
     //  TagField << " in order to read a buggy DICOM file.");
     //VRField = VR::INVALID;
-    (void)ex;
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
-#else
-    throw ex;
-#endif
 #endif
   }
   // Read Value Length
@@ -155,9 +146,8 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
     }
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     // HACK for SIEMENS Leonardo
-    if(ValueLengthField == 0x0006
-     && VRField == VR::UL
-     && TagField.GetGroup() == 0x0009)
+    if(ValueLengthField == 0x0006 && VRField == VR::UL
+      && TagField.GetGroup() == 0x0009)
     {
       mdcmWarningMacro("Replacing VL=0x0006 with VL=0x0004, for Tag=" <<
         TagField << " in order to read a buggy DICOM file.");
@@ -169,11 +159,9 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
   // chances is that 99% of times there is now way we can reach here, so safely throw an exception
   if(TagField == Tag(0x0000,0x0000) && ValueLengthField == 0 && VRField == VR::INVALID)
   {
-#ifndef MDCM_DONT_THROW
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
-#endif
   }
 #ifdef ELSCINT1_01F7_1070
   if(TagField == Tag(0x01f7,0x1070))
@@ -227,14 +215,12 @@ std::istream &ExplicitDataElement::ReadValue(std::istream &is, bool readvalues)
       }
       catch(std::exception &)
       {
-        // Must be one of those non-cp246 file...
+        // Must be one of those non-cp246 file,
         // but for some reason seekg back to previous offset + Read
-        // as Explicit does not work...
-#ifndef MDCM_DONT_THROW
+        // as Explicit does not work.
         ParseException pe;
         pe.SetLastElement(*this);
         throw pe;
-#endif
       }
       return is;
     }
@@ -279,7 +265,7 @@ std::istream &ExplicitDataElement::ReadValue(std::istream &is, bool readvalues)
         bsf.ByteSwap();
       }
     }
-    catch(std::exception &ex)
+    catch(std::exception & ex)
     {
       ValueLengthField = ValueField->GetLength();
     }
@@ -331,11 +317,9 @@ std::istream &ExplicitDataElement::ReadValue(std::istream &is, bool readvalues)
 #endif
     {
       // Might be the famous UN 16bits
-#ifndef MDCM_DONT_THROW
       ParseException pe;
       pe.SetLastElement(*this);
       throw pe;
-#endif
     }
     return is;
   }
@@ -377,9 +361,7 @@ const std::ostream &ExplicitDataElement::Write(std::ostream &os) const
 {
   if(TagField == Tag(0xfffe,0xe0dd))
   {
-#ifndef MDCM_DONT_THROW
-    throw Exception("Impossible");
-#endif
+    throw std::logic_error("Impossible");
   }
   if(!TagField.Write<TSwap>(os))
   {

@@ -372,8 +372,10 @@ bool Bitmap::GetBuffer2(std::ostream &os) const
   if (!success) success = TryJPEGCodec2(os);
   if (!success)
   {
-#ifndef MDCM_DONT_THROW
-    throw Exception("No codec found for this image");
+#if 1
+    mdcmAlwaysWarnMacro("No codec found for this image");
+#else
+    throw std::logic_error("No codec found for this image");
 #endif
   }
   return success;

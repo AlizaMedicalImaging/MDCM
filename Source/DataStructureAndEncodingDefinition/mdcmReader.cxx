@@ -348,22 +348,20 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           hasmetaheader = true;
           assert(!F->GetHeader().IsEmpty());
         }
-        catch(std::exception &ex)
+        catch(std::exception & ex)
         {
           mdcmWarningMacro(ex.what());
           // weird implicit meta header
           is.seekg(128+4, std::ios::beg);
           assert(is.good());
-          (void)ex;
           try
           {
             F->GetHeader().ReadCompat(is);
           }
-          catch(std::exception &ex2)
+          catch(std::exception & ex2)
           {
             // no meta header
-            mdcmErrorMacro(ex2.what());
-            (void)ex2;
+            mdcmAlwaysWarnMacro(ex2.what());
           }
         }
       }
@@ -390,7 +388,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
     if(!ts.IsValid())
     {
 #ifndef MDCM_DONT_THROW
-      throw Exception("Meta Header issue");
+      throw std::logic_error("Meta Header issue");
 #endif
     }
     // Special case where the dataset was compressed using the deflate
@@ -411,9 +409,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         {
           // LIBIDO-16-ACR_NEMA-Volume.dcm
           mdcmErrorMacro("VirtualBigEndianNotHandled");
-#ifndef MDCM_DONT_THROW
-          throw "Virtual Big Endian Implicit is not defined by DICOM";
-#endif
+          throw std::logic_error("Virtual Big Endian Implicit is not defined by DICOM");
         }
         else
         {
@@ -451,7 +447,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
       }
     }
     // Only catch parse exception at this point
-    catch(ParseException &ex)
+    catch(ParseException & ex)
     {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
       if(ex.GetLastElement().GetVR() == VR::UN && ex.GetLastElement().IsUndefinedLength())
@@ -534,7 +530,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
             F->GetDataSet().Insert(ide);
             caller.template ReadCommon<VR16ExplicitDataElement,SwapperNoOp>(is);
           }
-          catch (Exception &)
+          catch(std::logic_error &)
           {
             try
             {
@@ -558,27 +554,24 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
               // Explicit/Implicit
               // mdcmData/c_vf1001.dcm falls into that category, while in fact the fmi could simply
               // be inverted and all would be perfect
-              mdcmWarningMacro("Attempt to read file with explicit/implicit");
+              mdcmAlwaysWarnMacro("Attempt to read file with explicit/implicit");
               F->GetDataSet().Clear();
               caller.template ReadCommon<ExplicitImplicitDataElement,SwapperNoOp>(is);
             }
-            catch (Exception &ex2)
+            catch(std::exception &)
             {
-              (void)ex2;
               // MM: UNExplicitImplicitDataElement does not seems to be used anymore to read
               // mdcmData/TheralysMDCM120Bug.dcm, instead the code path goes into
               // ExplicitImplicitDataElement class instead.
               // Simply rethrow the exception for now.
-#ifndef MDCM_DONT_THROW
-              throw;
-#endif
+              mdcmAlwaysWarnMacro("Exception in Reader.cxx (1)");
             }
           }
         }
       }
       else
       {
-        mdcmWarningMacro("Attempt to read the file as mixture of explicit/implicit");
+        mdcmAlwaysWarnMacro("Attempt to read the file as mixture of explicit/implicit");
         // Try again with an ExplicitImplicitDataElement
         if(ts.GetSwapCode() == SwapCode::LittleEndian &&
           ts.GetNegociatedType() == TransferSyntax::Explicit)
@@ -601,7 +594,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         }
         else
         {
-          mdcmDebugMacro("No way this is DICOM");
+          mdcmAlwaysWarnMacro("Exception in Reader.cxx (2)");
           success = false;
         }
       }
@@ -611,28 +604,16 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
       success = false;
 #endif /* MDCM_SUPPORT_BROKEN_IMPLEMENTATION */
     }
-    catch(Exception &ex)
-    {
-      mdcmDebugMacro(ex.what());
-      (void)ex;
-      success = false;
-    }
     catch(...)
     {
-      mdcmWarningMacro("Unknown exception");
+      mdcmAlwaysWarnMacro("Exception in Reader.cxx (3)");
       success = false;
     }
     caller.Check(success, *Stream);
   }
-  catch(Exception &ex)
-  {
-    mdcmDebugMacro(ex.what());
-    (void)ex;
-    success = false;
-  }
   catch(...)
   {
-    mdcmWarningMacro("Unknown exception");
+    mdcmWarningMacro("Exception in Reader.cxx (4)");
     success = false;
   }
   return success;
@@ -657,6 +638,7 @@ bool Reader::CanRead() const
   std::istream &is = *Stream;
   if(is.bad()) return false;
   if(is.tellg() != std::streampos(0)) return false;
+  //
   {
     is.seekg(128, std::ios::beg); // we ignore return value as we test is.good()
     char b[4];
@@ -672,10 +654,13 @@ bool Reader::CanRead() const
   is.clear();
   is.seekg(0, std::ios::beg);
   char b[8];
-  if (is.good() && is.read(b,8))
+  if(is.good() && is.read(b,8))
   {
     // examine probable group number, assume <= 0x00ff
-    if (b[0] < b[1]) bigendian=true;
+    if(b[0] < b[1])
+    {
+      bigendian = true;
+    }
     else if (b[0] == 0 && b[1] == 0)
     {
       // group number is zero
@@ -685,13 +670,13 @@ bool Reader::CanRead() const
       if (b[4] < b[7]) bigendian=true;
     }
     // else littleendian
-    if (isasciiupper(b[4]) && isasciiupper(b[5])) explicitvr=true;
+    if(isasciiupper(b[4]) && isasciiupper(b[5])) explicitvr=true;
   }
   SwapCode sc = SwapCode::Unknown;
   TransferSyntax::NegociatedType nts = TransferSyntax::Unknown;
   std::stringstream ss(std::string(b, 8));
   Tag t;
-  if (bigendian)
+  if(bigendian)
   {
     t.Read<SwapperDoOp>(ss);
     if(t.GetGroup() <= 0xff) sc = SwapCode::BigEndian;
@@ -703,7 +688,7 @@ bool Reader::CanRead() const
   }
   VL vl;
   VR::VRType vr = VR::VR_END;
-  if (explicitvr)
+  if(explicitvr)
   {
     char vr_str[3];
     vr_str[0] = b[4];
@@ -715,12 +700,9 @@ bool Reader::CanRead() const
   }
   else
   {
-    if(bigendian)
-      vl.Read<SwapperDoOp>(ss);
-    else
-      vl.Read<SwapperNoOp>(ss);
-    if(vl < 0xff)
-      nts = TransferSyntax::Implicit;
+    if(bigendian) vl.Read<SwapperDoOp>(ss);
+    else          vl.Read<SwapperNoOp>(ss);
+    if(vl < 0xff) nts = TransferSyntax::Implicit;
   }
   // reset
   is.clear();

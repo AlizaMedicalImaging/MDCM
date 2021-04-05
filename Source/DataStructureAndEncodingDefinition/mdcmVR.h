@@ -17,11 +17,11 @@
 #include "mdcmTag.h"
 #include "mdcmTrace.h"
 #include "mdcmString.h"
-#include "mdcmException.h"
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 
-// to ensure compilation on sunos gcc
+// to compile on SunOS gcc
 #ifdef CS
 #undef CS
 #endif
@@ -144,7 +144,7 @@ public:
     if (VRField == INVALID)
     {
 #ifndef MDCM_DONT_THROW
-      throw Exception("INVALID VR");
+      throw std::logic_error("VR is invalid");
 #endif
     }
     if (VRField & VL32)

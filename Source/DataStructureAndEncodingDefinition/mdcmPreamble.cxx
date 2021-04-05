@@ -21,40 +21,42 @@
 =========================================================================*/
 
 #include "mdcmPreamble.h"
-#include "mdcmException.h"
 #include <cstring>
 
 namespace mdcm
 {
 
-Preamble::Preamble():Internal(0)
+Preamble::Preamble() : Internal(NULL)
 {
   Create();
 }
 
 Preamble::~Preamble()
 {
-  delete[] Internal;
+  if(Internal) delete[] Internal;
 }
 
-std::istream &Preamble::Read(std::istream &is)
+std::istream & Preamble::Read(std::istream & is)
 {
-  mdcmAssertAlwaysMacro(!IsEmpty());
-  if(is.read(Internal, 128+4))
+  if(!IsEmpty())
   {
-    if(Internal[128+0] == 'D' &&
-       Internal[128+1] == 'I' &&
-       Internal[128+2] == 'C' &&
-       Internal[128+3] == 'M')
+    if(is.read(Internal, 128+4))
     {
-      return is;
+      if(Internal[128+0] == 'D' &&
+         Internal[128+1] == 'I' &&
+         Internal[128+2] == 'C' &&
+         Internal[128+3] == 'M')
+      {
+        return is;
+      }
     }
   }
-  delete[] Internal;
-  Internal = 0;
-#ifndef MDCM_DONT_THROW
-  throw Exception("Not a DICOM V3 file (No Preamble)");
-#endif
+  if(Internal)
+  {
+    delete[] Internal;
+    Internal = NULL;
+  }
+  throw std::logic_error("Not a DICOM V3 file (No Preamble)");
 }
 
 void Preamble::Valid()
@@ -74,7 +76,7 @@ void Preamble::Create()
 void Preamble::Remove()
 {
   delete[] Internal;
-  Internal = 0;
+  Internal = NULL;
 }
 
 std::ostream const & Preamble::Write(std::ostream & os) const
