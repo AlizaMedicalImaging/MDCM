@@ -63,7 +63,10 @@ const char * FileMetaInformation::GetMDCMSourceApplicationEntityTitle()
 }
 
 // Keep cstor and dstor here to keep API minimal (see dllexport issue with mdcmstrict::)
-FileMetaInformation::FileMetaInformation():DataSetTS(TransferSyntax::TS_END),MetaInformationTS(TransferSyntax::Unknown),DataSetMS(MediaStorage::MS_END) {}
+FileMetaInformation::FileMetaInformation() :
+  DataSetTS(TransferSyntax::TS_END),
+  MetaInformationTS(TransferSyntax::Unknown),
+  DataSetMS(MediaStorage::MS_END) {}
 FileMetaInformation::~FileMetaInformation() {}
 
 void FileMetaInformation::SetImplementationClassUID(const char * imp)
@@ -189,16 +192,16 @@ void FileMetaInformation::FillFromDataSet(DataSet const & ds)
         const DataElement& sopclass = ds.GetDataElement(Tag(0x0008, 0x0016));
         DataElement mssopclass = GetDataElement(Tag(0x0002, 0x0002));
         assert(!mssopclass.IsEmpty());
-        const ByteValue *bv = sopclass.GetByteValue();
+        const ByteValue * bv = sopclass.GetByteValue();
         if(bv)
         {
           mssopclass.SetByteValue(bv->GetPointer(), bv->GetLength());
+          Replace(mssopclass);
         }
         else
         {
           throw std::logic_error("SOP Class is empty");
         }
-        Replace(mssopclass);
       }
     }
   }
@@ -230,17 +233,20 @@ void FileMetaInformation::FillFromDataSet(DataSet const & ds)
     bool dicomdir = (ms == MediaStorage::MediaStorageDirectoryStorage && dirrecsq);
     if(!dicomdir)
     {
-      if(!ds.FindDataElement(Tag(0x0008, 0x0018)) || ds.GetDataElement(Tag(0x0008, 0x0018)).IsEmpty())
+      if(!ds.FindDataElement(Tag(0x0008, 0x0018)) ||
+         ds.GetDataElement(Tag(0x0008, 0x0018)).IsEmpty())
       {
         throw std::logic_error("No (0x0008,0x0018) element");
       }
-      const DataElement& sopinst = ds.GetDataElement(Tag(0x0008, 0x0018));
+      const DataElement & sopinst = ds.GetDataElement(Tag(0x0008, 0x0018));
       assert(!GetDataElement(Tag(0x0002, 0x0003)).IsEmpty());
       DataElement mssopinst = GetDataElement(Tag(0x0002, 0x0003));
-      const ByteValue *bv = sopinst.GetByteValue();
-      assert(bv);
-      mssopinst.SetByteValue(bv->GetPointer(), bv->GetLength());
-      Replace(mssopinst);
+      const ByteValue * bv = sopinst.GetByteValue();
+      if (bv)
+      {
+        mssopinst.SetByteValue(bv->GetPointer(), bv->GetLength());
+        Replace(mssopinst);
+      }
     }
   }
   // Transfer Syntax UID (0002,0010) -> ??? (computed at write time at most)
@@ -762,11 +768,10 @@ std::istream &FileMetaInformation::ReadCompatInternal(std::istream &is)
   return is;
 }
 
-// if write a SQ in the meta header?
 void FileMetaInformation::ComputeDataSetTransferSyntax()
 {
   const Tag t(0x0002,0x0010);
-  const DataElement &de = GetDataElement(t);
+  const DataElement & de = GetDataElement(t);
   std::string ts;
   const ByteValue * bv = de.GetByteValue();
   if(!bv)
@@ -800,29 +805,23 @@ std::string FileMetaInformation::GetMediaStorageAsString() const
   const Tag t(0x0002,0x0002);
   if(!FindDataElement(t))
   {
-    mdcmAlwaysWarnMacro("File Meta information is present but does not contain " << t);
-    return "";
+    return std::string("");
   }
   const DataElement &de = GetDataElement(t);
   std::string ts;
   {
-    const ByteValue *bv = de.GetByteValue();
-    assert(bv);
-    if(bv->GetPointer() && bv->GetLength())
+    const ByteValue * bv = de.GetByteValue();
+    if(bv && bv->GetPointer() && bv->GetLength())
     {
       // Pad string with a \0
       ts = std::string(bv->GetPointer(), bv->GetLength());
     }
   }
-  // Paranoid check: if last character of a VR=UI is space let's pretend this is a \0
-  if(ts.size())
+  const size_t ts_size = ts.size();
+  if(ts_size > 0)
   {
-    char &last = ts[ts.size()-1];
-    if(last == ' ')
-    {
-      mdcmWarningMacro("Media Storage Class UID: " << ts << " contained a trailing space character");
-      last = '\0';
-    }
+    char & last = ts[ts_size - 1];
+    if(last == ' ') last = '\0';
   }
   return ts;
 }
@@ -843,7 +842,7 @@ void FileMetaInformation::Default()
 {
 }
 
-std::ostream &FileMetaInformation::Write(std::ostream &os) const
+std::ostream & FileMetaInformation::Write(std::ostream &os) const
 {
   P.Write(os);
   {
