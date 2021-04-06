@@ -81,17 +81,9 @@ std::istream & VR16ExplicitDataElement::ReadPreValue(std::istream & is)
 #endif
   // FIXME
   // Special hack for KONICA_VROX.dcm where in fact the VR=OX, in Pixel Data element
-  // in which case we need to assume a 32bits VR...for now this is a big phat hack !
+  // in which case we need to assume a 32bits VR.
   bool OX_hack = false;
-  try
-  {
-    if(!VRField.Read(is))
-    {
-      assert(0 && "Should not happen");
-      return is;
-    }
-  }
-  catch(std::logic_error &)
+  if(!VRField.Read(is))
   {
     VRField = VR::INVALID;
     // mdcm-MR-PHILIPS-16-Multi-Seq.dcm
@@ -102,11 +94,7 @@ std::istream & VR16ExplicitDataElement::ReadPreValue(std::istream & is)
       pe.SetLastElement(*this);
       throw pe;
     }
-    // -> For some reason VR is written as {44,0} well I guess this is a VR...
-    // Technically there is a second bug, dcmtk assume other things when reading this tag,
-    // so I need to change this tag too, if I ever want dcmtk to read this file. oh well
     // 0019004_Baseline_IMG1.dcm
-    // -> VR is garbage also...
     if(TagField == Tag(0x7fe0,0x0010))
     {
       OX_hack = true;
@@ -115,12 +103,12 @@ std::istream & VR16ExplicitDataElement::ReadPreValue(std::istream & is)
       is.read(dummy,2);
       assert(dummy[0] == 0 && dummy[1] == 0);
       mdcmAlwaysWarnMacro("Assuming 32 bits VR for Tag=" <<
-        TagField << " in order to read a buggy DICOM file.");
+        TagField << " (buggy file)");
     }
     else
     {
       mdcmAlwaysWarnMacro("Assuming 16 bits VR for Tag=" <<
-        TagField << " in order to read a buggy DICOM file.");
+        TagField << " (buggy file)");
     }
   }
   if(VR::GetLength(VRField) == 4)

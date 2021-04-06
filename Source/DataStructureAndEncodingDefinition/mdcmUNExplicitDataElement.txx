@@ -79,15 +79,7 @@ std::istream & UNExplicitDataElement::ReadPreValue(std::istream & is)
     VRField = VR::INVALID;
     return is;
   }
-  try
-  {
-    if(!VRField.Read(is))
-    {
-      assert(0 && "Should not happen");
-      return is;
-    }
-  }
-  catch(std::logic_error & ex)
+  if(!VRField.Read(is))
   {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     // mdcm-MR-PHILIPS-16-Multi-Seq.dcm
@@ -100,10 +92,12 @@ std::istream & UNExplicitDataElement::ReadPreValue(std::istream & is)
     // assert(TagField == Tag(8348,0339) || TagField == Tag(b5e8,0338))
     //mdcmWarningMacro("Assuming 16 bits VR for Tag=" <<
     //  TagField << " in order to read a buggy DICOM file.");
-    //VRField = VR::INVALID;
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
+#else
+    assert(0 && "Should not happen");
+    return is;
 #endif
   }
   if(VRField == VR::UN)

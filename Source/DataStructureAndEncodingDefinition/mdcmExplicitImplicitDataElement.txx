@@ -99,13 +99,8 @@ std::istream & ExplicitImplicitDataElement::ReadPreValue(std::istream & is)
     return is;
   }
 #endif
-  try
+  if(VRField.Read(is))
   {
-    if(!VRField.Read(is))
-    {
-      assert(0 && "Should not happen");
-      return is;
-    }
     if(VR::GetLength(VRField) == 4)
     {
       if(!ValueLengthField.Read<TSwap>(is))
@@ -134,7 +129,7 @@ std::istream & ExplicitImplicitDataElement::ReadPreValue(std::istream & is)
 #endif
     }
   }
-  catch(std::logic_error &)
+  else
   {
     VRField = VR::INVALID;
     is.seekg(-2, std::ios::cur);

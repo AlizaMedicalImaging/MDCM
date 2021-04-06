@@ -100,15 +100,7 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
     return is;
   }
 #endif
-  try
-  {
-    if(!VRField.Read(is))
-    {
-      assert(0 && "Should not happen");
-      return is;
-    }
-  }
-  catch(std::logic_error & ex)
+  if(!VRField.Read(is))
   {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     // mdcm-MR-PHILIPS-16-Multi-Seq.dcm
@@ -125,6 +117,9 @@ std::istream &ExplicitDataElement::ReadPreValue(std::istream &is)
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
+#else
+    assert(0 && "Should not happen");
+    return is;
 #endif
   }
   // Read Value Length
@@ -422,11 +417,7 @@ const std::ostream &ExplicitDataElement::Write(std::ostream &os) const
   else
   {
     assert(VRField.IsVRFile() && VRField != VR::INVALID);
-    if(!VRField.Write(os))
-    {
-      assert(0 && "Should not happen");
-      return os;
-    }
+    VRField.Write(os);
     if(VRField & VR::VL32)
     {
       if(!ValueLengthField.Write<TSwap>(os))
