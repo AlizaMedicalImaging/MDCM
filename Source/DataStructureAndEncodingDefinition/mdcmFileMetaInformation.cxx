@@ -75,7 +75,7 @@ const TransferSyntax & FileMetaInformation::GetDataSetTransferSyntax() const
   return DataSetTS;
 }
 
-void FileMetaInformation::SetDataSetTransferSyntax(const TransferSyntax &ts)
+void FileMetaInformation::SetDataSetTransferSyntax(const TransferSyntax & ts)
 {
   DataSetTS = ts;
 }
@@ -90,7 +90,7 @@ std::string FileMetaInformation::GetMediaStorageAsString() const
   {
     return std::string("");
   }
-  const DataElement &de = GetDataElement(t);
+  const DataElement & de = GetDataElement(t);
   std::string ts;
   {
     const ByteValue * bv = de.GetByteValue();
@@ -111,7 +111,7 @@ std::string FileMetaInformation::GetMediaStorageAsString() const
 
 MediaStorage FileMetaInformation::GetMediaStorage() const
 {
-  const std::string &ts = GetMediaStorageAsString();
+  const std::string & ts = GetMediaStorageAsString();
   if(ts.empty()) return MediaStorage::MS_END;
   MediaStorage ms = MediaStorage::GetMSType(ts.c_str());
   if(ms == MediaStorage::MS_END)
@@ -141,7 +141,7 @@ void FileMetaInformation::Replace(const DataElement & de)
 
 void FileMetaInformation::SetImplementationClassUID(const char * imp)
 {
-  // TODO: it would be nice to make sure imp is actually a valid UID
+  // TODO make sure imp is actually a valid UID
   if(imp)
   {
     ImplementationClassUID = imp;
@@ -198,7 +198,7 @@ bool FileMetaInformation::FillFromDataSet(const DataSet & ds)
   {
     xde.SetTag(Tag(0x0002, 0x0001));
     xde.SetVR(VR::OB);
-    const char *version = FileMetaInformation::GetFileMetaInformationVersion();
+    const char * version = FileMetaInformation::GetFileMetaInformationVersion();
     xde.SetByteValue(version, 2);
     Insert(xde);
   }
@@ -211,7 +211,7 @@ bool FileMetaInformation::FillFromDataSet(const DataSet & ds)
     {
       xde.SetTag(Tag(0x0002, 0x0001));
       xde.SetVR(VR::OB);
-      const char *version = FileMetaInformation::GetFileMetaInformationVersion();
+      const char * version = FileMetaInformation::GetFileMetaInformationVersion();
       xde.SetByteValue(version, 2);
       Replace(xde);
     }
@@ -259,7 +259,7 @@ bool FileMetaInformation::FillFromDataSet(const DataSet & ds)
       }
       else
       {
-        const DataElement& sopclass = ds.GetDataElement(Tag(0x0008, 0x0016));
+        const DataElement & sopclass = ds.GetDataElement(Tag(0x0008, 0x0016));
         DataElement mssopclass = GetDataElement(Tag(0x0002, 0x0002));
         assert(!mssopclass.IsEmpty());
         const ByteValue * bv = sopclass.GetByteValue();
@@ -277,7 +277,7 @@ bool FileMetaInformation::FillFromDataSet(const DataSet & ds)
     }
   }
   // Media Storage SOP Instance UID (0002,0003) -> see (0008,0018)
-  const DataElement &dummy = GetDataElement(Tag(0x0002,0x0003)); (void)dummy;
+  const DataElement & dummy = GetDataElement(Tag(0x0002,0x0003)); (void)dummy;
   if(!FindDataElement(Tag(0x0002, 0x0003)) || GetDataElement(Tag(0x0002,0x0003)).IsEmpty())
   {
     if(ds.FindDataElement(Tag(0x0008, 0x0018)))
@@ -502,7 +502,7 @@ bool ReadImplicitDataElement(std::istream &is, ImplicitDataElement &de)
     assert(0 && "Should not happen");
     return false;
   }
-  ByteValue *bv = 0;
+  ByteValue * bv = NULL;
   if(vl.IsUndefined())
   {
     assert(0 && "Should not happen");
@@ -522,7 +522,6 @@ bool ReadImplicitDataElement(std::istream &is, ImplicitDataElement &de)
   de.SetTag(t);
   de.SetVL(vl);
   de.SetValue(*bv);
-
   return true;
 }
 
@@ -571,7 +570,6 @@ bool FileMetaInformation::Read2(std::istream & is)
     mdcmAlwaysWarnMacro("In FileMetaInformation::Read: VR is invalid (!UL)");
     return false;
   }
-  // TODO
   is.seekg(-6,std::ios::cur);
   xde.Read<SwapperNoOp>(is);
   Insert(xde);
@@ -606,6 +604,7 @@ bool FileMetaInformation::Read2(std::istream & is)
   }
   const bool ts_ok = ComputeDataSetTransferSyntax();
   (void)ts_ok;
+  if(!is) return false;
   return true;
 }
 
@@ -728,6 +727,7 @@ bool FileMetaInformation::ReadCompat2(std::istream & is)
       }
     }
   }
+  if(!is) return false;
   return true;
 }
 
@@ -737,6 +737,7 @@ bool FileMetaInformation::Write2(std::ostream & os) const
   {
     this->DataSet::Write<ExplicitDataElement,SwapperNoOp>(os);
   }
+  if(!os) return false;
   return true;
 }
 
@@ -786,7 +787,7 @@ static bool AddVRToDataElement(DataElement & de)
 }
 
 template <typename TSwap>
-bool FileMetaInformation::ReadCompatInternal2(std::istream &is)
+bool FileMetaInformation::ReadCompatInternal2(std::istream & is)
 {
   // Purposely not Re-use ReadVR since we can read VR_END
   char vr_str0[2];
@@ -857,6 +858,7 @@ bool FileMetaInformation::ReadCompatInternal2(std::istream &is)
       is.seekg(-6, std::ios::cur); // Seek back
     }
   }
+  if(!is) return false;
   return true;
 }
 

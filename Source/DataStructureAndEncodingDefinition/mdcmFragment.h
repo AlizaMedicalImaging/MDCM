@@ -35,49 +35,46 @@ namespace mdcm
  */
 class MDCM_EXPORT Fragment : public DataElement
 {
+friend std::ostream &operator<<(std::ostream & os, const Fragment & val);
 public:
   Fragment() : DataElement(Tag(0xfffe, 0xe000), 0) {}
-  friend std::ostream &operator<<(std::ostream & os, const Fragment & val);
-
   VL GetLength() const;
-
   VL ComputeLength() const;
 
-  template <typename TSwap>
-  std::istream & Read(std::istream &is)
+  template <typename TSwap> bool Read(std::istream & is)
   {
-    ReadPreValue<TSwap>(is);
+    const bool ok = ReadPreValue<TSwap>(is);
+    (void)ok;
     return ReadValue<TSwap>(is);
   }
 
-  template <typename TSwap>
-  std::istream & ReadPreValue(std::istream & is)
+  template <typename TSwap> bool ReadPreValue(std::istream & is)
   {
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
     TagField.Read<TSwap>(is);
     if(!is)
     {
-      throw std::logic_error("Problem #1");
-      return is;
+      mdcmAlwaysWarnMacro("Problem #1");
+      return false;
     }
     if(!ValueLengthField.Read<TSwap>(is))
     {
-      throw std::logic_error("Problem #2");
-      return is;
+      mdcmAlwaysWarnMacro("Problem #2");
+      return false;
     }
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
     if(TagField != itemStart && TagField != seqDelItem)
     {
-      throw std::logic_error("Problem #3");
-      return is;
+      mdcmAlwaysWarnMacro("Problem #3");
+      return false;
     }
 #endif
-    return is;
+    if(!is) return false;
+    return true;
   }
 
-  template <typename TSwap>
-  std::istream &ReadValue(std::istream &is)
+  template <typename TSwap> bool ReadValue(std::istream & is)
   {
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
@@ -91,14 +88,13 @@ public:
       ParseException pe;
       pe.SetLastElement(*this);
       throw pe;
-      return is;
     }
     ValueField = bv;
-    return is;
+    if(!is) return false;
+    return true;
   }
 
-  template <typename TSwap>
-  std::istream &ReadBacktrack(std::istream &is)
+  template <typename TSwap> bool ReadBacktrack(std::istream & is)
   {
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
@@ -117,9 +113,8 @@ public:
         mdcmWarningMacro("Fuzzy Search, backtrack: " << (start - is.tellg()) << " Offset: " << is.tellg());
         if(offset > max)
         {
-          mdcmErrorMacro("Giving up");
-          throw std::logic_error("Impossible to backtrack");
-          return is;
+          mdcmAlwaysWarnMacro("Impossible to backtrack");
+          return false;
         }
       }
       else
@@ -130,7 +125,8 @@ public:
     assert(TagField == itemStart || TagField == seqDelItem);
     if(!ValueLengthField.Read<TSwap>(is))
     {
-      return is;
+      if (!is) return false;
+      return true;
     }
     SmartPointer<ByteValue> bv = new ByteValue;
     bv->SetLength(ValueLengthField);
@@ -142,14 +138,13 @@ public:
       ParseException pe;
       pe.SetLastElement(*this);
       throw pe;
-      return is;
     }
     ValueField = bv;
-    return is;
+    if(!is) return false;
+    return true;
   }
 
-  template <typename TSwap>
-  std::ostream & Write(std::ostream &os) const
+  template <typename TSwap> std::ostream & Write(std::ostream &os) const
   {
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
