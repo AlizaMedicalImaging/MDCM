@@ -384,12 +384,10 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
       hasmetaheader = false;
       mdcmDebugMacro("no file meta info found");
     }
-    const TransferSyntax &ts = F->GetHeader().GetDataSetTransferSyntax();
+    const TransferSyntax & ts = F->GetHeader().GetDataSetTransferSyntax();
     if(!ts.IsValid())
     {
-#ifndef MDCM_DONT_THROW
-      throw std::logic_error("Meta Header issue");
-#endif
+      throw std::logic_error("!ts.IsValid() (header issue)");
     }
     // Special case where the dataset was compressed using the deflate
     // algorithm
@@ -408,8 +406,8 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         if(ts.GetNegociatedType() == TransferSyntax::Implicit)
         {
           // LIBIDO-16-ACR_NEMA-Volume.dcm
-          mdcmErrorMacro("VirtualBigEndianNotHandled");
-          throw std::logic_error("Virtual Big Endian Implicit is not defined by DICOM");
+          mdcmAlwaysWarnMacro("Can not handle Virtual Big Endian Implicit");
+
         }
         else
         {
@@ -467,7 +465,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           FileMetaInformation header;
           header.Read(is);
         }
-        mdcmWarningMacro("Attempt to read non CP 246");
+        mdcmAlwaysWarnMacro("Attempt to read non CP 246");
         F->GetDataSet().Clear();
         caller.template ReadCommon<CP246ExplicitDataElement,SwapperNoOp>(is);
       }
@@ -488,11 +486,11 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           header.Read(is);
         }
         // GDCM 1.X
-        mdcmWarningMacro("Attempt to read GDCM 1.X wrongly encoded");
+        mdcmAlwaysWarnMacro("Attempt to read GDCM 1.X wrongly encoded");
         F->GetDataSet().Clear();
         caller.template ReadCommon<UNExplicitDataElement,SwapperNoOp>(is);
       }
-      else if (ex.GetLastElement().GetTag() == Tag(0xfeff,0x00e0))
+      else if(ex.GetLastElement().GetTag() == Tag(0xfeff,0x00e0))
       {
         // Famous philips where some private sequence were byteswapped
         // eg. PHILIPS_Intera-16-MONO2-Uncompress.dcm
@@ -510,7 +508,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           FileMetaInformation header;
           header.Read(is);
         }
-        mdcmWarningMacro("Attempt to read Philips with ByteSwap private sequence wrongly encoded");
+        mdcmAlwaysWarnMacro("Attempt to read Philips with ByteSwap private sequence wrongly encoded");
         F->GetDataSet().Clear();
         assert(0); // TODO FIXME
       }
@@ -520,7 +518,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         {
           try
           {
-            mdcmWarningMacro("Attempt to read file with VR16bits");
+            mdcmAlwaysWarnMacro("Attempt to read file with VR16bits");
             // We could not read the VR in an explicit dataset
             // seek back tag + vr
             is.seekg(-6, std::ios::cur);
