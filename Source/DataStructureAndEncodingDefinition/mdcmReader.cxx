@@ -322,20 +322,12 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
   {
     std::istream &is = *Stream;
     bool haspreamble = true;
-    try
-    {
-      F->GetHeader().GetPreamble().Read(is);
-    }
-    catch(std::exception &)
+    if(!F->GetHeader().GetPreamble().Read(is))
     {
       // return to beginning of file, hopefully this file is simply missing preamble
       is.clear();
       is.seekg(0, std::ios::beg);
       haspreamble = false;
-    }
-    catch(...)
-    {
-      assert(0);
     }
     bool hasmetaheader = false;
     try
