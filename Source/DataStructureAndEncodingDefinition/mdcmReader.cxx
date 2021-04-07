@@ -204,11 +204,6 @@ public:
     is.setstate(std::ios::eofbit);
   }
 
-  static void Check(bool b, std::istream & is)
-  {
-    if(b) { assert(is.eof()); }
-    (void)is;
-  }
 };
 
 class ReadUpToTagCaller
@@ -232,7 +227,6 @@ public:
     m_dataSet.template ReadUpToTagWithLength<T1,T2>(is,m_tag,m_skipTags,length);
   }
 
-  static void Check(bool , std::istream &) {}
 };
 
 class ReadSelectedTagsCaller
@@ -256,7 +250,6 @@ public:
     m_dataSet.template ReadSelectedTagsWithLength<T1,T2>(is,m_tags,length,m_readvalues);
   }
 
-  static void Check(bool , std::istream &) {}
 };
 
 class ReadSelectedPrivateTagsCaller
@@ -280,7 +273,6 @@ public:
     m_dataSet.template ReadSelectedPrivateTagsWithLength<T1,T2>(is,m_groups,length,m_readvalues);
   }
 
-  static void Check(bool , std::istream &) {}
 };
 
 } // namespace details
@@ -316,7 +308,6 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
   {
     return false;
   }
-  bool success = true;
   try
   {
     std::istream & is = *Stream;
@@ -549,8 +540,8 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
               // MM: UNExplicitImplicitDataElement does not seems to be used anymore to read
               // mdcmData/TheralysMDCM120Bug.dcm, instead the code path goes into
               // ExplicitImplicitDataElement class instead.
-              // Simply rethrow the exception for now.
               mdcmAlwaysWarnMacro("Exception in Reader.cxx (1)");
+              return false;
             }
           }
         }
@@ -581,27 +572,26 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
         else
         {
           mdcmAlwaysWarnMacro("Exception in Reader.cxx (2)");
-          success = false;
+          return false;
         }
       }
 #else
       mdcmAlwaysWarnMacro(ex.what());
-      success = false;
+      return false;
 #endif
     }
     catch(...)
     {
       mdcmAlwaysWarnMacro("Exception in Reader.cxx (3)");
-      success = false;
+      return false;
     }
-    caller.Check(success, *Stream);
   }
   catch(...)
   {
     mdcmWarningMacro("Exception in Reader.cxx (4)");
-    success = false;
+    return false;
   }
-  return success;
+  return true;
 }
 
 static inline bool isasciiupper(char c)
