@@ -83,11 +83,13 @@ bool Writer::Write()
         mdcmAlwaysWarnMacro("In Writer::Write: FillFromDataSet failed");
         return false;
       }
-      duplicate.Write(os);
+      const bool ok = duplicate.Write2(os);
+      (void)ok;
     }
     else
     {
-      Header.Write(os);
+      const bool ok = Header.Write2(os);
+      (void)ok;
     }
   }
   const TransferSyntax & ts = Header.GetDataSetTransferSyntax();

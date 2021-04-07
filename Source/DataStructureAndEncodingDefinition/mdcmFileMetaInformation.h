@@ -76,17 +76,17 @@ public:
   static const char * GetImplementationVersionName();
   static const char * GetSourceApplicationEntityTitle();
   bool FillFromDataSet(const DataSet &);
-  std::istream & Read(std::istream &);
-  std::istream & ReadCompat(std::istream &);
-  std::ostream & Write(std::ostream &) const;
+  bool Read2(std::istream &);
+  bool ReadCompat2(std::istream &);
+  bool Write2(std::ostream &) const;
   const Preamble & GetPreamble() const;
   Preamble & GetPreamble();
   void SetPreamble(const Preamble &);
   VL GetFullLength() const;
 
 protected:
-  template <typename TSwap> std::istream & ReadCompatInternal(std::istream &);
-  void ComputeDataSetTransferSyntax(); // FIXME
+  template <typename TSwap> bool ReadCompatInternal2(std::istream &);
+  bool ComputeDataSetTransferSyntax();
   static const char * GetFileMetaInformationVersion();
   static const char * GetMDCMImplementationClassUID();
   static const char * GetMDCMImplementationVersionName();

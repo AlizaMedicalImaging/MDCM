@@ -310,17 +310,16 @@ bool Reader::ReadSelectedPrivateTags(std::set<PrivateTag> const & selectedPTags,
 }
 
 template <typename T_Caller>
-bool Reader::InternalReadCommon(const T_Caller &caller)
+bool Reader::InternalReadCommon(const T_Caller & caller)
 {
   if(!Stream || !*Stream)
   {
-    mdcmErrorMacro("No File");
     return false;
   }
   bool success = true;
   try
   {
-    std::istream &is = *Stream;
+    std::istream & is = *Stream;
     bool haspreamble = true;
     if(!F->GetHeader().GetPreamble().Read(is))
     {
@@ -329,57 +328,40 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
       is.seekg(0, std::ios::beg);
       haspreamble = false;
     }
-    bool hasmetaheader = false;
-    try
+	bool hasmetaheader = false;
+    if(haspreamble)
     {
-      if(haspreamble)
-      {
-        try
-        {
-          F->GetHeader().Read(is);
-          hasmetaheader = true;
-          assert(!F->GetHeader().IsEmpty());
-        }
-        catch(std::exception & ex)
-        {
-          mdcmWarningMacro(ex.what());
-          // weird implicit meta header
-          is.seekg(128+4, std::ios::beg);
-          assert(is.good());
-          try
-          {
-            F->GetHeader().ReadCompat(is);
-          }
-          catch(std::exception & ex2)
-          {
-            // no meta header
-            mdcmAlwaysWarnMacro(ex2.what());
-          }
-        }
-      }
+	  if(F->GetHeader().Read2(is))
+	  {
+        hasmetaheader = true;
+	  }
       else
-      {
-        F->GetHeader().ReadCompat(is);
+	  {
+        is.seekg(128+4, std::ios::beg);
+        assert(is.good());
+        hasmetaheader = F->GetHeader().ReadCompat2(is);
       }
     }
-    catch(std::exception &)
+    else
+    {
+      hasmetaheader = F->GetHeader().ReadCompat2(is);
+    }
+    if(!hasmetaheader)
     {
       is.seekg(0, std::ios::beg);
-      hasmetaheader = false;
     }
-    catch(...)
-    {
-      assert(0);
-    }
-    if(F->GetHeader().IsEmpty())
+    if(hasmetaheader && F->GetHeader().IsEmpty())
     {
       hasmetaheader = false;
-      mdcmDebugMacro("no file meta info found");
     }
+	if(!hasmetaheader)
+	{
+      mdcmWarningMacro("Can not read header");
+	}
     const TransferSyntax & ts = F->GetHeader().GetDataSetTransferSyntax();
-    if(!ts.IsValid())
+    if(hasmetaheader && !ts.IsValid())
     {
-      throw std::logic_error("!ts.IsValid() (header issue)");
+      mdcmAlwaysWarnMacro("TransferSyntax in header is invalid");
     }
     // Special case where the dataset was compressed using the deflate
     // algorithm
@@ -399,7 +381,6 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         {
           // LIBIDO-16-ACR_NEMA-Volume.dcm
           mdcmAlwaysWarnMacro("Can not handle Virtual Big Endian Implicit");
-
         }
         else
         {
@@ -436,7 +417,6 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         }
       }
     }
-    // Only catch parse exception at this point
     catch(ParseException & ex)
     {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
@@ -455,7 +435,11 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         if(hasmetaheader)
         {
           FileMetaInformation header;
-          header.Read(is);
+          const bool header_ok = header.Read2(is);
+		  if(!header_ok)
+		  {
+		    mdcmAlwaysWarnMacro("header.Read failed (1)");
+		  }
         }
         mdcmAlwaysWarnMacro("Attempt to read non CP 246");
         F->GetDataSet().Clear();
@@ -475,7 +459,11 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         if(hasmetaheader)
         {
           FileMetaInformation header;
-          header.Read(is);
+          const bool header_ok = header.Read2(is);
+		  if(!header_ok)
+		  {
+		    mdcmAlwaysWarnMacro("header.Read failed (2)");
+		  }
         }
         // GDCM 1.X
         mdcmAlwaysWarnMacro("Attempt to read GDCM 1.X wrongly encoded");
@@ -498,7 +486,11 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         if(hasmetaheader)
         {
           FileMetaInformation header;
-          header.Read(is);
+          const bool header_ok = header.Read2(is);
+		  if(!header_ok)
+		  {
+		    mdcmAlwaysWarnMacro("header.Read failed (3)");
+		  }
         }
         mdcmAlwaysWarnMacro("Attempt to read Philips with ByteSwap private sequence wrongly encoded");
         F->GetDataSet().Clear();
@@ -539,12 +531,16 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
               if(hasmetaheader)
               {
                 FileMetaInformation header;
-                header.Read(is);
+                const bool header_ok = header.Read2(is);
+		        if(!header_ok)
+		        {
+		          mdcmAlwaysWarnMacro("header.Read failed (4)");
+		        }
               }
               // Explicit/Implicit
               // mdcmData/c_vf1001.dcm falls into that category, while in fact the fmi could simply
               // be inverted and all would be perfect
-              mdcmAlwaysWarnMacro("Attempt to read file with explicit/implicit");
+              mdcmWarningMacro("Attempt to read file with explicit/implicit");
               F->GetDataSet().Clear();
               caller.template ReadCommon<ExplicitImplicitDataElement,SwapperNoOp>(is);
             }
@@ -561,7 +557,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
       }
       else
       {
-        mdcmAlwaysWarnMacro("Attempt to read the file as mixture of explicit/implicit");
+        mdcmWarningMacro("Attempt to read the file as mixture of explicit/implicit");
         // Try again with an ExplicitImplicitDataElement
         if(ts.GetSwapCode() == SwapCode::LittleEndian &&
           ts.GetNegociatedType() == TransferSyntax::Explicit)
@@ -577,7 +573,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
           if(hasmetaheader)
           {
             FileMetaInformation header;
-            header.ReadCompat(is);
+            header.ReadCompat2(is);
           }
           F->GetDataSet().Clear();
           caller.template ReadCommon<ExplicitImplicitDataElement,SwapperNoOp>(is);
@@ -589,10 +585,9 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
         }
       }
 #else
-      mdcmDebugMacro(ex.what());
-      (void)ex;
+      mdcmAlwaysWarnMacro(ex.what());
       success = false;
-#endif /* MDCM_SUPPORT_BROKEN_IMPLEMENTATION */
+#endif
     }
     catch(...)
     {
