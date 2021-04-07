@@ -107,7 +107,7 @@ set_target_properties(mdcmcommon PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
 install_library(mdcmcommon)
 install_pdb(mdcmcommon)
-install_includes("*.h" "*.txx")
+install_includes("*.h" "*.hxx")
 if(NOT MDCM_INSTALL_NO_DEVELOPMENT)
   install(FILES ${header_files}
     "${MDCM_BINARY_DIR}/Source/Common/mdcmConfigure.h"

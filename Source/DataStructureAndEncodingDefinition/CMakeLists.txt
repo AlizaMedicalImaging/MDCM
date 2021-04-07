@@ -50,4 +50,4 @@ set_target_properties(mdcmdsed PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
 install_library(mdcmdsed)
 install_pdb(mdcmdsed)
-install_includes("*.h" "*.txx")
+install_includes("*.h" "*.hxx")

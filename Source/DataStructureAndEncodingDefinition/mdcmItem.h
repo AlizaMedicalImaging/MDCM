@@ -316,6 +316,6 @@ inline std::ostream& operator<<(std::ostream & os, const Item & val)
 
 } // end namespace mdcm
 
-#include "mdcmItem.txx"
+#include "mdcmItem.hxx"
 
 #endif //MDCMITEM_H

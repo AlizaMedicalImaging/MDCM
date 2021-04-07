@@ -145,4 +145,4 @@ set_target_properties(mdcmmsff PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
 install_library(mdcmmsff)
 install_pdb(mdcmmsff)
-install_includes("*.h" "*.txx")
+install_includes("*.h" "*.hxx")

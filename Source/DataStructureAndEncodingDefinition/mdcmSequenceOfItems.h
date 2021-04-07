@@ -233,6 +233,6 @@ public:
 
 } // end namespace mdcm
 
-#include "mdcmSequenceOfItems.txx"
+#include "mdcmSequenceOfItems.hxx"
 
 #endif //MDCMSEQUENCEOFITEMS_H
