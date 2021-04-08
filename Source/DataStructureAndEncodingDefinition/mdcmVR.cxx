@@ -528,7 +528,6 @@ bool VR::Read(std::istream & is)
   char vr[2];
   is.read(vr, 2);
   VRField = GetVRTypeFromFile(vr);
-  assert(VRField != VR_END);
   if(VRField == VR_END)
   {
     mdcmAlwaysWarnMacro("In VR::Read VRField == VR_END");
@@ -558,6 +557,7 @@ bool VR::Read(std::istream & is)
       mdcmAlwaysWarnMacro("In VR::Read: 32 bits VR contains non-zero bytes");
     }
   }
+  if(!is) return false;
   return true;
 }
 
@@ -572,7 +572,7 @@ void VR::Write(std::ostream & os) const
   const char * vr = GetVRString(vrfield);
   os.write(vr, 2);
   // See PS 3.5, Data Element Structure With Explicit VR
-  if (vrfield & VL32)
+  if(vrfield & VL32)
   {
     const char dum[2] = {0, 0};
     os.write(dum,2);

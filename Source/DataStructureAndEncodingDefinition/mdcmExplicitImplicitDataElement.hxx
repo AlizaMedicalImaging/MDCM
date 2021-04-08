@@ -267,7 +267,7 @@ std::istream & ExplicitImplicitDataElement::ReadPreValue(std::istream & is)
       else
 #endif
       {
-        throw std::logic_error("Should not happen (imp)");
+        throw std::logic_error("ExplicitImplicitDataElement::ReadPreValue !ValueIO<ImplicitDataElement,TSwap>::Read");
       }
       return is;
     }
@@ -305,7 +305,7 @@ std::istream & ExplicitImplicitDataElement::ReadPreValue(std::istream & is)
 }
 
 template <typename TSwap>
-std::istream &ExplicitImplicitDataElement::ReadValue(std::istream &is, bool readvalues)
+std::istream & ExplicitImplicitDataElement::ReadValue(std::istream &is, bool readvalues)
 {
   if(is.eof()) return is;
   /* thechnically the following is bad

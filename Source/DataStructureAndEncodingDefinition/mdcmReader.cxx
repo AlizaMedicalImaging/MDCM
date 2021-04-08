@@ -483,7 +483,7 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
 		    mdcmAlwaysWarnMacro("header.Read failed (3)");
 		  }
         }
-        mdcmAlwaysWarnMacro("Attempt to read Philips with ByteSwap private sequence wrongly encoded");
+        mdcmAlwaysWarnMacro("Attempt to read wrongly encoded sequence");
         F->GetDataSet().Clear();
         assert(0); // TODO FIXME
       }
@@ -494,12 +494,9 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
           try
           {
             mdcmAlwaysWarnMacro("Attempt to read file with VR16bits");
-            // We could not read the VR in an explicit dataset
-            // seek back tag + vr
             is.seekg(-6, std::ios::cur);
             VR16ExplicitDataElement ide;
             ide.template Read<SwapperNoOp>(is);
-            // If we are here it means we succeeded in reading the implicit data element
             F->GetDataSet().Insert(ide);
             caller.template ReadCommon<VR16ExplicitDataElement,SwapperNoOp>(is);
           }
@@ -507,9 +504,6 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
           {
             try
             {
-              // The file is neither:
-              // 1. An Explicit encoded
-              // 2. I could not reread it using the VR16Explicit reader, last option is that the file is explicit/implicit
               is.clear();
               if(haspreamble)
               {
@@ -528,19 +522,14 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
 		          mdcmAlwaysWarnMacro("header.Read failed (4)");
 		        }
               }
-              // Explicit/Implicit
-              // mdcmData/c_vf1001.dcm falls into that category, while in fact the fmi could simply
-              // be inverted and all would be perfect
-              mdcmWarningMacro("Attempt to read file with explicit/implicit");
+              mdcmWarningMacro("Attempt to read with explicit/implicit");
               F->GetDataSet().Clear();
               caller.template ReadCommon<ExplicitImplicitDataElement,SwapperNoOp>(is);
             }
-            catch(std::exception &)
+            catch(std::exception & ex)
             {
-              // MM: UNExplicitImplicitDataElement does not seems to be used anymore to read
-              // mdcmData/TheralysMDCM120Bug.dcm, instead the code path goes into
-              // ExplicitImplicitDataElement class instead.
-              mdcmAlwaysWarnMacro("Exception in Reader.cxx (1)");
+              // Siemens_CT_Sensation64_has_VR_RT.dcm
+              mdcmAlwaysWarnMacro("Exception in Reader.cxx (1):\n" << ex.what());
               return false;
             }
           }
@@ -549,9 +538,8 @@ bool Reader::InternalReadCommon(const T_Caller & caller)
       else
       {
         mdcmWarningMacro("Attempt to read the file as mixture of explicit/implicit");
-        // Try again with an ExplicitImplicitDataElement
         if(ts.GetSwapCode() == SwapCode::LittleEndian &&
-          ts.GetNegociatedType() == TransferSyntax::Explicit)
+           ts.GetNegociatedType() == TransferSyntax::Explicit)
         {
           if(haspreamble)
           {

@@ -70,13 +70,12 @@ public:
       return false;
     }
 #endif
-    if(!is) return false;
     return true;
   }
 
   template <typename TSwap> bool ReadValue(std::istream & is)
   {
-    const Tag itemStart(0xfffe, 0xe000);
+    const Tag itemStart(0xfffe,0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
     SmartPointer<ByteValue> bv = new ByteValue;
     bv->SetLength(ValueLengthField);
@@ -96,6 +95,7 @@ public:
 
   template <typename TSwap> bool ReadBacktrack(std::istream & is)
   {
+    if(!is) return false;
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
     bool cont = true;
@@ -105,7 +105,6 @@ public:
     while(cont)
     {
       TagField.Read<TSwap>(is);
-      assert(is);
       if(TagField != itemStart && TagField != seqDelItem)
       {
         ++offset;
@@ -125,8 +124,7 @@ public:
     assert(TagField == itemStart || TagField == seqDelItem);
     if(!ValueLengthField.Read<TSwap>(is))
     {
-      if (!is) return false;
-      return true;
+      return false;
     }
     SmartPointer<ByteValue> bv = new ByteValue;
     bv->SetLength(ValueLengthField);
@@ -140,11 +138,10 @@ public:
       throw pe;
     }
     ValueField = bv;
-    if(!is) return false;
     return true;
   }
 
-  template <typename TSwap> std::ostream & Write(std::ostream &os) const
+  template <typename TSwap> std::ostream & Write(std::ostream & os) const
   {
     const Tag itemStart(0xfffe, 0xe000);
     const Tag seqDelItem(0xfffe,0xe0dd);
