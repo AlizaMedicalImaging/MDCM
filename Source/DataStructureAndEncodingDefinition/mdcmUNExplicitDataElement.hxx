@@ -55,11 +55,9 @@ std::istream & UNExplicitDataElement::ReadPreValue(std::istream & is)
   }
   if(TagField == Tag(0xfffe,0xe0dd))
   {
-#ifndef MDCM_DONT_THROW
     ParseException pe;
     pe.SetLastElement(*this);
     throw pe;
-#endif
   }
   assert(TagField != Tag(0xfffe,0xe0dd));
   const Tag itemDelItem(0xfffe,0xe00d);

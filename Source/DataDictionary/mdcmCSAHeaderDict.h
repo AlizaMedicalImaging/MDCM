@@ -28,12 +28,9 @@
 #include <iostream>
 #include <iomanip>
 #include <set>
-#include <exception>
 
 namespace mdcm
 {
-
-class MDCM_EXPORT CSAHeaderDictException : public std::exception {};
 
 /**
  * Class to represent a map of CSAHeaderDictEntry
@@ -70,9 +67,7 @@ public:
     {
       return *it;
     }
-#ifndef MDCM_DONT_THROW
-    throw CSAHeaderDictException();
-#endif
+    throw std::logic_error("Exception in GetCSAHeaderDictEntry");
   }
 
 protected:

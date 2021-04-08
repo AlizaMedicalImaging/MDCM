@@ -26,7 +26,7 @@
 namespace mdcm
 {
 
-Preamble::Preamble() : Internal(NULL)
+Preamble::Preamble()
 {
   Create();
 }
@@ -59,24 +59,20 @@ std::istream & Preamble::Read(std::istream & is)
   throw std::logic_error("Not a DICOM V3 file (No Preamble)");
 }
 
-void Preamble::Valid()
-{
-  if(!Internal) Internal = new char[128+4];
-  memset(Internal, 0, 128);
-  memcpy(Internal+128, "DICM", 4);
-}
-
 void Preamble::Create()
 {
-  if(!Internal) Internal = new char[128+4];
+  Internal = new char[128+4];
   memset(Internal, 0, 128);
   memcpy(Internal+128, "DICM", 4);
 }
 
 void Preamble::Remove()
 {
-  delete[] Internal;
-  Internal = NULL;
+  if(Internal)
+  {
+    delete[] Internal;
+    Internal = NULL;
+  }
 }
 
 std::ostream const & Preamble::Write(std::ostream & os) const
@@ -86,14 +82,6 @@ std::ostream const & Preamble::Write(std::ostream & os) const
     os.write(Internal, 128+4);
   }
   return os;
-}
-
-void Preamble::Clear()
-{
-}
-
-void Preamble::Print(std::ostream &) const
-{
 }
 
 } // end namespace mdcm

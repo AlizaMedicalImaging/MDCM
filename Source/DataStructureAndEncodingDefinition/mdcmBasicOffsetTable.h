@@ -47,9 +47,7 @@ public:
     }
     if(TagField != itemStart)
     {
-#ifndef MDCM_DONT_THROW
-      throw "SIEMENS Icon thingy";
-#endif
+      throw std::logic_error("Siemens Icon issue?");
     }
     if(!ValueLengthField.Read<TSwap>(is))
     {

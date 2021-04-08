@@ -143,9 +143,7 @@ public:
     assert(VRField != VR_END);
     if (VRField == INVALID)
     {
-#ifndef MDCM_DONT_THROW
       throw std::logic_error("VR is invalid");
-#endif
     }
     if (VRField & VL32)
     {

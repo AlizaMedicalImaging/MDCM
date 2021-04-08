@@ -387,9 +387,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
     const TransferSyntax &ts = F->GetHeader().GetDataSetTransferSyntax();
     if(!ts.IsValid())
     {
-#ifndef MDCM_DONT_THROW
       throw std::logic_error("Meta Header issue");
-#endif
     }
     // Special case where the dataset was compressed using the deflate
     // algorithm
@@ -564,7 +562,7 @@ bool Reader::InternalReadCommon(const T_Caller &caller)
               // mdcmData/TheralysMDCM120Bug.dcm, instead the code path goes into
               // ExplicitImplicitDataElement class instead.
               // Simply rethrow the exception for now.
-              mdcmAlwaysWarnMacro("Exception in Reader.cxx (1)");
+              throw std::logic_error("Exception in Reader.cxx (1)"); // TODO
             }
           }
         }
