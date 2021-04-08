@@ -525,6 +525,7 @@ bool VR::IsBinary2(VRType vr)
 
 bool VR::Read(std::istream & is)
 {
+  if(!is) return false;
   char vr[2];
   is.read(vr, 2);
   VRField = GetVRTypeFromFile(vr);
@@ -557,12 +558,12 @@ bool VR::Read(std::istream & is)
       mdcmAlwaysWarnMacro("In VR::Read: 32 bits VR contains non-zero bytes");
     }
   }
-  if(!is) return false;
   return true;
 }
 
 void VR::Write(std::ostream & os) const
 {
+  if(!os) return;
   VRType vrfield = VRField;
   if(IsDual())
   {
