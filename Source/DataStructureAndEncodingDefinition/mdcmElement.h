@@ -304,7 +304,9 @@ std::string to_string (Float data) {
   }
   else
   {
-    throw std::logic_error("Impossible Conversion");
+#ifndef MDCM_DONT_THROW
+    throw "Impossible Conversion";
+#endif
   }
 }
 #else

@@ -2229,7 +2229,9 @@ void ImageHelper::SetRescaleInterceptSlopeValue(File & f, const Image & img)
   {
     if(img.GetIntercept() != 0. || img.GetSlope() != 1.)
     {
-      mdcmAlwaysWarnMacro("Re-scale is not expected in particular file");
+#ifndef MDCM_DONT_THROW
+      throw "Impossible";
+#endif
     }
     return;
   }

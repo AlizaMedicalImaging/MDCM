@@ -33,6 +33,8 @@
 namespace mdcm
 {
 
+class MDCM_EXPORT CSAHeaderDictException : public std::exception {};
+
 /**
  * Class to represent a map of CSAHeaderDictEntry
  */
@@ -68,7 +70,9 @@ public:
     {
       return *it;
     }
-    mdcmAlwaysWarnMacro("Error in GetCSAHeaderDictEntry");
+#ifndef MDCM_DONT_THROW
+    throw CSAHeaderDictException();
+#endif
   }
 
 protected:

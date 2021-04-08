@@ -45,7 +45,9 @@ rle_encoder::rle_encoder(source & s, image_info const & ii):internals(NULL)
 {
   if(!ii.is_little_endian())
   {
+#ifndef MDCM_DONT_THROW
     throw std::runtime_error("RLE: big endian is not supported");
+#endif
   }
   internals = new internal;
   internals->img = ii;
