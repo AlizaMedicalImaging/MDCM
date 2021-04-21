@@ -83,7 +83,7 @@ bool SurfaceReader::ReadSurfaces()
     SequenceOfItems::ConstIterator itSurface    = surfaceSQ->Begin();
     SequenceOfItems::ConstIterator itEndSurface = surfaceSQ->End();
     unsigned long idxItem = 1;
-    for (; itSurface != itEndSurface; itSurface++)
+    for (; itSurface != itEndSurface; ++itSurface)
     {
       if(!ReadSurface(*itSurface, idxItem))
       {
@@ -363,7 +363,7 @@ bool SurfaceReader::ReadSurface(const Item & surfaceItem, const unsigned long id
       primitivesData.reserve(nbItems);
       SequenceOfItems::ConstIterator it    = typedSQ->Begin();
       SequenceOfItems::ConstIterator itEnd = typedSQ->End();
-      for(; it != itEnd; it++)
+      for(; it != itEnd; ++it)
       {
         const DataSet & typedPrimitivesDS = it->GetNestedDataSet();
         // Primitive Sequence
