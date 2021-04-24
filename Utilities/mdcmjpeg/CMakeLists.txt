@@ -120,7 +120,7 @@ else()
 endif()
 
 # JPEG_PRED6_BUG bug
-option(SUPPORT_JPEG_PRED6_BUG "Workaround Jpeg pred. 6 bug" ON)
+option(SUPPORT_JPEG_PRED6_BUG "Workaround Jpeg pred. 6 bug" OFF)
 
 # Generate three libraries: jpeg 8bits, 12bits and 16bits
 # using only one source directory
