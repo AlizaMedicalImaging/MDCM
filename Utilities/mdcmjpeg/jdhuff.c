@@ -323,7 +323,6 @@ jpeg_huff_decode (bitread_working_state * state,
     }
   }
 #else
-  (void)enable_cornell_workaround;
   if (l > 16) {
     WARNMS(state->cinfo, JWRN_HUFF_BAD_CODE);
     return 0;      /* fake a zero as the safest result */
