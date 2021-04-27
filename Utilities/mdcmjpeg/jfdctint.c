@@ -132,11 +132,11 @@ Sorry, this code only copes with 8x8 DCTs./* deliberate syntax err */
 #  endif
 
 
-       /*
-        * Perform the forward DCT on one block of samples.
-        */
-
-       GLOBAL(void) jpeg_fdct_islow(DCTELEM * data)
+/*
+ * Perform the forward DCT on one block of samples.
+ */
+GLOBAL(void)
+jpeg_fdct_islow(DCTELEM * data)
 {
   IJG_INT   tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
   IJG_INT   tmp10, tmp11, tmp12, tmp13;

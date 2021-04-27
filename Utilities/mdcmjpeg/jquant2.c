@@ -324,10 +324,10 @@ update_box(j_decompress_ptr cinfo, boxptr boxp)
   my_cquantize_ptr cquantize = (my_cquantize_ptr)cinfo->cquantize;
   hist3d           histogram = cquantize->histogram;
   histptr          histp;
-  IJG_INT          c0, c1, c2;
-  IJG_INT          c0min, c0max, c1min, c1max, c2min, c2max;
+  int              c0, c1, c2;
+  int              c0min, c0max, c1min, c1max, c2min, c2max;
   IJG_INT          dist0, dist1, dist2;
-  IJG_INT          ccount;
+  long long        ccount;
 
   c0min = boxp->c0min;
   c0max = boxp->c0max;
