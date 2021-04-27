@@ -169,7 +169,7 @@ compress_data (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
     samp_rows = compptr->v_samp_factor;
   else {
     /* NB: can't use last_row_height here, since may not be set! */
-    samp_rows = (int) (compptr->height_in_data_units % compptr->v_samp_factor);
+    samp_rows = (int) compptr->height_in_data_units % compptr->v_samp_factor;
     if (samp_rows == 0) samp_rows = compptr->v_samp_factor;
     else {
       /* Fill dummy difference rows at the bottom edge with zeros, which
@@ -309,7 +309,6 @@ compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
   int comp, ci /* , yoffset */ ;
   JSAMPARRAY buffer[MAX_COMPONENTS];
   jpeg_component_info *compptr;
-  (void)input_buf;
 
   /* Align the virtual buffers for the components used in this scan.
    * NB: during first pass, this is safe only because the buffers will
@@ -387,8 +386,6 @@ jinit_c_diff_controller (j_compress_ptr cinfo, boolean need_full_buffer)
 #ifdef FULL_SAMP_BUFFER_SUPPORTED
     /* Allocate a full-image virtual array for each component, */
     /* padded to a multiple of samp_factor differences in each direction. */
-    int ci;
-    jpeg_component_info *compptr;
 
     for (ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
    ci++, compptr++) {

@@ -145,7 +145,7 @@ int_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
   JDIMENSION outcol, outcol_h;  /* outcol_h == outcol*h_expand */
   JDIMENSION output_cols = compptr->width_in_data_units * cinfo->data_unit;
   JSAMPROW inptr, outptr;
-  INT32 outvalue;
+  IJG_INT outvalue;
 
   h_expand = cinfo->max_h_samp_factor / compptr->h_samp_factor;
   v_expand = cinfo->max_v_samp_factor / compptr->v_samp_factor;
@@ -168,7 +168,7 @@ int_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
       for (v = 0; v < v_expand; v++) {
   inptr = input_data[inrow+v] + outcol_h;
   for (h = 0; h < h_expand; h++) {
-    outvalue += (INT32) GETJSAMPLE(*inptr++);
+    outvalue += (IJG_INT) GETJSAMPLE(*inptr++);
   }
       }
       *outptr++ = (JSAMPLE) ((outvalue + numpix2) / numpix);
@@ -297,7 +297,7 @@ h2v2_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
   JDIMENSION colctr;
   JDIMENSION output_cols = compptr->width_in_data_units * cinfo->data_unit;
   register JSAMPROW inptr0, inptr1, above_ptr, below_ptr, outptr;
-  INT32 membersum, neighsum, memberscale, neighscale;
+  IJG_INT membersum, neighsum, memberscale, neighscale;
 
   /* Expand input data enough to let all the output samples be generated
    * by the standard loop.  Special-casing padded output would be more
@@ -319,8 +319,8 @@ h2v2_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info * compptr,
    * Also recall that SF = smoothing_factor / 1024.
    */
 
-  memberscale = 16384 - cinfo->smoothing_factor * 80; /* scaled (1-5*SF)/4 */
-  neighscale = cinfo->smoothing_factor * 16; /* scaled SF/4 */
+  memberscale = 16384 - (IJG_INT)cinfo->smoothing_factor * 80; /* scaled (1-5*SF)/4 */
+  neighscale = (IJG_INT)cinfo->smoothing_factor * 16; /* scaled SF/4 */
 
   inrow = 0;
   for (outrow = 0; outrow < compptr->v_samp_factor; outrow++) {
@@ -397,7 +397,7 @@ fullsize_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info *compptr,
   JDIMENSION colctr;
   JDIMENSION output_cols = compptr->width_in_data_units * cinfo->data_unit;
   register JSAMPROW inptr, above_ptr, below_ptr, outptr;
-  INT32 membersum, neighsum, memberscale, neighscale;
+  IJG_INT membersum, neighsum, memberscale, neighscale;
   int colsum, lastcolsum, nextcolsum;
 
   /* Expand input data enough to let all the output samples be generated
@@ -413,8 +413,8 @@ fullsize_smooth_downsample (j_compress_ptr cinfo, jpeg_component_info *compptr,
    * Also recall that SF = smoothing_factor / 1024.
    */
 
-  memberscale = 65536L - cinfo->smoothing_factor * 512L; /* scaled 1-8*SF */
-  neighscale = cinfo->smoothing_factor * 64; /* scaled SF */
+  memberscale = 65536L - (IJG_INT)cinfo->smoothing_factor * 512L; /* scaled 1-8*SF */
+  neighscale = (IJG_INT)cinfo->smoothing_factor * 64; /* scaled SF */
 
   for (outrow = 0; outrow < compptr->v_samp_factor; outrow++) {
     outptr = output_data[outrow];

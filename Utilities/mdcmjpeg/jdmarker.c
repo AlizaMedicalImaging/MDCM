@@ -151,7 +151,7 @@ typedef my_marker_reader * my_marker_ptr;
       V = GETJOCTET(*next_input_byte++); )
 
 /* As above, but read two bytes interpreted as an unsigned 16-bit integer.
- * V should be declared unsigned int or perhaps INT32.
+ * V should be declared unsigned int or perhaps IJG_INT.
  */
 #define INPUT_2BYTES(cinfo,V,action)  \
   MAKESTMT( MAKE_BYTE_AVAIL(cinfo,action); \
@@ -238,7 +238,7 @@ get_sof (j_decompress_ptr cinfo, J_CODEC_PROCESS process, boolean is_arith,
    int data_unit)
 /* Process a SOFn marker */
 {
-  INT32 length;
+  IJG_INT length;
   int c, ci;
   jpeg_component_info * compptr;
   INPUT_VARS(cinfo);
@@ -270,7 +270,7 @@ get_sof (j_decompress_ptr cinfo, J_CODEC_PROCESS process, boolean is_arith,
       || cinfo->num_components <= 0)
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
-  if (length != (cinfo->num_components * 3))
+  if (length != ((IJG_INT)cinfo->num_components * 3))
     ERREXIT(cinfo, JERR_BAD_LENGTH);
 
   if (cinfo->comp_info == NULL)  /* do only once, even if suspend */
@@ -303,7 +303,7 @@ LOCAL(boolean)
 get_sos (j_decompress_ptr cinfo)
 /* Process a SOS marker */
 {
-  INT32 length;
+  IJG_INT length;
   int i, ci, n, c, cc;
   jpeg_component_info * compptr;
   INPUT_VARS(cinfo);
@@ -375,7 +375,7 @@ LOCAL(boolean)
 get_dac (j_decompress_ptr cinfo)
 /* Process a DAC marker */
 {
-  INT32 length;
+  IJG_INT length;
   int index, val;
   INPUT_VARS(cinfo);
 
@@ -394,10 +394,10 @@ get_dac (j_decompress_ptr cinfo)
       ERREXIT1(cinfo, JERR_DAC_INDEX, index);
 
     if (index >= NUM_ARITH_TBLS) { /* define AC table */
-      cinfo->arith_ac_K[index-NUM_ARITH_TBLS] = (UINT8) val;
+      cinfo->arith_ac_K[index-NUM_ARITH_TBLS] = (IJG_UCHAR) val;
     } else {      /* define DC table */
-      cinfo->arith_dc_L[index] = (UINT8) (val & 0x0F);
-      cinfo->arith_dc_U[index] = (UINT8) (val >> 4);
+      cinfo->arith_dc_L[index] = (IJG_UCHAR) (val & 0x0F);
+      cinfo->arith_dc_U[index] = (IJG_UCHAR) (val >> 4);
       if (cinfo->arith_dc_L[index] > cinfo->arith_dc_U[index])
   ERREXIT1(cinfo, JERR_DAC_VALUE, val);
     }
@@ -421,9 +421,9 @@ LOCAL(boolean)
 get_dht (j_decompress_ptr cinfo)
 /* Process a DHT marker */
 {
-  INT32 length;
-  UINT8 bits[17];
-  UINT8 huffval[256];
+  IJG_INT length;
+  IJG_UCHAR bits[17];
+  IJG_UCHAR huffval[256];
   int i, index, count;
   JHUFF_TBL **htblptr;
   INPUT_VARS(cinfo);
@@ -455,7 +455,7 @@ get_dht (j_decompress_ptr cinfo)
     /* Here we just do minimal validation of the counts to avoid walking
      * off the end of our table space.  jdhuff.c will check more carefully.
      */
-    if (count > 256 || ((INT32) count) > length)
+    if (count > 256 || ((IJG_INT) count) > length)
       ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
 
     for (i = 0; i < count; i++)
@@ -465,13 +465,19 @@ get_dht (j_decompress_ptr cinfo)
 
     if (index & 0x10) {    /* AC table definition */
       index -= 0x10;
+      if (index < 0 || index >= NUM_HUFF_TBLS) {
+        ERREXIT1(cinfo, JERR_DHT_INDEX, index);
+      }
       htblptr = &cinfo->ac_huff_tbl_ptrs[index];
     } else {      /* DC table definition */
+      if (index < 0 || index >= NUM_HUFF_TBLS) {
+        ERREXIT1(cinfo, JERR_DHT_INDEX, index);
+      }
       htblptr = &cinfo->dc_huff_tbl_ptrs[index];
     }
 
-    if (index < 0 || index >= NUM_HUFF_TBLS)
-      ERREXIT1(cinfo, JERR_DHT_INDEX, index);
+    if (htblptr == NULL)
+      ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
 
     if (*htblptr == NULL)
       *htblptr = jpeg_alloc_huff_table((j_common_ptr) cinfo);
@@ -492,7 +498,7 @@ LOCAL(boolean)
 get_dqt (j_decompress_ptr cinfo)
 /* Process a DQT marker */
 {
-  INT32 length;
+  IJG_INT length;
   int n, i, prec;
   unsigned int tmp;
   JQUANT_TBL *quant_ptr;
@@ -521,7 +527,7 @@ get_dqt (j_decompress_ptr cinfo)
       else
   INPUT_BYTE(cinfo, tmp, return FALSE);
       /* We convert the zigzag-order table to natural array order. */
-      quant_ptr->quantval[jpeg_natural_order[i]] = (UINT16) tmp;
+      quant_ptr->quantval[jpeg_natural_order[i]] = (IJG_USHRT) tmp;
     }
 
     if (cinfo->err->trace_level >= 2) {
@@ -550,7 +556,7 @@ LOCAL(boolean)
 get_dri (j_decompress_ptr cinfo)
 /* Process a DRI marker */
 {
-  INT32 length;
+  IJG_INT length;
   unsigned int tmp;
   INPUT_VARS(cinfo);
 
@@ -584,13 +590,13 @@ get_dri (j_decompress_ptr cinfo)
 
 LOCAL(void)
 examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
-        unsigned int datalen, INT32 remaining)
+        unsigned int datalen, IJG_INT remaining)
 /* Examine first few bytes from an APP0.
  * Take appropriate action if it is a JFIF marker.
  * datalen is # of bytes at data[], remaining is length of rest of marker data.
  */
 {
-  INT32 totallen = (INT32) datalen + remaining;
+  IJG_INT totallen = (IJG_INT) datalen + remaining;
 
   if (datalen >= APP0_DATA_LEN &&
       GETJOCTET(data[0]) == 0x4A &&
@@ -624,7 +630,7 @@ examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
          GETJOCTET(data[12]), GETJOCTET(data[13]));
     totallen -= APP0_DATA_LEN;
     if (totallen !=
-  ((INT32)GETJOCTET(data[12]) * (INT32)GETJOCTET(data[13]) * (INT32) 3))
+  ((IJG_INT)GETJOCTET(data[12]) * (IJG_INT)GETJOCTET(data[13]) * (IJG_INT) 3))
       TRACEMS1(cinfo, 1, JTRC_JFIF_BADTHUMBNAILSIZE, (int) totallen);
   } else if (datalen >= 6 &&
       GETJOCTET(data[0]) == 0x4A &&
@@ -660,7 +666,7 @@ examine_app0 (j_decompress_ptr cinfo, JOCTET FAR * data,
 
 LOCAL(void)
 examine_app14 (j_decompress_ptr cinfo, JOCTET FAR * data,
-         unsigned int datalen, INT32 remaining)
+         unsigned int datalen, IJG_INT remaining)
 /* Examine first few bytes from an APP14.
  * Take appropriate action if it is an Adobe marker.
  * datalen is # of bytes at data[], remaining is length of rest of marker data.
@@ -681,7 +687,7 @@ examine_app14 (j_decompress_ptr cinfo, JOCTET FAR * data,
     transform = GETJOCTET(data[11]);
     TRACEMS4(cinfo, 1, JTRC_ADOBE, version, flags0, flags1, transform);
     cinfo->saw_Adobe_marker = TRUE;
-    cinfo->Adobe_transform = (UINT8) transform;
+    cinfo->Adobe_transform = (IJG_UCHAR) transform;
   } else {
     /* Start of APP14 does not match "Adobe", or too short */
     TRACEMS1(cinfo, 1, JTRC_APP14, (int) (datalen + remaining));
@@ -693,7 +699,7 @@ METHODDEF(boolean)
 get_interesting_appn (j_decompress_ptr cinfo)
 /* Process an APP0 or APP14 marker without saving it */
 {
-  INT32 length;
+  IJG_INT length;
   JOCTET b[APPN_DATA_LEN];
   unsigned int i, numtoread;
   INPUT_VARS(cinfo);
@@ -745,7 +751,7 @@ save_marker (j_decompress_ptr cinfo)
   jpeg_saved_marker_ptr cur_marker = marker->cur_marker;
   unsigned int bytes_read, data_length;
   JOCTET FAR * data;
-  INT32 length = 0;
+  IJG_INT length = 0;
   INPUT_VARS(cinfo);
 
   if (cur_marker == NULL) {
@@ -766,7 +772,7 @@ save_marker (j_decompress_ptr cinfo)
   (*cinfo->mem->alloc_large) ((j_common_ptr) cinfo, JPOOL_IMAGE,
             SIZEOF(struct jpeg_marker_struct) + limit);
       cur_marker->next = NULL;
-      cur_marker->marker = (UINT8) cinfo->unread_marker;
+      cur_marker->marker = (IJG_UCHAR) cinfo->unread_marker;
       cur_marker->original_length = (unsigned int) length;
       cur_marker->data_length = limit;
       /* data area is just beyond the jpeg_marker_struct */
@@ -847,7 +853,7 @@ METHODDEF(boolean)
 skip_variable (j_decompress_ptr cinfo)
 /* Skip over an unknown or uninteresting variable-length marker */
 {
-  INT32 length;
+  IJG_INT length;
   INPUT_VARS(cinfo);
 
   INPUT_2BYTES(cinfo, length, return FALSE);

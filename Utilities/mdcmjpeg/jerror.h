@@ -101,6 +101,9 @@ JMESSAGE(JERR_MISSING_DATA, "Scan script does not transmit all data")
 JMESSAGE(JERR_MODE_CHANGE, "Invalid color quantization mode change")
 JMESSAGE(JERR_NOTIMPL, "Not implemented yet")
 JMESSAGE(JERR_NOT_COMPILED, "Requested feature was omitted at compile time")
+#ifdef WITH_ARITHMETIC_PATCH
+JMESSAGE(JERR_NO_ARITH_TABLE, "Arithmetic table 0x%02x was not defined")
+#endif
 JMESSAGE(JERR_NO_BACKING_STORE, "Backing store not supported")
 JMESSAGE(JERR_NO_HUFF_TABLE, "Huffman table 0x%02x was not defined")
 JMESSAGE(JERR_NO_IMAGE, "JPEG datastream contains no image")
@@ -131,7 +134,7 @@ JMESSAGE(JERR_XMS_WRITE, "Write to XMS failed")
 JMESSAGE(JMSG_COPYRIGHT, JCOPYRIGHT)
 JMESSAGE(JMSG_VERSION, JVERSION)
 JMESSAGE(JTRC_16BIT_TABLES,
-   "CAUTION: quantization tables are too coarse for baseline JPEG")
+   "Caution: quantization tables are too coarse for baseline JPEG")
 JMESSAGE(JTRC_ADOBE,
    "Adobe APP14 marker: version %d, flags 0x%04x 0x%04x, transform %d")
 JMESSAGE(JTRC_APP0, "Unknown APP0 marker (not JFIF), length %u")
@@ -181,6 +184,9 @@ JMESSAGE(JTRC_UNKNOWN_LOSSY_IDS,
 JMESSAGE(JTRC_XMS_CLOSE, "Freed XMS handle %u")
 JMESSAGE(JTRC_XMS_OPEN, "Obtained XMS handle %u")
 JMESSAGE(JWRN_ADOBE_XFORM, "Unknown Adobe color transform code %d")
+#ifdef WITH_ARITHMETIC_PATCH
+JMESSAGE(JWRN_ARITH_BAD_CODE, "Corrupt JPEG data: bad arithmetic code")
+#endif
 JMESSAGE(JWRN_BOGUS_PROGRESSION,
    "Inconsistent progression sequence for component %d coefficient %d")
 JMESSAGE(JWRN_EXTRANEOUS_DATA,
@@ -195,9 +201,6 @@ JMESSAGE(JWRN_MUST_RESYNC,
    "Corrupt JPEG data: found marker 0x%02x instead of RST%d")
 JMESSAGE(JWRN_NOT_SEQUENTIAL, "Invalid SOS parameters for sequential JPEG")
 JMESSAGE(JWRN_TOO_MUCH_DATA, "Application transferred too many scanlines")
-/* For more information see:
- * http://www.medicalconnections.co.uk/html/lossless_bug.html */
-JMESSAGE(JWRN_SIGNED_ARITH, "Corrupt JPEG data: using signed arithmetic")
 
 #ifdef JMAKE_ENUM_LIST
 

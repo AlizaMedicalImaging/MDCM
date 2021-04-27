@@ -236,16 +236,16 @@ struct jpeg_color_quantizer {
  * shift" instructions that shift in copies of the sign bit.  But some
  * C compilers implement >> with an unsigned shift.  For these machines you
  * must define RIGHT_SHIFT_IS_UNSIGNED.
- * RIGHT_SHIFT provides a proper signed right shift of an INT32 quantity.
+ * RIGHT_SHIFT provides a proper signed right shift of an IJG_INT quantity.
  * It is only applied with constant shift counts.  SHIFT_TEMPS must be
  * included in the variables of any routine using RIGHT_SHIFT.
  */
 
 #ifdef RIGHT_SHIFT_IS_UNSIGNED
-#define SHIFT_TEMPS  INT32 shift_temp;
+#define SHIFT_TEMPS  IJG_INT shift_temp;
 #define RIGHT_SHIFT(x,shft)  \
   ((shift_temp = (x)) < 0 ? \
-   (shift_temp >> (shft)) | ((~((INT32) 0)) << (32-(shft))) : \
+   (shift_temp >> (shft)) | ((~((IJG_INT) 0)) << (32-(shft))) : \
    (shift_temp >> (shft)))
 #else
 #define SHIFT_TEMPS
@@ -270,7 +270,9 @@ struct jpeg_color_quantizer {
 #define jinit_forward_dct  jIFDCT
 #define jinit_shuff_encoder  jISHEncoder
 #define jinit_phuff_encoder  jIPHEncoder
+#ifdef WITH_ARITHMETIC_PATCH
 #define jinit_arith_encoder  jIAEncoder
+#endif
 #define jinit_marker_writer  jIMWriter
 #define jinit_d_codec    jIDCodec
 #define jinit_lossy_d_codec  jILossyD
@@ -284,7 +286,9 @@ struct jpeg_color_quantizer {
 #define jinit_marker_reader  jIMReader
 #define jinit_shuff_decoder  jISHDecoder
 #define jinit_phuff_decoder  jIPHDecoder
+#ifdef WITH_ARITHMETIC_PATCH
 #define jinit_arith_decoder  jIADecoder
+#endif
 #define jinit_lhuff_decoder  jILHDecoder
 #define jinit_undifferencer  jIUndiff
 #define jinit_d_scaler    jIDScaler
@@ -319,7 +323,9 @@ EXTERN(void) jinit_compressor JPP((j_compress_ptr cinfo));
 EXTERN(void) jinit_color_converter JPP((j_compress_ptr cinfo));
 EXTERN(void) jinit_downsampler JPP((j_compress_ptr cinfo));
 EXTERN(void) jinit_marker_writer JPP((j_compress_ptr cinfo));
+#ifdef WITH_ARITHMETIC_PATCH
 EXTERN(void) jinit_arith_encoder JPP((j_compress_ptr cinfo));
+#endif
 /* Decompression module initialization routines */
 EXTERN(void) jinit_d_codec JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit_d_diff_controller JPP((j_decompress_ptr cinfo, boolean need_full_buffer));
@@ -331,7 +337,9 @@ EXTERN(void) jinit_d_post_controller JPP((j_decompress_ptr cinfo,
             boolean need_full_buffer));
 EXTERN(void) jinit_input_controller JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit_marker_reader JPP((j_decompress_ptr cinfo));
+#ifdef WITH_ARITHMETIC_PATCH 
 EXTERN(void) jinit_arith_decoder JPP((j_decompress_ptr cinfo));
+#endif
 EXTERN(void) jinit_upsampler JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit_color_deconverter JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit_1pass_quantizer JPP((j_decompress_ptr cinfo));

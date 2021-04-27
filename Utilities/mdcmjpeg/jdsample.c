@@ -54,8 +54,8 @@ typedef struct {
   /* These arrays save pixel expansion factors so that int_expand need not
    * recompute them each time.  They are unused for other upsampling methods.
    */
-  UINT8 h_expand[MAX_COMPONENTS];
-  UINT8 v_expand[MAX_COMPONENTS];
+  IJG_UCHAR h_expand[MAX_COMPONENTS];
+  IJG_UCHAR v_expand[MAX_COMPONENTS];
 } my_upsampler;
 
 typedef my_upsampler * my_upsample_ptr;
@@ -355,7 +355,7 @@ h2v2_fancy_upsample (j_decompress_ptr cinfo, jpeg_component_info * compptr,
 #if BITS_IN_JSAMPLE == 8
   register int thiscolsum, lastcolsum, nextcolsum;
 #else
-  register INT32 thiscolsum, lastcolsum, nextcolsum;
+  register IJG_INT thiscolsum, lastcolsum, nextcolsum;
 #endif
   register JDIMENSION colctr;
   int inrow, outrow, v;
@@ -468,8 +468,8 @@ jinit_upsampler (j_decompress_ptr cinfo)
          (v_out_group % v_in_group) == 0) {
       /* Generic integral-factors upsampling method */
       upsample->methods[ci] = int_upsample;
-      upsample->h_expand[ci] = (UINT8) (h_out_group / h_in_group);
-      upsample->v_expand[ci] = (UINT8) (v_out_group / v_in_group);
+      upsample->h_expand[ci] = (IJG_UCHAR) (h_out_group / h_in_group);
+      upsample->v_expand[ci] = (IJG_UCHAR) (v_out_group / v_in_group);
     } else
       ERREXIT(cinfo, JERR_FRACT_SAMPLE_NOTIMPL);
     if (need_buffer) {

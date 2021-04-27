@@ -82,7 +82,7 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
      * it must still fit in si bits, since no code is allowed to be all ones.
      * BUG FIX 2001-09-03: Comparison must be >, not >=
      */
-    if (((INT32) code) > (((INT32) 1) << si))
+    if (((IJG_INT) code) > (((IJG_INT) 1) << si))
       ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     code <<= 1;
     si++;
@@ -96,7 +96,7 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
       /* valoffset[l] = huffval[] index of 1st symbol of code length l,
        * minus the minimum code of length l
        */
-      dtbl->valoffset[l] = (INT32) p - (INT32) huffcode[p];
+      dtbl->valoffset[l] = (IJG_INT) p - (IJG_INT) huffcode[p];
       p += htbl->bits[l];
       dtbl->maxcode[l] = huffcode[p-1]; /* maximum code of length l */
     } else {
@@ -137,34 +137,6 @@ jpeg_make_d_derived_tbl (j_decompress_ptr cinfo, boolean isDC, int tblno,
   if (isDC) {
     for (i = 0; i < numsymbols; i++) {
       int sym = htbl->huffval[i];
-/* The following file contains a value of 17 in the huffman table, which is impossible
- * according to ISO 10918-1, H.1.2.2 Huffman coding of the modulo difference
- * and table H.2.
- * PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm
- * MM, 2008/08/12 I am breaking backward compatibility and decide not to support this image
- * anymore. In fact the decompression using another library: PVRG was giving me
- * another result anyway.
- *
- * Steps:
- *
- * $ gdcmconv --raw -i PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm -o bla.dcm
- * $ gdcmraw -i bla.dcm -o bla.raw
- * $ gdcmraw -i PHILIPS_Gyroscan-12-Jpeg_Extended_Process_2_4.dcm -o philips.jpg
- * $ pvrgjpeg -d philips
- * $ dd conv=swab if=philips.jpg.0 of=philips.raw
- * $ vbindiff bla.raw philips.raw
- *
- * $ md5sum bla.raw philips.raw
- * 4b0021efe5a675f24c82e1ff28a1e2eb  bla.raw
- * d93d2f78d845c7a132489aab92eadd32  philips.raw
- *
- *
- * footnote, I get a much closer result doing:
- * $ pvrgjpeg -a -y -d philips
- * after that the number of diff with IJG is getting lower
- *
- * 0f2570f5d91ddea5bd9d3825a86eaabe  philips.raw
- */
       if (sym < 0 || sym > 16)
   ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     }
@@ -311,7 +283,7 @@ jpeg_huff_decode (bitread_working_state * state,
       d_derived_tbl * htbl, int min_bits, boolean enable_cornell_workaround)
 {
   register int l = min_bits;
-  register INT32 code;
+  register IJG_INT code;
 
   /* HUFF_DECODE has determined that the code is at least min_bits */
   /* bits long, so fetch that many bits in one swoop. */

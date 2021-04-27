@@ -78,7 +78,7 @@ jpeg_make_c_derived_tbl (j_compress_ptr cinfo, boolean isDC, int tblno,
      * it must still fit in si bits, since no code is allowed to be all ones.
      * BUG FIX 2001-09-03: Comparison must be >, not >=
      */
-    if (((INT32) code) > (((INT32) 1) << si))
+    if (((IJG_INT) code) > (((IJG_INT) 1) << si))
       ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
     code <<= 1;
     si++;
@@ -141,7 +141,7 @@ GLOBAL(void)
 jpeg_gen_optimal_table (j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
 {
 #define MAX_CLEN 32    /* assumed maximum initial code length */
-  UINT8 bits[MAX_CLEN+1];  /* bits[k] = # of symbols with code length k */
+  IJG_UCHAR bits[MAX_CLEN+1];  /* bits[k] = # of symbols with code length k */
   int codesize[257];    /* codesize[k] = code length of symbol k */
   int others[257];    /* next symbol in current branch of tree */
   int c1, c2;
@@ -263,7 +263,7 @@ jpeg_gen_optimal_table (j_compress_ptr cinfo, JHUFF_TBL * htbl, long freq[])
   for (i = 1; i <= MAX_CLEN; i++) {
     for (j = 0; j <= 255; j++) {
       if (codesize[j] == i) {
-  htbl->huffval[p] = (UINT8) j;
+  htbl->huffval[p] = (IJG_UCHAR) j;
   p++;
       }
     }

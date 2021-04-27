@@ -19,7 +19,6 @@
  * We do not support run-time selection of data precision, sorry.
  */
 
-/*#define BITS_IN_JSAMPLE  8*//* use 8 or 12 (or 16 only for lossless) */
 #ifndef BITS_IN_JSAMPLE
 #error You need to define BITS_IN_JSAMPLE
 #endif
@@ -164,38 +163,31 @@ typedef char JOCTET;
  * typedefs live at a different point on the speed/space tradeoff curve.)
  */
 
-/* UINT8 must hold at least the values 0..255. */
+/* IJG_UCHAR must hold at least the values 0..255. */
 
 #ifdef HAVE_UNSIGNED_CHAR
-typedef unsigned char UINT8;
+typedef unsigned char IJG_UCHAR;
 #else /* not HAVE_UNSIGNED_CHAR */
 #ifdef CHAR_IS_UNSIGNED
-typedef char UINT8;
+typedef char IJG_UCHAR;
 #else /* not CHAR_IS_UNSIGNED */
-typedef short UINT8;
+typedef short IJG_UCHAR;
 #endif /* CHAR_IS_UNSIGNED */
 #endif /* HAVE_UNSIGNED_CHAR */
 
-/* UINT16 must hold at least the values 0..65535. */
+/* IJG_USHRT must hold at least the values 0..65535. */
 
 #ifdef HAVE_UNSIGNED_SHORT
-typedef unsigned short UINT16;
+typedef unsigned short IJG_USHRT;
 #else /* not HAVE_UNSIGNED_SHORT */
-typedef unsigned int UINT16;
+typedef unsigned int IJG_USHRT;
 #endif /* HAVE_UNSIGNED_SHORT */
 
-/* INT16 must hold at least the values -32768..32767. */
+/* IJG_SHRT must hold at least the values -32768..32767. */
+typedef short IJG_SHRT;
 
-#ifndef XMD_H			/* X11/xmd.h correctly defines INT16 */
-typedef short INT16;
-#endif
-
-/* INT32 must hold at least signed 32-bit values. */
-/* X11/xmd.h and basetsd.h correctly defines INT32 */
-
-#if !defined(XMD_H) && !defined(_BASETSD_H_)
-typedef int INT32;
-#endif
+/* IJG_INT must hold at least signed 32-bit values. */
+typedef long long IJG_INT;
 
 /* Datatype used for image dimensions.  The JPEG standard only supports
  * images up to 64K*64K due to 16-bit fields in SOF markers.  Therefore

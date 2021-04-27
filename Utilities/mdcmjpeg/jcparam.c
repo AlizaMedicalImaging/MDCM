@@ -52,7 +52,7 @@ jpeg_add_quant_table (j_compress_ptr cinfo, int which_tbl,
     if (temp > 32767L) temp = 32767L; /* max quantizer needed for 12 bits */
     if (force_baseline && temp > 255L)
       temp = 255L;    /* limit to baseline range if requested */
-    (*qtblptr)->quantval[i] = (UINT16) temp;
+    (*qtblptr)->quantval[i] = (IJG_USHRT) temp;
   }
 
   /* Initialize sent_table FALSE so table will be written to JPEG file. */
@@ -150,7 +150,7 @@ jpeg_set_quality (j_compress_ptr cinfo, int quality, boolean force_baseline)
 
 LOCAL(void)
 add_huff_table (j_compress_ptr cinfo,
-    JHUFF_TBL **htblptr, const UINT8 *bits, const UINT8 *val)
+    JHUFF_TBL **htblptr, const IJG_UCHAR *bits, const IJG_UCHAR *val)
 /* Define a Huffman table */
 {
   int nsymbols, len;
@@ -171,7 +171,7 @@ add_huff_table (j_compress_ptr cinfo,
   if (nsymbols < 1 || nsymbols > 256)
     ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
 
-  MEMCOPY((*htblptr)->huffval, val, nsymbols * SIZEOF(UINT8));
+  MEMCOPY((*htblptr)->huffval, val, nsymbols * SIZEOF(IJG_UCHAR));
 
   /* Initialize sent_table FALSE so table will be written to JPEG file. */
   (*htblptr)->sent_table = FALSE;
@@ -183,19 +183,19 @@ std_huff_tables (j_compress_ptr cinfo)
 /* Set up the standard Huffman tables (cf. JPEG standard section K.3) */
 /* IMPORTANT: these are only valid for 8-bit data precision! */
 {
-  static const UINT8 bits_dc_luminance[17] =
+  static const IJG_UCHAR bits_dc_luminance[17] =
     { /* 0-base */ 0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 };
-  static const UINT8 val_dc_luminance[] =
+  static const IJG_UCHAR val_dc_luminance[] =
     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-  static const UINT8 bits_dc_chrominance[17] =
+  static const IJG_UCHAR bits_dc_chrominance[17] =
     { /* 0-base */ 0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 };
-  static const UINT8 val_dc_chrominance[] =
+  static const IJG_UCHAR val_dc_chrominance[] =
     { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-  static const UINT8 bits_ac_luminance[17] =
+  static const IJG_UCHAR bits_ac_luminance[17] =
     { /* 0-base */ 0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d };
-  static const UINT8 val_ac_luminance[] =
+  static const IJG_UCHAR val_ac_luminance[] =
     { 0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12,
       0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07,
       0x22, 0x71, 0x14, 0x32, 0x81, 0x91, 0xa1, 0x08,
@@ -218,9 +218,9 @@ std_huff_tables (j_compress_ptr cinfo)
       0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
       0xf9, 0xfa };
 
-  static const UINT8 bits_ac_chrominance[17] =
+  static const IJG_UCHAR bits_ac_chrominance[17] =
     { /* 0-base */ 0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77 };
-  static const UINT8 val_ac_chrominance[] =
+  static const IJG_UCHAR val_ac_chrominance[] =
     { 0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21,
       0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71,
       0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91,

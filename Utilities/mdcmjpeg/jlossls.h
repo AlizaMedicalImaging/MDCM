@@ -20,15 +20,15 @@
 #define PREDICTOR1  Ra
 #define PREDICTOR2  Rb
 #define PREDICTOR3  Rc
-#define PREDICTOR4  (int) ((INT32) Ra + (INT32) Rb - (INT32) Rc)
-#define PREDICTOR5  (int) ((INT32) Ra + RIGHT_SHIFT((INT32) Rb - (INT32) Rc, 1))
-#define PREDICTOR6  (int) ((INT32) Rb + RIGHT_SHIFT((INT32) Ra - (INT32) Rc, 1))
-#define PREDICTOR7  (int) RIGHT_SHIFT((INT32) Ra + (INT32) Rb, 1)
+#define PREDICTOR4  (int) ((IJG_INT) Ra + (IJG_INT) Rb - (IJG_INT) Rc)
+#define PREDICTOR5  (int) ((IJG_INT) Ra + RIGHT_SHIFT((IJG_INT) Rb - (IJG_INT) Rc, 1))
+#define PREDICTOR6  (int) ((IJG_INT) Rb + RIGHT_SHIFT((IJG_INT) Ra - (IJG_INT) Rc, 1))
+#define PREDICTOR7  (int) RIGHT_SHIFT((IJG_INT) Ra + (IJG_INT) Rb, 1)
 /* Workaround */
-#define PREDICTOR4A	(int) ((INT16) Ra + (INT16) Rb - (INT16) Rc)
-#define PREDICTOR5A	(int) ((INT16) Ra + RIGHT_SHIFT((INT16) Rb - (INT16) Rc, 1))
-#define PREDICTOR6A	(int) ((INT16) Rb + RIGHT_SHIFT((INT16) Ra - (INT16) Rc, 1))
-#define PREDICTOR7A	(int) RIGHT_SHIFT((INT16) Ra + (INT16) Rb, 1)
+#define PREDICTOR4A	(int) ((IJG_SHRT) Ra + (IJG_SHRT) Rb - (IJG_SHRT) Rc)
+#define PREDICTOR5A	(int) ((IJG_SHRT) Ra + RIGHT_SHIFT((IJG_SHRT) Rb - (IJG_SHRT) Rc, 1))
+#define PREDICTOR6A	(int) ((IJG_SHRT) Rb + RIGHT_SHIFT((IJG_SHRT) Ra - (IJG_SHRT) Rc, 1))
+#define PREDICTOR7A	(int) RIGHT_SHIFT((IJG_SHRT) Ra + (IJG_SHRT) Rb, 1)
 
 typedef JMETHOD(void, predict_difference_method_ptr,
     (j_compress_ptr cinfo, int ci,

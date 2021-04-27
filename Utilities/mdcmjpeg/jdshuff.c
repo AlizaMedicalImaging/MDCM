@@ -146,7 +146,7 @@ start_pass_huff_decoder (j_decompress_ptr cinfo)
 
 #ifdef AVOID_TABLES
 
-#define HUFF_EXTEND(x,s)  ((x) < (1<<((s)-1)) ? (x) + (((-1u)<<(s)) + 1) : (x))
+#define HUFF_EXTEND(x,s)  ((x) < (1<<((s)-1)) ? (x) + (((~0U)<<(s)) + 1) : (x))
 
 #else
 
@@ -156,14 +156,13 @@ static const int extend_test[16] =   /* entry n is 2**(n-1) */
   { 0, 0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080,
     0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000 };
 
-static const int extend_offset[16] = /* entry n is (-1u << n) + 1 */
-  { 0, ((-1u)<<1) + 1, ((-1u)<<2) + 1, ((-1u)<<3) + 1, ((-1u)<<4) + 1,
-    ((-1u)<<5) + 1, ((-1u)<<6) + 1, ((-1u)<<7) + 1, ((-1u)<<8) + 1,
-    ((-1u)<<9) + 1, ((-1u)<<10) + 1, ((-1u)<<11) + 1, ((-1u)<<12) + 1,
-    ((-1u)<<13) + 1, ((-1u)<<14) + 1, ((-1u)<<15) + 1 };
+static const int extend_offset[16] = /* entry n is (-1 << n) + 1 */
+  { 0, (int)((~0U)<<1) + 1, (int)((~0U)<<2) + 1, (int)((~0U)<<3) + 1, (int)((~0U)<<4) + 1,
+    (int)((~0U)<<5) + 1, (int)((~0U)<<6) + 1, (int)((~0U)<<7) + 1, (int)((~0U)<<8) + 1,
+    (int)((~0U)<<9) + 1, (int)((~0U)<<10) + 1, (int)((~0U)<<11) + 1, (int)((~0U)<<12) + 1,
+    (int)((~0U)<<13) + 1, (int)((~0U)<<14) + 1, (int)((~0U)<<15) + 1 };
 
 #endif /* AVOID_TABLES */
-
 
 /*
  * Check for a restart marker & resynchronize decoder.

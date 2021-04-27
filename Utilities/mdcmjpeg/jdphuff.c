@@ -201,7 +201,7 @@ start_pass_phuff_decoder (j_decompress_ptr cinfo)
 
 #ifdef AVOID_TABLES
 
-#define HUFF_EXTEND(x,s)  ((x) < (1<<((s)-1)) ? (x) + (((-1u)<<(s)) + 1) : (x))
+#define HUFF_EXTEND(x,s)  ((x) < (1<<((s)-1)) ? (x) + (((~0U)<<(s)) + 1) : (x))
 
 #else
 

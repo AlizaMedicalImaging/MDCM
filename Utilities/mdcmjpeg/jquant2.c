@@ -144,7 +144,7 @@
 #define C2_SHIFT  (BITS_IN_JSAMPLE-HIST_C2_BITS)
 
 
-typedef UINT16 histcell;  /* histogram cell; prefer an unsigned type */
+typedef IJG_USHRT histcell;  /* histogram cell; prefer an unsigned type */
 
 typedef histcell FAR * histptr;  /* for pointers to histogram cells */
 
@@ -178,11 +178,11 @@ typedef hist2d * hist3d;  /* type for top-level pointer */
  */
 
 #if BITS_IN_JSAMPLE == 8
-typedef INT16 FSERROR;    /* 16 bits should be enough */
+typedef IJG_SHRT FSERROR;    /* 16 bits should be enough */
 typedef int LOCFSERROR;    /* use 'int' for calculation temps */
 #else
-typedef INT32 FSERROR;    /* may need more than 16 bits */
-typedef INT32 LOCFSERROR;  /* be sure calculation temps are big enough */
+typedef IJG_INT FSERROR;    /* may need more than 16 bits */
+typedef IJG_INT LOCFSERROR;  /* be sure calculation temps are big enough */
 #endif
 
 typedef FSERROR FAR *FSERRPTR;  /* pointer to error array (in FAR storage!) */
@@ -262,7 +262,7 @@ typedef struct {
   int c1min, c1max;
   int c2min, c2max;
   /* The volume (actually 2-norm) of the box */
-  INT32 volume;
+  IJG_INT volume;
   /* The number of nonzero histogram cells within this box */
   long colorcount;
 } box;
@@ -297,7 +297,7 @@ find_biggest_volume (boxptr boxlist, int numboxes)
 {
   register boxptr boxp;
   register int i;
-  register INT32 maxv = 0;
+  register IJG_INT maxv = 0;
   boxptr which = NULL;
 
   for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++) {
@@ -318,10 +318,10 @@ update_box (j_decompress_ptr cinfo, boxptr boxp)
   my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
   hist3d histogram = cquantize->histogram;
   histptr histp;
-  int c0,c1,c2;
-  int c0min,c0max,c1min,c1max,c2min,c2max;
-  INT32 dist0,dist1,dist2;
-  long ccount;
+  IJG_INT c0,c1,c2;
+  IJG_INT c0min,c0max,c1min,c1max,c2min,c2max;
+  IJG_INT dist0,dist1,dist2;
+  IJG_INT ccount;
 
   c0min = boxp->c0min;  c0max = boxp->c0max;
   c1min = boxp->c1min;  c1max = boxp->c1max;
@@ -530,9 +530,16 @@ compute_color (j_decompress_ptr cinfo, boxptr boxp, int icolor)
       }
     }
 
-  cinfo->colormap[0][icolor] = (JSAMPLE) ((c0total + (total>>1)) / total);
-  cinfo->colormap[1][icolor] = (JSAMPLE) ((c1total + (total>>1)) / total);
-  cinfo->colormap[2][icolor] = (JSAMPLE) ((c2total + (total>>1)) / total);
+  if (total != 0) {
+    cinfo->colormap[0][icolor] = (JSAMPLE) ((c0total + (total>>1)) / total);
+    cinfo->colormap[1][icolor] = (JSAMPLE) ((c1total + (total>>1)) / total);
+    cinfo->colormap[2][icolor] = (JSAMPLE) ((c2total + (total>>1)) / total);
+  }
+  else {
+    cinfo->colormap[0][icolor] = 0;
+    cinfo->colormap[1][icolor] = 0;
+    cinfo->colormap[2][icolor] = 0;
+  }
 }
 
 
@@ -593,7 +600,7 @@ select_colors (j_decompress_ptr cinfo, int desired_colors)
  * distance from every colormap entry to every histogram cell.  Unfortunately,
  * it needs a work array to hold the best-distance-so-far for each histogram
  * cell (because the inner loop has to be over cells, not colormap entries).
- * The work array elements have to be INT32s, so the work array would need
+ * The work array elements have to be IJG_INTs, so the work array would need
  * 256Kb at our recommended precision.  This is not feasible in DOS machines.
  *
  * To get around these problems, we apply Thomas' method to compute the
@@ -659,8 +666,8 @@ find_nearby_colors (j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
   int maxc0, maxc1, maxc2;
   int centerc0, centerc1, centerc2;
   int i, x, ncolors;
-  INT32 minmaxdist, min_dist, max_dist, tdist;
-  INT32 mindist[MAXNUMCOLORS];  /* min distance to colormap entry i */
+  IJG_INT minmaxdist, min_dist, max_dist, tdist;
+  IJG_INT mindist[MAXNUMCOLORS];  /* min distance to colormap entry i */
 
   /* Compute true coordinates of update box's upper corner and center.
    * Actually we compute the coordinates of the center of the upper-corner
@@ -784,15 +791,15 @@ find_best_colors (j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
 {
   int ic0, ic1, ic2;
   int i, icolor;
-  register INT32 * bptr;  /* pointer into bestdist[] array */
+  register IJG_INT * bptr;  /* pointer into bestdist[] array */
   JSAMPLE * cptr;    /* pointer into bestcolor[] array */
-  INT32 dist0, dist1;    /* initial distance values */
-  register INT32 dist2;    /* current distance in inner loop */
-  INT32 xx0, xx1;    /* distance increments */
-  register INT32 xx2;
-  INT32 inc0, inc1, inc2;  /* initial values for increments */
+  IJG_INT dist0, dist1;    /* initial distance values */
+  register IJG_INT dist2;    /* current distance in inner loop */
+  IJG_INT xx0, xx1;    /* distance increments */
+  register IJG_INT xx2;
+  IJG_INT inc0, inc1, inc2;  /* initial values for increments */
   /* This array holds the distance to the nearest-so-far color for each cell */
-  INT32 bestdist[BOX_C0_ELEMS * BOX_C1_ELEMS * BOX_C2_ELEMS];
+  IJG_INT bestdist[BOX_C0_ELEMS * BOX_C1_ELEMS * BOX_C2_ELEMS];
 
   /* Initialize best-distance for each cell of the update box */
   bptr = bestdist;

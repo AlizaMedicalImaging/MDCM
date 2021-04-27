@@ -96,7 +96,7 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
    * We apply a further scale factor of 8.
    */
 #define CONST_BITS 14
-  static const INT16 aanscales[DCTSIZE2] = {
+  static const IJG_SHRT aanscales[DCTSIZE2] = {
     /* precomputed values scaled up by 14 bits */
     16384, 22725, 21407, 19266, 16384, 12873,  8867,  4520,
     22725, 31521, 29692, 26722, 22725, 17855, 12299,  6270,
@@ -117,8 +117,8 @@ start_pass_fdctmgr (j_compress_ptr cinfo)
   dtbl = fdct->divisors[qtblno];
   for (i = 0; i < DCTSIZE2; i++) {
     dtbl[i] = (DCTELEM)
-      DESCALE(MULTIPLY16V16((INT32) qtbl->quantval[i],
-          (INT32) aanscales[i]),
+      DESCALE(MULTIPLY16V16((IJG_INT) qtbl->quantval[i],
+          (IJG_INT) aanscales[i]),
         CONST_BITS-3);
   }
       }
