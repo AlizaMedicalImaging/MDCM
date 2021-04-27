@@ -162,7 +162,7 @@ Specification of the spatial positioning of pixel samples within components rela
 samples of other components is necessary for proper image post processing and accurate
 image presentation.  In JFIF files, the position of the pixels in subsampled components are
 defined with respect to the highest resolution component.  Since components must be
-sampled orthogonally (along rows and columns), the spatial position of the samples in a
+sampled orthogonally (along long rows and columns), the spatial position of the samples in a
 given subsampled component may be determined by specifying the horizontal and vertical
 offsets of the first sample, i.e. the sample in the upper left corner, with respect to the
 highest resolution component.

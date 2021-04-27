@@ -31,9 +31,10 @@
  * \brief very low level C 'structure', used to decode jpeg file
  * Should not appear in the Doxygen supplied documentation
  */
-typedef struct {
-  struct jpeg_source_mgr pub; /* public fields */
-  JOCTET eoi_buffer[2];       /* a place to put a dummy EOI */
+typedef struct
+{
+  struct jpeg_source_mgr pub;           /* public fields */
+  JOCTET                 eoi_buffer[2]; /* a place to put a dummy EOI */
 } my_source_mgr;
 
 typedef my_source_mgr * my_src_ptr;
@@ -45,7 +46,7 @@ typedef my_source_mgr * my_src_ptr;
  */
 
 METHODDEF(void)
-init_source (j_decompress_ptr cinfo)
+init_source(j_decompress_ptr cinfo)
 {
   /* No work, since jpeg_memory_src set up the buffer pointer and count.
    * Indeed, if we want to read multiple JPEG images from one buffer,
@@ -69,15 +70,15 @@ init_source (j_decompress_ptr cinfo)
  */
 
 METHODDEF(boolean)
-fill_input_buffer (j_decompress_ptr cinfo)
+fill_input_buffer(j_decompress_ptr cinfo)
 {
-  my_src_ptr src = (my_src_ptr) cinfo->src;
+  my_src_ptr src = (my_src_ptr)cinfo->src;
 
   WARNMS(cinfo, JWRN_JPEG_EOF);
 
   /* Create a fake EOI marker */
-  src->eoi_buffer[0] = (JOCTET) 0xFF;
-  src->eoi_buffer[1] = (JOCTET) JPEG_EOI;
+  src->eoi_buffer[0] = (JOCTET)0xFF;
+  src->eoi_buffer[1] = (JOCTET)JPEG_EOI;
   src->pub.next_input_byte = src->eoi_buffer;
   src->pub.bytes_in_buffer = 2;
 
@@ -96,20 +97,22 @@ fill_input_buffer (j_decompress_ptr cinfo)
  */
 
 METHODDEF(void)
-skip_input_data (j_decompress_ptr cinfo, long num_bytes)
+skip_input_data(j_decompress_ptr cinfo, long long num_bytes)
 {
-  my_src_ptr src = (my_src_ptr) cinfo->src;
+  my_src_ptr src = (my_src_ptr)cinfo->src;
 
-  if (num_bytes > 0) {
-    while (num_bytes > (long) src->pub.bytes_in_buffer) {
-      num_bytes -= (long) src->pub.bytes_in_buffer;
-      (void) fill_input_buffer(cinfo);
+  if (num_bytes > 0)
+  {
+    while (num_bytes > (long long)src->pub.bytes_in_buffer)
+    {
+      num_bytes -= (long long)src->pub.bytes_in_buffer;
+      (void)fill_input_buffer(cinfo);
       /* note we assume that fill_input_buffer will never return FALSE,
        * so suspension need not be handled.
        */
     }
-    src->pub.next_input_byte += (size_t) num_bytes;
-    src->pub.bytes_in_buffer -= (size_t) num_bytes;
+    src->pub.next_input_byte += (size_t)num_bytes;
+    src->pub.bytes_in_buffer -= (size_t)num_bytes;
   }
 }
 
@@ -133,7 +136,7 @@ skip_input_data (j_decompress_ptr cinfo, long num_bytes)
  */
 
 METHODDEF(void)
-term_source (j_decompress_ptr cinfo)
+term_source(j_decompress_ptr cinfo)
 {
   /* no work necessary here */
   (void)cinfo;
@@ -145,7 +148,7 @@ term_source (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_memory_src (j_decompress_ptr cinfo, const JOCTET * buffer, size_t bufsize)
+jpeg_memory_src(j_decompress_ptr cinfo, const JOCTET * buffer, size_t bufsize)
 {
   my_src_ptr src;
 
@@ -155,13 +158,13 @@ jpeg_memory_src (j_decompress_ptr cinfo, const JOCTET * buffer, size_t bufsize)
    * This makes it unsafe to use this manager and a different source
    * manager serially with the same JPEG object.  Caveat programmer.
    */
-  if (cinfo->src == NULL) { /* first time for this JPEG object? */
-    cinfo->src = (struct jpeg_source_mgr *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-        SIZEOF(my_source_mgr));
+  if (cinfo->src == NULL)
+  { /* first time for this JPEG object? */
+    cinfo->src =
+      (struct jpeg_source_mgr *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_PERMANENT, SIZEOF(my_source_mgr));
   }
 
-  src = (my_src_ptr) cinfo->src;
+  src = (my_src_ptr)cinfo->src;
   src->pub.init_source = init_source;
   src->pub.fill_input_buffer = fill_input_buffer;
   src->pub.skip_input_data = skip_input_data;

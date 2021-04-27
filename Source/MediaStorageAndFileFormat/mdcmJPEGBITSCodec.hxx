@@ -157,7 +157,7 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
  * Arranging for additional bytes to be discarded before reloading the input
  * buffer is the application writer's problem.
  */
-METHODDEF(void) skip_input_data(j_decompress_ptr cinfo, long int num_bytes)
+METHODDEF(void) skip_input_data(j_decompress_ptr cinfo, long long num_bytes)
 {
   my_src_ptr src = (my_src_ptr) cinfo->src;
   /* Just a dumb implementation for now.  Could use fseek() except
@@ -166,9 +166,9 @@ METHODDEF(void) skip_input_data(j_decompress_ptr cinfo, long int num_bytes)
    */
   if(num_bytes > 0)
   {
-    while(num_bytes > (long int)src->pub.bytes_in_buffer)
+    while(num_bytes > (long long)src->pub.bytes_in_buffer)
     {
-      num_bytes -= (long int) src->pub.bytes_in_buffer;
+      num_bytes -= (long long) src->pub.bytes_in_buffer;
       (void)fill_input_buffer(cinfo);
       /* FIXME assumed that fill_input_buffer will never return FALSE,
        * so suspension need not be handled.
