@@ -454,8 +454,8 @@ jinit_c_coef_controller(j_compress_ptr cinfo, boolean need_full_buffer)
         (j_common_ptr)cinfo,
         JPOOL_IMAGE,
         FALSE,
-        (JDIMENSION)jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor),
-        (JDIMENSION)jround_up((long long)compptr->height_in_data_units, (long long)compptr->v_samp_factor),
+        (JDIMENSION)jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor),
+        (JDIMENSION)jround_up((IJG_LONG)compptr->height_in_data_units, (IJG_LONG)compptr->v_samp_factor),
         (JDIMENSION)compptr->v_samp_factor);
     }
 #else

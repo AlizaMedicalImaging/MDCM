@@ -73,7 +73,7 @@ jpeg_start_decompress(j_decompress_ptr cinfo)
           if (++cinfo->progress->pass_counter >= cinfo->progress->pass_limit)
           {
             /* jdmaster underestimated number of scans; ratchet up one scan */
-            cinfo->progress->pass_limit += (long long)cinfo->total_iMCU_rows;
+            cinfo->progress->pass_limit += (IJG_LONG)cinfo->total_iMCU_rows;
           }
         }
       }
@@ -119,8 +119,8 @@ output_pass_setup(j_decompress_ptr cinfo)
       /* Call progress monitor hook if present */
       if (cinfo->progress != NULL)
       {
-        cinfo->progress->pass_counter = (long long)cinfo->output_scanline;
-        cinfo->progress->pass_limit = (long long)cinfo->output_height;
+        cinfo->progress->pass_counter = (IJG_LONG)cinfo->output_scanline;
+        cinfo->progress->pass_limit = (IJG_LONG)cinfo->output_height;
         (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
       }
       /* Process some data */
@@ -174,8 +174,8 @@ jpeg_read_scanlines(j_decompress_ptr cinfo, JSAMPARRAY scanlines, JDIMENSION max
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL)
   {
-    cinfo->progress->pass_counter = (long long)cinfo->output_scanline;
-    cinfo->progress->pass_limit = (long long)cinfo->output_height;
+    cinfo->progress->pass_counter = (IJG_LONG)cinfo->output_scanline;
+    cinfo->progress->pass_limit = (IJG_LONG)cinfo->output_height;
     (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
   }
 
@@ -208,8 +208,8 @@ jpeg_read_raw_data(j_decompress_ptr cinfo, JSAMPIMAGE data, JDIMENSION max_lines
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL)
   {
-    cinfo->progress->pass_counter = (long long)cinfo->output_scanline;
-    cinfo->progress->pass_limit = (long long)cinfo->output_height;
+    cinfo->progress->pass_counter = (IJG_LONG)cinfo->output_scanline;
+    cinfo->progress->pass_limit = (IJG_LONG)cinfo->output_height;
     (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
   }
 

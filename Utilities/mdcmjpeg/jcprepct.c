@@ -291,7 +291,7 @@ create_context_buffer(j_compress_ptr cinfo)
     true_buffer = (*cinfo->mem->alloc_sarray)(
       (j_common_ptr)cinfo,
       JPOOL_IMAGE,
-      (JDIMENSION)(((long long)compptr->width_in_data_units * cinfo->data_unit * cinfo->max_h_samp_factor) /
+      (JDIMENSION)(((IJG_LONG)compptr->width_in_data_units * cinfo->data_unit * cinfo->max_h_samp_factor) /
                    compptr->h_samp_factor),
       (JDIMENSION)(3 * rgroup_height));
     /* Copy true buffer row pointers into the middle of the fake row array */
@@ -351,7 +351,7 @@ jinit_c_prep_controller(j_compress_ptr cinfo, boolean need_full_buffer)
       prep->color_buf[ci] = (*cinfo->mem->alloc_sarray)(
         (j_common_ptr)cinfo,
         JPOOL_IMAGE,
-        (JDIMENSION)(((long long)compptr->width_in_data_units * cinfo->data_unit * cinfo->max_h_samp_factor) /
+        (JDIMENSION)(((IJG_LONG)compptr->width_in_data_units * cinfo->data_unit * cinfo->max_h_samp_factor) /
                      compptr->h_samp_factor),
         (JDIMENSION)cinfo->max_v_samp_factor);
     }

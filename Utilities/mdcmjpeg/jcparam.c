@@ -33,7 +33,7 @@ jpeg_add_quant_table(j_compress_ptr       cinfo,
 {
   JQUANT_TBL ** qtblptr;
   int           i;
-  long long          temp;
+  IJG_LONG          temp;
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != CSTATE_START)
@@ -49,7 +49,7 @@ jpeg_add_quant_table(j_compress_ptr       cinfo,
 
   for (i = 0; i < DCTSIZE2; i++)
   {
-    temp = ((long long)basic_table[i] * scale_factor + 50L) / 100L;
+    temp = ((IJG_LONG)basic_table[i] * scale_factor + 50L) / 100L;
     /* limit the values to the valid range */
     if (temp <= 0L)
       temp = 1L;

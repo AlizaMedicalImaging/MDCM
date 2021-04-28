@@ -67,8 +67,8 @@ typedef struct
   c_derived_tbl * ac_derived_tbls[NUM_HUFF_TBLS];
 
 #ifdef ENTROPY_OPT_SUPPORTED /* Statistics tables for optimization */
-  long long * dc_count_ptrs[NUM_HUFF_TBLS];
-  long long * ac_count_ptrs[NUM_HUFF_TBLS];
+  IJG_LONG * dc_count_ptrs[NUM_HUFF_TBLS];
+  IJG_LONG * ac_count_ptrs[NUM_HUFF_TBLS];
 #endif
 } shuff_entropy_encoder;
 
@@ -143,12 +143,12 @@ start_pass_huff(j_compress_ptr cinfo, boolean gather_statistics)
       /* Note that jpeg_gen_optimal_table expects 257 entries in each table! */
       if (entropy->dc_count_ptrs[dctbl] == NULL)
         entropy->dc_count_ptrs[dctbl] =
-          (long long *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(long long));
-      MEMZERO(entropy->dc_count_ptrs[dctbl], 257 * SIZEOF(long long));
+          (IJG_LONG *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(IJG_LONG));
+      MEMZERO(entropy->dc_count_ptrs[dctbl], 257 * SIZEOF(IJG_LONG));
       if (entropy->ac_count_ptrs[actbl] == NULL)
         entropy->ac_count_ptrs[actbl] =
-          (long long *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(long long));
-      MEMZERO(entropy->ac_count_ptrs[actbl], 257 * SIZEOF(long long));
+          (IJG_LONG *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(IJG_LONG));
+      MEMZERO(entropy->ac_count_ptrs[actbl], 257 * SIZEOF(IJG_LONG));
 #endif
     }
     else
@@ -497,7 +497,7 @@ finish_pass_huff(j_compress_ptr cinfo)
 /* Process a single block's worth of coefficients */
 
 LOCAL(void)
-htest_one_block(j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val, long long dc_counts[], long long ac_counts[])
+htest_one_block(j_compress_ptr cinfo, JCOEFPTR block, int last_dc_val, IJG_LONG dc_counts[], IJG_LONG ac_counts[])
 {
   register int temp;
   register int nbits;

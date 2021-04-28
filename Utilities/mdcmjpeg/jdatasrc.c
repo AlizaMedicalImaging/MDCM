@@ -127,7 +127,7 @@ fill_input_buffer(j_decompress_ptr cinfo)
  */
 
 METHODDEF(void)
-skip_input_data(j_decompress_ptr cinfo, long long num_bytes)
+skip_input_data(j_decompress_ptr cinfo, IJG_LONG num_bytes)
 {
   my_src_ptr src = (my_src_ptr)cinfo->src;
 
@@ -137,9 +137,9 @@ skip_input_data(j_decompress_ptr cinfo, long long num_bytes)
    */
   if (num_bytes > 0)
   {
-    while (num_bytes > (long long)src->pub.bytes_in_buffer)
+    while (num_bytes > (IJG_LONG)src->pub.bytes_in_buffer)
     {
-      num_bytes -= (long long)src->pub.bytes_in_buffer;
+      num_bytes -= (IJG_LONG)src->pub.bytes_in_buffer;
       (void)fill_input_buffer(cinfo);
       /* note we assume that fill_input_buffer will never return FALSE,
        * so suspension need not be handled.

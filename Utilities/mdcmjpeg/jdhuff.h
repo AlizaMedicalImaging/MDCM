@@ -40,10 +40,10 @@ typedef struct
 
   /* Lookahead tables: indexed by the next HUFF_LOOKAHEAD bits of
    * the input data stream.  If the next Huffman code is no more
-   * than HUFF_LOOKAHEAD bits long long, we can obtain its length and
+   * than HUFF_LOOKAHEAD bits long, we can obtain its length and
    * the corresponding symbol directly from these tables.
    */
-  int       look_nbits[1 << HUFF_LOOKAHEAD]; /* # bits, or 0 if too long long */
+  int       look_nbits[1 << HUFF_LOOKAHEAD]; /* # bits, or 0 if too long */
   IJG_UCHAR look_sym[1 << HUFF_LOOKAHEAD];   /* symbol, or unused */
 } d_derived_tbl;
 
@@ -72,8 +72,8 @@ EXTERN(void) jpeg_make_d_derived_tbl JPP((j_decompress_ptr cinfo, boolean isDC, 
 typedef IJG_INT bit_buf_type; /* type of bit-extraction buffer */
 #define BIT_BUF_SIZE 32       /* size of buffer in bits */
 
-/* If long long is > 32 bits on your machine, and shifting/masking long longs is
- * reasonably fast, making bit_buf_type be long long and setting BIT_BUF_SIZE
+/* If long is > 32 bits on your machine, and shifting/masking longs is
+ * reasonably fast, making bit_buf_type be long and setting BIT_BUF_SIZE
  * appropriately should be a win.  Unfortunately we can't define the size
  * with something like  #define BIT_BUF_SIZE (sizeof(bit_buf_type)*8)
  * because not all machines measure sizeof in 8-bit bytes.
@@ -168,14 +168,14 @@ jpeg_fill_bit_buffer
  *
  * We use a lookahead table to process codes of up to HUFF_LOOKAHEAD bits
  * without looping.  Usually, more than 95% of the Huffman codes will be 8
- * or fewer bits long long.  The few overlength codes are handled with a loop,
+ * or fewer bits long.  The few overlength codes are handled with a loop,
  * which need not be inline code.
  *
  * Notes about the HUFF_DECODE macro:
  * 1. Near the end of the data segment, we may fail to get enough bits
  *    for a lookahead.  In that case, we do it the hard way.
  * 2. If the lookahead table contains no entry, the next code must be
- *    more than HUFF_LOOKAHEAD bits long long.
+ *    more than HUFF_LOOKAHEAD bits long.
  * 3. jpeg_huff_decode returns -1 if forced to suspend.
  */
 

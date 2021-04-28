@@ -51,7 +51,7 @@ initial_setup(j_compress_ptr cinfo)
 {
   int                   ci;
   jpeg_component_info * compptr;
-  long long                  samplesperrow;
+  IJG_LONG                  samplesperrow;
   JDIMENSION            jd_samplesperrow;
   int                   data_unit = cinfo->data_unit;
 
@@ -60,13 +60,13 @@ initial_setup(j_compress_ptr cinfo)
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
 
   /* Make sure image isn't bigger than I can handle */
-  if ((long long)cinfo->image_height > (long long)JPEG_MAX_DIMENSION || (long long)cinfo->image_width > (long long)JPEG_MAX_DIMENSION)
+  if ((IJG_LONG)cinfo->image_height > (IJG_LONG)JPEG_MAX_DIMENSION || (IJG_LONG)cinfo->image_width > (IJG_LONG)JPEG_MAX_DIMENSION)
     ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int)JPEG_MAX_DIMENSION);
 
   /* Width of an input scanline must be representable as JDIMENSION. */
-  samplesperrow = (long long)cinfo->image_width * (long long)cinfo->input_components;
+  samplesperrow = (IJG_LONG)cinfo->image_width * (IJG_LONG)cinfo->input_components;
   jd_samplesperrow = (JDIMENSION)samplesperrow;
-  if ((long long)jd_samplesperrow != samplesperrow)
+  if ((IJG_LONG)jd_samplesperrow != samplesperrow)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
   /* For now, precision must match compiled-in value... */
@@ -97,15 +97,15 @@ initial_setup(j_compress_ptr cinfo)
     /* For compression, we never do any codec-based processing. */
     compptr->codec_data_unit = data_unit;
     /* Size in data units */
-    compptr->width_in_data_units = (JDIMENSION)jdiv_round_up((long long)cinfo->image_width * (long long)compptr->h_samp_factor,
-                                                             (long long)(cinfo->max_h_samp_factor * data_unit));
-    compptr->height_in_data_units = (JDIMENSION)jdiv_round_up((long long)cinfo->image_height * (long long)compptr->v_samp_factor,
-                                                              (long long)(cinfo->max_v_samp_factor * data_unit));
+    compptr->width_in_data_units = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width * (IJG_LONG)compptr->h_samp_factor,
+                                                             (IJG_LONG)(cinfo->max_h_samp_factor * data_unit));
+    compptr->height_in_data_units = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height * (IJG_LONG)compptr->v_samp_factor,
+                                                              (IJG_LONG)(cinfo->max_v_samp_factor * data_unit));
     /* Size in samples */
-    compptr->downsampled_width = (JDIMENSION)jdiv_round_up((long long)cinfo->image_width * (long long)compptr->h_samp_factor,
-                                                           (long long)cinfo->max_h_samp_factor);
-    compptr->downsampled_height = (JDIMENSION)jdiv_round_up((long long)cinfo->image_height * (long long)compptr->v_samp_factor,
-                                                            (long long)cinfo->max_v_samp_factor);
+    compptr->downsampled_width = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width * (IJG_LONG)compptr->h_samp_factor,
+                                                           (IJG_LONG)cinfo->max_h_samp_factor);
+    compptr->downsampled_height = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height * (IJG_LONG)compptr->v_samp_factor,
+                                                            (IJG_LONG)cinfo->max_v_samp_factor);
     /* Mark component needed (this flag isn't actually used for compression) */
     compptr->component_needed = TRUE;
   }
@@ -114,7 +114,7 @@ initial_setup(j_compress_ptr cinfo)
    * main controller will call coefficient controller).
    */
   cinfo->total_iMCU_rows =
-    (JDIMENSION)jdiv_round_up((long long)cinfo->image_height, (long long)(cinfo->max_v_samp_factor * data_unit));
+    (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height, (IJG_LONG)(cinfo->max_v_samp_factor * data_unit));
 }
 
 #ifdef C_MULTISCAN_FILES_SUPPORTED
@@ -422,9 +422,9 @@ per_scan_setup(j_compress_ptr cinfo)
 
     /* Overall image size in MCUs */
     cinfo->MCUs_per_row =
-      (JDIMENSION)jdiv_round_up((long long)cinfo->image_width, (long long)(cinfo->max_h_samp_factor * data_unit));
+      (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width, (IJG_LONG)(cinfo->max_h_samp_factor * data_unit));
     cinfo->MCU_rows_in_scan =
-      (JDIMENSION)jdiv_round_up((long long)cinfo->image_height, (long long)(cinfo->max_v_samp_factor * data_unit));
+      (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height, (IJG_LONG)(cinfo->max_v_samp_factor * data_unit));
 
     cinfo->data_units_in_MCU = 0;
 
@@ -460,7 +460,7 @@ per_scan_setup(j_compress_ptr cinfo)
   /* Note that count must fit in 16 bits, so we provide limiting. */
   if (cinfo->restart_in_rows > 0)
   {
-    long long nominal = (long long)cinfo->restart_in_rows * (long long)cinfo->MCUs_per_row;
+    IJG_LONG nominal = (IJG_LONG)cinfo->restart_in_rows * (IJG_LONG)cinfo->MCUs_per_row;
     cinfo->restart_interval = (unsigned int)MIN(nominal, 65535L);
   }
 }

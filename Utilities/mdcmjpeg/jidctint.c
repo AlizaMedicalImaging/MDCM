@@ -60,7 +60,7 @@ Sorry, this code only copes with 8x8 DCTs./* deliberate syntax err */
  * multiplication we have to divide the product by CONST_SCALE, with proper
  * rounding, to produce the correct output.  This division can be done
  * cheaply as a right shift of CONST_BITS bits.  We postpone shifting
- * as long long as possible so that partial sums can be added together with
+ * as long as possible so that partial sums can be added together with
  * full fractional precision.
  *
  * The outputs of the first pass are scaled up by PASS1_BITS bits so that

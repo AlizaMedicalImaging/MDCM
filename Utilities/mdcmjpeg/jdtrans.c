@@ -81,7 +81,7 @@ jpeg_read_coefficients(j_decompress_ptr cinfo)
         if (++cinfo->progress->pass_counter >= cinfo->progress->pass_limit)
         {
           /* startup underestimated number of scans; ratchet up one scan */
-          cinfo->progress->pass_limit += (long long)cinfo->total_iMCU_rows;
+          cinfo->progress->pass_limit += (IJG_LONG)cinfo->total_iMCU_rows;
         }
       }
     }
@@ -142,7 +142,7 @@ transdecode_master_selection(j_decompress_ptr cinfo)
       nscans = 1;
     }
     cinfo->progress->pass_counter = 0L;
-    cinfo->progress->pass_limit = (long long)cinfo->total_iMCU_rows * nscans;
+    cinfo->progress->pass_limit = (IJG_LONG)cinfo->total_iMCU_rows * nscans;
     cinfo->progress->completed_passes = 0;
     cinfo->progress->total_passes = 1;
   }

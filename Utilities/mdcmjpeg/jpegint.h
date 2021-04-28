@@ -362,8 +362,8 @@ EXTERN(void) jinit_merged_upsampler JPP((j_decompress_ptr cinfo));
 EXTERN(void) jinit_memory_mgr JPP((j_common_ptr cinfo));
 
 /* Utility routines in jutils.c */
-EXTERN(long long) jdiv_round_up JPP((long long a, long long b));
-EXTERN(long long) jround_up JPP((long long a, long long b));
+EXTERN(IJG_LONG) jdiv_round_up JPP((IJG_LONG a, IJG_LONG b));
+EXTERN(IJG_LONG) jround_up JPP((IJG_LONG a, IJG_LONG b));
 EXTERN(void)
 jcopy_sample_rows JPP(
   (JSAMPARRAY input_array, int source_row, JSAMPARRAY output_array, int dest_row, int num_rows, JDIMENSION num_cols));
@@ -381,11 +381,11 @@ extern const int jpeg_natural_order[]; /* zigzag coef order to natural order */
 #  ifndef AM_MEMORY_MANAGER /* only jmemmgr.c defines these */
 struct jvirt_sarray_control
 {
-  long long dummy;
+  IJG_LONG dummy;
 };
 struct jvirt_barray_control
 {
-  long long dummy;
+  IJG_LONG dummy;
 };
 #  endif
 #endif /* INCOMPLETE_TYPES_BROKEN */

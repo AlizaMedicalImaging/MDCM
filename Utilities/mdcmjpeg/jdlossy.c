@@ -29,22 +29,22 @@ calc_output_dimensions(j_decompress_ptr cinfo)
   if (cinfo->scale_num * 8 <= cinfo->scale_denom)
   {
     /* Provide 1/8 scaling */
-    cinfo->output_width = (JDIMENSION)jdiv_round_up((long long)cinfo->image_width, 8L);
-    cinfo->output_height = (JDIMENSION)jdiv_round_up((long long)cinfo->image_height, 8L);
+    cinfo->output_width = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width, 8L);
+    cinfo->output_height = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height, 8L);
     cinfo->min_codec_data_unit = 1;
   }
   else if (cinfo->scale_num * 4 <= cinfo->scale_denom)
   {
     /* Provide 1/4 scaling */
-    cinfo->output_width = (JDIMENSION)jdiv_round_up((long long)cinfo->image_width, 4L);
-    cinfo->output_height = (JDIMENSION)jdiv_round_up((long long)cinfo->image_height, 4L);
+    cinfo->output_width = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width, 4L);
+    cinfo->output_height = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height, 4L);
     cinfo->min_codec_data_unit = 2;
   }
   else if (cinfo->scale_num * 2 <= cinfo->scale_denom)
   {
     /* Provide 1/2 scaling */
-    cinfo->output_width = (JDIMENSION)jdiv_round_up((long long)cinfo->image_width, 2L);
-    cinfo->output_height = (JDIMENSION)jdiv_round_up((long long)cinfo->image_height, 2L);
+    cinfo->output_width = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width, 2L);
+    cinfo->output_height = (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height, 2L);
     cinfo->min_codec_data_unit = 4;
   }
   else
@@ -78,11 +78,11 @@ calc_output_dimensions(j_decompress_ptr cinfo)
   {
     /* Size in samples, after IDCT scaling */
     compptr->downsampled_width =
-      (JDIMENSION)jdiv_round_up((long long)cinfo->image_width * (long long)(compptr->h_samp_factor * compptr->codec_data_unit),
-                                (long long)(cinfo->max_h_samp_factor * DCTSIZE));
+      (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_width * (IJG_LONG)(compptr->h_samp_factor * compptr->codec_data_unit),
+                                (IJG_LONG)(cinfo->max_h_samp_factor * DCTSIZE));
     compptr->downsampled_height =
-      (JDIMENSION)jdiv_round_up((long long)cinfo->image_height * (long long)(compptr->v_samp_factor * compptr->codec_data_unit),
-                                (long long)(cinfo->max_v_samp_factor * DCTSIZE));
+      (JDIMENSION)jdiv_round_up((IJG_LONG)cinfo->image_height * (IJG_LONG)(compptr->v_samp_factor * compptr->codec_data_unit),
+                                (IJG_LONG)(cinfo->max_v_samp_factor * DCTSIZE));
   }
 
 #else /* !IDCT_SCALING_SUPPORTED */

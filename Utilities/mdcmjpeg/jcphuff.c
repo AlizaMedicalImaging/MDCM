@@ -56,7 +56,7 @@ typedef struct
   c_derived_tbl * derived_tbls[NUM_HUFF_TBLS];
 
   /* Statistics tables for optimization; again, one set is enough */
-  long long * count_ptrs[NUM_HUFF_TBLS];
+  IJG_LONG * count_ptrs[NUM_HUFF_TBLS];
 } phuff_entropy_encoder;
 
 typedef phuff_entropy_encoder * phuff_entropy_ptr;
@@ -167,8 +167,8 @@ start_pass_phuff(j_compress_ptr cinfo, boolean gather_statistics)
       /* Note that jpeg_gen_optimal_table expects 257 entries in each table! */
       if (entropy->count_ptrs[tbl] == NULL)
         entropy->count_ptrs[tbl] =
-          (long long *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(long long));
-      MEMZERO(entropy->count_ptrs[tbl], 257 * SIZEOF(long long));
+          (IJG_LONG *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(IJG_LONG));
+      MEMZERO(entropy->count_ptrs[tbl], 257 * SIZEOF(IJG_LONG));
     }
     else
     {

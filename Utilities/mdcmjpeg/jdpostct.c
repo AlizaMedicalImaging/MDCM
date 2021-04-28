@@ -294,7 +294,7 @@ jinit_d_post_controller(j_decompress_ptr cinfo, boolean need_full_buffer)
                                            JPOOL_IMAGE,
                                            FALSE,
                                            cinfo->output_width * cinfo->out_color_components,
-                                           (JDIMENSION)jround_up((long long)cinfo->output_height, (long long)post->strip_height),
+                                           (JDIMENSION)jround_up((IJG_LONG)cinfo->output_height, (IJG_LONG)post->strip_height),
                                            post->strip_height);
 #else
       ERREXIT(cinfo, JERR_BAD_BUFFER_MODE);

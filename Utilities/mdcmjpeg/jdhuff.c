@@ -109,7 +109,7 @@ jpeg_make_d_derived_tbl(j_decompress_ptr cinfo, boolean isDC, int tblno, d_deriv
   dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpeg_huff_decode terminates */
 
   /* Compute lookahead tables to speed up decoding.
-   * First we set all the table entries to 0, indicating "too long long";
+   * First we set all the table entries to 0, indicating "too long";
    * then we iterate through the Huffman codes that are short enough and
    * fill in all the entries that correspond to bit sequences starting
    * with that code.
@@ -308,7 +308,7 @@ jpeg_huff_decode(bitread_working_state * state,
   register IJG_INT code;
 
   /* HUFF_DECODE has determined that the code is at least min_bits */
-  /* bits long long, so fetch that many bits in one swoop. */
+  /* bits long, so fetch that many bits in one swoop. */
 
   CHECK_BIT_BUFFER(*state, l, return -1);
   code = GET_BITS(l);

@@ -66,10 +66,10 @@ typedef struct
   c_derived_tbl * cur_tbls[C_MAX_DATA_UNITS_IN_MCU];
 
 #ifdef ENTROPY_OPT_SUPPORTED /* Statistics tables for optimization */
-  long long * count_ptrs[NUM_HUFF_TBLS];
+  IJG_LONG * count_ptrs[NUM_HUFF_TBLS];
 
   /* Pointers to stats tables to be used for each data unit within an MCU */
-  long long * cur_counts[C_MAX_DATA_UNITS_IN_MCU];
+  IJG_LONG * cur_counts[C_MAX_DATA_UNITS_IN_MCU];
 #endif
 
   /* Pointers to the proper input difference row for each group of data units
@@ -170,8 +170,8 @@ start_pass_huff(j_compress_ptr cinfo, boolean gather_statistics)
       /* Note that jpeg_gen_optimal_table expects 257 entries in each table! */
       if (entropy->count_ptrs[dctbl] == NULL)
         entropy->count_ptrs[dctbl] =
-          (long long *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(long long));
-      MEMZERO(entropy->count_ptrs[dctbl], 257 * SIZEOF(long long));
+          (IJG_LONG *)(*cinfo->mem->alloc_small)((j_common_ptr)cinfo, JPOOL_IMAGE, 257 * SIZEOF(IJG_LONG));
+      MEMZERO(entropy->count_ptrs[dctbl], 257 * SIZEOF(IJG_LONG));
 #endif
     }
     else
@@ -530,7 +530,7 @@ encode_mcus_gather(j_compress_ptr cinfo,
       register int temp;
       register int nbits;
       /* c_derived_tbl *dctbl = entropy->cur_tbls[sampn]; */
-      long long * counts = entropy->cur_counts[sampn];
+      IJG_LONG * counts = entropy->cur_counts[sampn];
 
       /* Encode the difference per section H.1.2.2 */
 

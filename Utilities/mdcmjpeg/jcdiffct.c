@@ -190,7 +190,7 @@ compress_data(j_compress_ptr cinfo, JSAMPIMAGE input_buf)
              */
             for (samp_row = samp_rows; samp_row < compptr->v_samp_factor; samp_row++)
               MEMZERO(diff->diff_buf[ci][samp_row],
-                      jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor) * SIZEOF(JDIFF));
+                      jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor) * SIZEOF(JDIFF));
           }
         }
         samps_across = compptr->width_in_data_units;
@@ -362,12 +362,12 @@ jinit_c_diff_controller(j_compress_ptr cinfo, boolean need_full_buffer)
     diff->cur_row[ci] = *(*cinfo->mem->alloc_sarray)(
       (j_common_ptr)cinfo,
       JPOOL_IMAGE,
-      (JDIMENSION)jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor),
+      (JDIMENSION)jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor),
       (JDIMENSION)1);
     diff->prev_row[ci] = *(*cinfo->mem->alloc_sarray)(
       (j_common_ptr)cinfo,
       JPOOL_IMAGE,
-      (JDIMENSION)jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor),
+      (JDIMENSION)jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor),
       (JDIMENSION)1);
   }
 
@@ -377,7 +377,7 @@ jinit_c_diff_controller(j_compress_ptr cinfo, boolean need_full_buffer)
     diff->diff_buf[ci] = (*cinfo->mem->alloc_darray)(
       (j_common_ptr)cinfo,
       JPOOL_IMAGE,
-      (JDIMENSION)jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor),
+      (JDIMENSION)jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor),
       (JDIMENSION)compptr->v_samp_factor);
     /* Prefill difference rows with zeros.  We do this because only actual
      * data is placed in the buffers during prediction/differencing, leaving
@@ -386,7 +386,7 @@ jinit_c_diff_controller(j_compress_ptr cinfo, boolean need_full_buffer)
      */
     for (row = 0; row < compptr->v_samp_factor; row++)
       MEMZERO(diff->diff_buf[ci][row],
-              jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor) * SIZEOF(JDIFF));
+              jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor) * SIZEOF(JDIFF));
   }
 
   /* Create the sample buffer. */
@@ -402,8 +402,8 @@ jinit_c_diff_controller(j_compress_ptr cinfo, boolean need_full_buffer)
         (j_common_ptr)cinfo,
         JPOOL_IMAGE,
         FALSE,
-        (JDIMENSION)jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor),
-        (JDIMENSION)jround_up((long long)compptr->height_in_data_units, (long long)compptr->v_samp_factor),
+        (JDIMENSION)jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor),
+        (JDIMENSION)jround_up((IJG_LONG)compptr->height_in_data_units, (IJG_LONG)compptr->v_samp_factor),
         (JDIMENSION)compptr->v_samp_factor);
     }
 #  else

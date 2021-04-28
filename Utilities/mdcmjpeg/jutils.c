@@ -63,8 +63,8 @@ const int jpeg_natural_order[DCTSIZE2 + 16] = { 0,  1,  8,  16, 9,  2,  3,  10, 
  * Arithmetic utilities
  */
 
-GLOBAL(long long)
-jdiv_round_up(long long a, long long b)
+GLOBAL(IJG_LONG)
+jdiv_round_up(IJG_LONG a, IJG_LONG b)
 /* Compute a/b rounded up to next integer, ie, ceil(a/b) */
 /* Assumes a >= 0, b > 0 */
 {
@@ -72,8 +72,8 @@ jdiv_round_up(long long a, long long b)
 }
 
 
-GLOBAL(long long)
-jround_up(long long a, long long b)
+GLOBAL(IJG_LONG)
+jround_up(IJG_LONG a, IJG_LONG b)
 /* Compute a rounded up to next multiple of b, ie, ceil(a/b)*b */
 /* Assumes a >= 0, b > 0 */
 {
@@ -148,11 +148,11 @@ jcopy_block_row(JBLOCKROW input_row, JBLOCKROW output_row, JDIMENSION num_blocks
   FMEMCOPY(output_row, input_row, num_blocks * (DCTSIZE2 * SIZEOF(JCOEF)));
 #else
   register JCOEFPTR inptr, outptr;
-  register long long     count;
+  register IJG_LONG     count;
 
   inptr = (JCOEFPTR)input_row;
   outptr = (JCOEFPTR)output_row;
-  for (count = (long long)num_blocks * DCTSIZE2; count > 0; count--)
+  for (count = (IJG_LONG)num_blocks * DCTSIZE2; count > 0; count--)
   {
     *outptr++ = *inptr++;
   }

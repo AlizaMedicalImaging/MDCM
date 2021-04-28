@@ -205,7 +205,7 @@ LOCAL(void)
 master_selection(j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr)cinfo->master;
-  long long          samplesperrow;
+  IJG_LONG          samplesperrow;
   JDIMENSION    jd_samplesperrow;
 
   /* Initialize dimensions and other stuff */
@@ -213,9 +213,9 @@ master_selection(j_decompress_ptr cinfo)
   prepare_range_limit_table(cinfo);
 
   /* Width of an output scanline must be representable as JDIMENSION. */
-  samplesperrow = (long long)cinfo->output_width * (long long)cinfo->out_color_components;
+  samplesperrow = (IJG_LONG)cinfo->output_width * (IJG_LONG)cinfo->out_color_components;
   jd_samplesperrow = (JDIMENSION)samplesperrow;
-  if ((long long)jd_samplesperrow != samplesperrow)
+  if ((IJG_LONG)jd_samplesperrow != samplesperrow)
     ERREXIT(cinfo, JERR_WIDTH_OVERFLOW);
 
   /* Initialize my private state */
@@ -331,7 +331,7 @@ master_selection(j_decompress_ptr cinfo)
       nscans = cinfo->num_components;
     }
     cinfo->progress->pass_counter = 0L;
-    cinfo->progress->pass_limit = (long long)cinfo->total_iMCU_rows * nscans;
+    cinfo->progress->pass_limit = (IJG_LONG)cinfo->total_iMCU_rows * nscans;
     cinfo->progress->completed_passes = 0;
     cinfo->progress->total_passes = (cinfo->enable_2pass_quant ? 3 : 2);
     /* Count the input pass as done */

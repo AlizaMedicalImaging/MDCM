@@ -117,7 +117,7 @@ jpeg_make_c_derived_tbl(j_compress_ptr cinfo, boolean isDC, int tblno, c_derived
  * one bits (so that padding bits added at the end of a compressed segment
  * can't look like a valid code).  Because of the canonical ordering of
  * codewords, this just means that there must be an unused slot in the
- * long longest codeword length category.  Section K.2 of the JPEG spec suggests
+ * longest codeword length category.  Section K.2 of the JPEG spec suggests
  * reserving such a slot by pretending that symbol 256 is a valid symbol
  * with count 1.  In theory that's not optimal; giving it count zero but
  * including it in the symbol set anyway should give a better Huffman code.
@@ -125,7 +125,7 @@ jpeg_make_c_derived_tbl(j_compress_ptr cinfo, boolean isDC, int tblno, c_derived
  * practice, because it produces more all-ones bytes (which incur stuffed
  * zero bytes in the final file).  In any case the difference is tiny.
  *
- * The JPEG standard requires Huffman codes to be no more than 16 bits long long.
+ * The JPEG standard requires Huffman codes to be no more than 16 bits long.
  * If some symbols have a very small but nonzero probability, the Huffman tree
  * must be adjusted to meet the code length restriction.  We currently use
  * the adjustment method suggested in JPEG section K.2.  This method is *not*
@@ -138,7 +138,7 @@ jpeg_make_c_derived_tbl(j_compress_ptr cinfo, boolean isDC, int tblno, c_derived
  */
 
 GLOBAL(void)
-jpeg_gen_optimal_table(j_compress_ptr cinfo, JHUFF_TBL * htbl, long long freq[])
+jpeg_gen_optimal_table(j_compress_ptr cinfo, JHUFF_TBL * htbl, IJG_LONG freq[])
 {
 #define MAX_CLEN 32             /* assumed maximum initial code length */
   IJG_UCHAR bits[MAX_CLEN + 1]; /* bits[k] = # of symbols with code length k */
@@ -146,7 +146,7 @@ jpeg_gen_optimal_table(j_compress_ptr cinfo, JHUFF_TBL * htbl, long long freq[])
   int       others[257];        /* next symbol in current branch of tree */
   int       c1, c2;
   int       p, i, j;
-  long long      v;
+  IJG_LONG      v;
 
   /* This algorithm is explained in section K.2 of the JPEG standard */
 
@@ -235,12 +235,12 @@ jpeg_gen_optimal_table(j_compress_ptr cinfo, JHUFF_TBL * htbl, long long freq[])
   /* JPEG doesn't allow symbols with code lengths over 16 bits, so if the pure
    * Huffman procedure assigned any such lengths, we must adjust the coding.
    * Here is what the JPEG spec says about how this next bit works:
-   * Since symbols are paired for the long longest Huffman code, the symbols are
+   * Since symbols are paired for the longest Huffman code, the symbols are
    * removed from this length category two at a time.  The prefix for the pair
    * (which is one bit shorter) is allocated to one of the pair; then,
    * skipping the BITS entry for that prefix length, a code word from the next
    * shortest nonzero BITS entry is converted into a prefix for two code words
-   * one bit long longer.
+   * one bit longer.
    */
 
   for (i = MAX_CLEN; i > 16; i--)

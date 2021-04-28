@@ -98,7 +98,7 @@ rgb_ycc_start(j_compress_ptr cinfo)
   {
     rgb_ycc_tab[i + R_Y_OFF] = FIX(0.29900) * i;
 #if (BITS_IN_JSAMPLE == 16 && REMOVE_OVERFLOW_WARN_JPEG16 == 1)
-    rgb_ycc_tab[i + G_Y_OFF] = (IJG_INT)((long long)FIX(0.58700) * i);
+    rgb_ycc_tab[i + G_Y_OFF] = (IJG_INT)((IJG_LONG)FIX(0.58700) * i);
 #else
     rgb_ycc_tab[i + G_Y_OFF] = FIX(0.58700) * i;
 #endif
@@ -110,7 +110,7 @@ rgb_ycc_start(j_compress_ptr cinfo)
      * not MAXJSAMPLE+1, and thus that we don't have to range-limit.
      */
 #if (BITS_IN_JSAMPLE == 16 && REMOVE_OVERFLOW_WARN_JPEG16 == 1)
-    rgb_ycc_tab[i + B_CB_OFF] = (IJG_INT)((long long)FIX(0.50000) * i + CBCR_OFFSET + ONE_HALF - 1);
+    rgb_ycc_tab[i + B_CB_OFF] = (IJG_INT)((IJG_LONG)FIX(0.50000) * i + CBCR_OFFSET + ONE_HALF - 1);
 #else
     rgb_ycc_tab[i + B_CB_OFF] = FIX(0.50000) * i + CBCR_OFFSET + ONE_HALF - 1;
 #endif

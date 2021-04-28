@@ -97,8 +97,8 @@ EXTERN(void) jpeg_free_large JPP((j_common_ptr cinfo, void FAR * object, size_t 
  * Conversely, zero may be returned to always use the minimum amount of memory.
  */
 
-EXTERN(long long)
-jpeg_mem_available JPP((j_common_ptr cinfo, long long min_bytes_needed, long long max_bytes_needed, long long already_allocated));
+EXTERN(IJG_LONG)
+jpeg_mem_available JPP((j_common_ptr cinfo, IJG_LONG min_bytes_needed, IJG_LONG max_bytes_needed, IJG_LONG already_allocated));
 
 
 /*
@@ -137,10 +137,10 @@ typedef struct backing_store_struct
   /* Methods for reading/writing/closing this backing-store object */
   JMETHOD(void,
           read_backing_store,
-          (j_common_ptr cinfo, backing_store_ptr info, void FAR * buffer_address, long long file_offset, long long byte_count));
+          (j_common_ptr cinfo, backing_store_ptr info, void FAR * buffer_address, IJG_LONG file_offset, IJG_LONG byte_count));
   JMETHOD(void,
           write_backing_store,
-          (j_common_ptr cinfo, backing_store_ptr info, void FAR * buffer_address, long long file_offset, long long byte_count));
+          (j_common_ptr cinfo, backing_store_ptr info, void FAR * buffer_address, IJG_LONG file_offset, IJG_LONG byte_count));
   JMETHOD(void, close_backing_store, (j_common_ptr cinfo, backing_store_ptr info));
 
   /* Private fields for system-dependent backing-store management */
@@ -171,7 +171,7 @@ typedef struct backing_store_struct
  * just take an error exit.)
  */
 
-EXTERN(void) jpeg_open_backing_store JPP((j_common_ptr cinfo, backing_store_ptr info, long long total_bytes_needed));
+EXTERN(void) jpeg_open_backing_store JPP((j_common_ptr cinfo, backing_store_ptr info, IJG_LONG total_bytes_needed));
 
 
 /*
@@ -186,5 +186,5 @@ EXTERN(void) jpeg_open_backing_store JPP((j_common_ptr cinfo, backing_store_ptr 
  * all opened backing-store objects have been closed.
  */
 
-EXTERN(long long) jpeg_mem_init JPP((j_common_ptr cinfo));
+EXTERN(IJG_LONG) jpeg_mem_init JPP((j_common_ptr cinfo));
 EXTERN(void) jpeg_mem_term JPP((j_common_ptr cinfo));

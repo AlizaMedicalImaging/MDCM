@@ -193,7 +193,7 @@ select_ncolors(j_decompress_ptr cinfo, int Ncolors[])
   int              max_colors = cinfo->desired_number_of_colors;
   int              total_colors, iroot, i, j;
   boolean          changed;
-  long long             temp;
+  IJG_LONG             temp;
   static const int RGB_order[3] = { RGB_GREEN, RGB_RED, RGB_BLUE };
 
   /* We can allocate at least the nc'th root of max_colors per component. */
@@ -205,7 +205,7 @@ select_ncolors(j_decompress_ptr cinfo, int Ncolors[])
     temp = iroot; /* set temp = iroot ** nc */
     for (i = 1; i < nc; i++)
       temp *= iroot;
-  } while (temp <= (long long)max_colors); /* repeat till iroot exceeds root */
+  } while (temp <= (IJG_LONG)max_colors); /* repeat till iroot exceeds root */
   iroot--;                            /* now iroot = floor(root) */
 
   /* Must have at least 2 color values per component */
@@ -233,8 +233,8 @@ select_ncolors(j_decompress_ptr cinfo, int Ncolors[])
       j = (cinfo->out_color_space == JCS_RGB ? RGB_order[i] : i);
       /* calculate new total_colors if Ncolors[j] is incremented */
       temp = total_colors / Ncolors[j];
-      temp *= Ncolors[j] + 1; /* done in long long arith to avoid oflo */
-      if (temp > (long long)max_colors)
+      temp *= Ncolors[j] + 1; /* done in IJG_LONG arith to avoid oflo */
+      if (temp > (IJG_LONG)max_colors)
         break;      /* won't fit, done with this pass */
       Ncolors[j]++; /* OK, apply the increment */
       total_colors = (int)temp;

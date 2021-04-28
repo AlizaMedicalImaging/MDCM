@@ -301,7 +301,7 @@ emit_sof(j_compress_ptr cinfo, JPEG_MARKER code)
   emit_2bytes(cinfo, 3 * cinfo->num_components + 2 + 5 + 1); /* length */
 
   /* Make sure image isn't bigger than SOF field can handle */
-  if ((long long)cinfo->image_height > 65535L || (long long)cinfo->image_width > 65535L)
+  if ((IJG_LONG)cinfo->image_height > 65535L || (IJG_LONG)cinfo->image_width > 65535L)
     ERREXIT1(cinfo, JERR_IMAGE_TOO_BIG, (unsigned int)65535);
 
   emit_byte(cinfo, cinfo->data_precision);

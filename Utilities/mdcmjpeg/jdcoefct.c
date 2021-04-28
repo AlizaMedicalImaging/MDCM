@@ -759,8 +759,8 @@ jinit_d_coef_controller(j_decompress_ptr cinfo, boolean need_full_buffer)
         (j_common_ptr)cinfo,
         JPOOL_IMAGE,
         TRUE,
-        (JDIMENSION)jround_up((long long)compptr->width_in_data_units, (long long)compptr->h_samp_factor),
-        (JDIMENSION)jround_up((long long)compptr->height_in_data_units, (long long)compptr->v_samp_factor),
+        (JDIMENSION)jround_up((IJG_LONG)compptr->width_in_data_units, (IJG_LONG)compptr->h_samp_factor),
+        (JDIMENSION)jround_up((IJG_LONG)compptr->height_in_data_units, (IJG_LONG)compptr->v_samp_factor),
         (JDIMENSION)access_rows);
     }
     lossyd->pub.consume_data = consume_data;

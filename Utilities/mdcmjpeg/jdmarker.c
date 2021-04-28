@@ -260,7 +260,7 @@ get_sof(j_decompress_ptr cinfo, J_CODEC_PROCESS process, boolean is_arith, int d
     ERREXIT(cinfo, JERR_SOF_DUPLICATE);
 
   /* We don't support files in which the image height is initially specified */
-  /* as 0 and is later redefined by DNL.  As long long as we have to check that,  */
+  /* as 0 and is later redefined by DNL.  As long as we have to check that,  */
   /* might as well have a general sanity check. */
   if (cinfo->image_height <= 0 || cinfo->image_width <= 0 || cinfo->num_components <= 0)
     ERREXIT(cinfo, JERR_EMPTY_IMAGE);
@@ -747,7 +747,7 @@ get_interesting_appn(j_decompress_ptr cinfo)
   /* skip any remaining data -- could be lots */
   INPUT_SYNC(cinfo);
   if (length > 0)
-    (*cinfo->src->skip_input_data)(cinfo, (long long)length);
+    (*cinfo->src->skip_input_data)(cinfo, (IJG_LONG)length);
 
   return TRUE;
 }
@@ -864,7 +864,7 @@ save_marker(j_decompress_ptr cinfo)
   /* skip any remaining data -- could be lots */
   INPUT_SYNC(cinfo); /* do before skip_input_data */
   if (length > 0)
-    (*cinfo->src->skip_input_data)(cinfo, (long long)length);
+    (*cinfo->src->skip_input_data)(cinfo, (IJG_LONG)length);
 
   return TRUE;
 }
@@ -886,7 +886,7 @@ skip_variable(j_decompress_ptr cinfo)
 
   INPUT_SYNC(cinfo); /* do before skip_input_data */
   if (length > 0)
-    (*cinfo->src->skip_input_data)(cinfo, (long long)length);
+    (*cinfo->src->skip_input_data)(cinfo, (IJG_LONG)length);
 
   return TRUE;
 }
@@ -1350,14 +1350,14 @@ GLOBAL(void)
 jpeg_save_markers(j_decompress_ptr cinfo, int marker_code, unsigned int length_limit)
 {
   my_marker_ptr             marker = (my_marker_ptr)cinfo->marker;
-  long long                      maxlength;
+  IJG_LONG                      maxlength;
   jpeg_marker_parser_method processor;
 
   /* Length limit mustn't be larger than what we can allocate
    * (should only be a concern in a 16-bit environment).
    */
   maxlength = cinfo->mem->max_alloc_chunk - SIZEOF(struct jpeg_marker_struct);
-  if (((long long)length_limit) > maxlength)
+  if (((IJG_LONG)length_limit) > maxlength)
     length_limit = (unsigned int)maxlength;
 
   /* Choose processor routine to use.

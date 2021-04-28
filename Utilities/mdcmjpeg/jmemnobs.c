@@ -75,8 +75,8 @@ jpeg_free_large(j_common_ptr cinfo, void FAR * object, size_t sizeofobject)
  * Here we always say, "we got all you want bud!"
  */
 
-GLOBAL(long long)
-jpeg_mem_available(j_common_ptr cinfo, long long min_bytes_needed, long long max_bytes_needed, long long already_allocated)
+GLOBAL(IJG_LONG)
+jpeg_mem_available(j_common_ptr cinfo, IJG_LONG min_bytes_needed, IJG_LONG max_bytes_needed, IJG_LONG already_allocated)
 {
   (void)cinfo;
   (void)min_bytes_needed;
@@ -92,7 +92,7 @@ jpeg_mem_available(j_common_ptr cinfo, long long min_bytes_needed, long long max
  */
 
 GLOBAL(void)
-jpeg_open_backing_store(j_common_ptr cinfo, backing_store_ptr info, long long total_bytes_needed)
+jpeg_open_backing_store(j_common_ptr cinfo, backing_store_ptr info, IJG_LONG total_bytes_needed)
 {
   (void)info;
   (void)total_bytes_needed;
@@ -105,7 +105,7 @@ jpeg_open_backing_store(j_common_ptr cinfo, backing_store_ptr info, long long to
  * cleanup required.  Here, there isn't any.
  */
 
-GLOBAL(long long)
+GLOBAL(IJG_LONG)
 jpeg_mem_init(j_common_ptr cinfo)
 {
   (void)cinfo;

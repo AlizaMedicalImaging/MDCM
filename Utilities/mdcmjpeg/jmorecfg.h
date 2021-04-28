@@ -187,7 +187,9 @@ typedef unsigned int IJG_USHRT;
 typedef short IJG_SHRT;
 
 /* IJG_INT must hold at least signed 32-bit values. */
-typedef long long IJG_INT;
+typedef long IJG_INT;
+
+typedef long long IJG_LONG;
 
 /* Datatype used for image dimensions.  The JPEG standard only supports
  * images up to 64K*64K due to 16-bit fields in SOF markers.  Therefore

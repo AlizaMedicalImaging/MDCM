@@ -86,8 +86,8 @@ jpeg_write_scanlines(j_compress_ptr cinfo, JSAMPARRAY scanlines, JDIMENSION num_
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL)
   {
-    cinfo->progress->pass_counter = (long long)cinfo->next_scanline;
-    cinfo->progress->pass_limit = (long long)cinfo->image_height;
+    cinfo->progress->pass_counter = (IJG_LONG)cinfo->next_scanline;
+    cinfo->progress->pass_limit = (IJG_LONG)cinfo->image_height;
     (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
   }
 
@@ -132,8 +132,8 @@ jpeg_write_raw_data(j_compress_ptr cinfo, JSAMPIMAGE data, JDIMENSION num_lines)
   /* Call progress monitor hook if present */
   if (cinfo->progress != NULL)
   {
-    cinfo->progress->pass_counter = (long long)cinfo->next_scanline;
-    cinfo->progress->pass_limit = (long long)cinfo->image_height;
+    cinfo->progress->pass_counter = (IJG_LONG)cinfo->next_scanline;
+    cinfo->progress->pass_limit = (IJG_LONG)cinfo->image_height;
     (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
   }
 

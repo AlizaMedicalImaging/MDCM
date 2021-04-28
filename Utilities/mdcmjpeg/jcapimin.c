@@ -169,8 +169,8 @@ jpeg_finish_compress(j_compress_ptr cinfo)
     {
       if (cinfo->progress != NULL)
       {
-        cinfo->progress->pass_counter = (long long)iMCU_row;
-        cinfo->progress->pass_limit = (long long)cinfo->total_iMCU_rows;
+        cinfo->progress->pass_counter = (IJG_LONG)iMCU_row;
+        cinfo->progress->pass_limit = (IJG_LONG)cinfo->total_iMCU_rows;
         (*cinfo->progress->progress_monitor)((j_common_ptr)cinfo);
       }
       /* We bypass the main controller and invoke coef controller directly;

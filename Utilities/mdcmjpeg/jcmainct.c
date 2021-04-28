@@ -282,7 +282,7 @@ jinit_c_main_controller(j_compress_ptr cinfo, boolean need_full_buffer)
         JPOOL_IMAGE,
         FALSE,
         compptr->width_in_data_units * data_unit,
-        (JDIMENSION)jround_up((long long)compptr->height_in_data_units, (long long)compptr->v_samp_factor) * data_unit,
+        (JDIMENSION)jround_up((IJG_LONG)compptr->height_in_data_units, (IJG_LONG)compptr->v_samp_factor) * data_unit,
         (JDIMENSION)(compptr->v_samp_factor * data_unit));
     }
 #else

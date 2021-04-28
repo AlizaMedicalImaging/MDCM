@@ -106,8 +106,8 @@
  * If you have plenty of memory and cycles, 6 bits all around gives marginally
  * better results; if you are short of memory, 5 bits all around will save
  * some space but degrade the results.
- * To maintain a fully accurate histogram, we'd need to allocate a "long long"
- * (preferably unsigned long long) for each cell.  In practice this is overkill;
+ * To maintain a fully accurate histogram, we'd need to allocate a "long"
+ * (preferably unsigned long) for each cell.  In practice this is overkill;
  * we can get by with 16 bits per cell.  Few of the cell counts will overflow,
  * and clamping those that do overflow to the maximum value will give close-
  * enough results.  This reduces the recommended histogram size from 256Kb
@@ -133,7 +133,7 @@
 #  define HIST_C1_BITS 6 /* bits of precision in G histogram */
 #  define HIST_C2_BITS 5 /* bits of precision in B/R histogram */
 
-/* Number of elements along long histogram axes. */
+/* Number of elements along histogram axes. */
 #  define HIST_C0_ELEMS (1 << HIST_C0_BITS)
 #  define HIST_C1_ELEMS (1 << HIST_C1_BITS)
 #  define HIST_C2_ELEMS (1 << HIST_C2_BITS)
@@ -171,7 +171,7 @@ typedef hist2d *     hist3d;            /* type for top-level pointer */
  *
  * The fserrors[] array has (#columns + 2) entries; the extra entry at
  * each end saves us from special-casing the first and last pixels.
- * Each entry is three values long long, one value for each color component.
+ * Each entry is three values long, one value for each color component.
  *
  * Note: on a wide image, we might not have enough room in a PC's near data
  * segment to hold the error array; so it is allocated with alloc_large.
@@ -266,7 +266,7 @@ typedef struct
   /* The volume (actually 2-norm) of the box */
   IJG_INT volume;
   /* The number of nonzero histogram cells within this box */
-  long long colorcount;
+  IJG_LONG colorcount;
 } box;
 
 typedef box * boxptr;
@@ -279,7 +279,7 @@ find_biggest_color_pop(boxptr boxlist, int numboxes)
 {
   register boxptr boxp;
   register int    i;
-  register long long   maxc = 0;
+  register IJG_LONG   maxc = 0;
   boxptr          which = NULL;
 
   for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++)
@@ -327,7 +327,7 @@ update_box(j_decompress_ptr cinfo, boxptr boxp)
   int              c0, c1, c2;
   int              c0min, c0max, c1min, c1max, c2min, c2max;
   IJG_INT          dist0, dist1, dist2;
-  long long        ccount;
+  IJG_LONG        ccount;
 
   c0min = boxp->c0min;
   c0max = boxp->c0max;
@@ -417,7 +417,7 @@ have_c2max:
 
   /* Update box volume.
    * We use 2-norm rather than real volume here; this biases the method
-   * against making long long narrow boxes, and it has the side benefit that
+   * against making long narrow boxes, and it has the side benefit that
    * a box is splittable iff norm > 0.
    * Since the differences are expressed in histogram-cell units,
    * we have to shift back to JSAMPLE units to get consistent distances;
@@ -476,7 +476,7 @@ median_cut(j_decompress_ptr cinfo, boxptr boxlist, int numboxes, int desired_col
     b2->c1min = b1->c1min;
     b2->c2min = b1->c2min;
     /* Choose which axis to split the box on.
-     * Current algorithm: long longest scaled axis.
+     * Current algorithm: longest scaled axis.
      * See notes in update_box about scaling distances.
      */
     c0 = ((b1->c0max - b1->c0min) << C0_SHIFT) * C0_SCALE;
@@ -510,7 +510,7 @@ median_cut(j_decompress_ptr cinfo, boxptr boxlist, int numboxes, int desired_col
       n = 0;
     }
 #  endif
-    /* Choose split point along long selected axis, and update box bounds.
+    /* Choose split point along selected axis, and update box bounds.
      * Current algorithm: split at halfway point.
      * (Since the box has been shrunk to minimum volume,
      * any split will produce two nonempty subboxes.)
@@ -554,11 +554,11 @@ compute_color(j_decompress_ptr cinfo, boxptr boxp, int icolor)
   histptr          histp;
   int              c0, c1, c2;
   int              c0min, c0max, c1min, c1max, c2min, c2max;
-  long long             count;
-  long long             total = 0;
-  long long             c0total = 0;
-  long long             c1total = 0;
-  long long             c2total = 0;
+  IJG_LONG             count;
+  IJG_LONG             total = 0;
+  IJG_LONG             c0total = 0;
+  IJG_LONG             c1total = 0;
+  IJG_LONG             c2total = 0;
 
   c0min = boxp->c0min;
   c0max = boxp->c0max;
@@ -1389,7 +1389,7 @@ jinit_2pass_quantizer(j_decompress_ptr cinfo)
   {
     /* Make sure color count is acceptable */
     int desired = cinfo->desired_number_of_colors;
-    /* Lower bound on # of colors ... somewhat arbitrary as long long as > 0 */
+    /* Lower bound on # of colors ... somewhat arbitrary as long as > 0 */
     if (desired < 8)
       ERREXIT1(cinfo, JERR_QUANT_FEW_COLORS, 8);
     /* Make sure colormap indexes can be represented by JSAMPLEs */
