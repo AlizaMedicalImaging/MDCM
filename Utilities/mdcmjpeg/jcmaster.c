@@ -51,7 +51,7 @@ initial_setup(j_compress_ptr cinfo)
 {
   int                   ci;
   jpeg_component_info * compptr;
-  IJG_LONG                  samplesperrow;
+  IJG_LONG              samplesperrow;
   JDIMENSION            jd_samplesperrow;
   int                   data_unit = cinfo->data_unit;
 

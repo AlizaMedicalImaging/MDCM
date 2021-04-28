@@ -205,7 +205,7 @@ LOCAL(void)
 master_selection(j_decompress_ptr cinfo)
 {
   my_master_ptr master = (my_master_ptr)cinfo->master;
-  IJG_LONG          samplesperrow;
+  IJG_LONG      samplesperrow;
   JDIMENSION    jd_samplesperrow;
 
   /* Initialize dimensions and other stuff */

@@ -193,7 +193,7 @@ select_ncolors(j_decompress_ptr cinfo, int Ncolors[])
   int              max_colors = cinfo->desired_number_of_colors;
   int              total_colors, iroot, i, j;
   boolean          changed;
-  IJG_LONG             temp;
+  IJG_LONG         temp;
   static const int RGB_order[3] = { RGB_GREEN, RGB_RED, RGB_BLUE };
 
   /* We can allocate at least the nc'th root of max_colors per component. */

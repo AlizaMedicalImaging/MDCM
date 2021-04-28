@@ -33,7 +33,7 @@ jpeg_add_quant_table(j_compress_ptr       cinfo,
 {
   JQUANT_TBL ** qtblptr;
   int           i;
-  IJG_LONG          temp;
+  IJG_LONG      temp;
 
   /* Safety check to ensure start_compress not called yet. */
   if (cinfo->global_state != CSTATE_START)

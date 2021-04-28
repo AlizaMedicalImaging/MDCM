@@ -277,10 +277,10 @@ find_biggest_color_pop(boxptr boxlist, int numboxes)
 /* Find the splittable box with the largest color population */
 /* Returns NULL if no splittable boxes remain */
 {
-  register boxptr boxp;
-  register int    i;
-  register IJG_LONG   maxc = 0;
-  boxptr          which = NULL;
+  register boxptr   boxp;
+  register int      i;
+  register IJG_LONG maxc = 0;
+  boxptr which = NULL;
 
   for (i = 0, boxp = boxlist; i < numboxes; i++, boxp++)
   {
@@ -327,7 +327,7 @@ update_box(j_decompress_ptr cinfo, boxptr boxp)
   int              c0, c1, c2;
   int              c0min, c0max, c1min, c1max, c2min, c2max;
   IJG_INT          dist0, dist1, dist2;
-  IJG_LONG        ccount;
+  IJG_LONG         ccount;
 
   c0min = boxp->c0min;
   c0max = boxp->c0max;
@@ -554,11 +554,11 @@ compute_color(j_decompress_ptr cinfo, boxptr boxp, int icolor)
   histptr          histp;
   int              c0, c1, c2;
   int              c0min, c0max, c1min, c1max, c2min, c2max;
-  IJG_LONG             count;
-  IJG_LONG             total = 0;
-  IJG_LONG             c0total = 0;
-  IJG_LONG             c1total = 0;
-  IJG_LONG             c2total = 0;
+  IJG_LONG         count;
+  IJG_LONG         total = 0;
+  IJG_LONG         c0total = 0;
+  IJG_LONG         c1total = 0;
+  IJG_LONG         c2total = 0;
 
   c0min = boxp->c0min;
   c0max = boxp->c0max;

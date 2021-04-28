@@ -404,7 +404,7 @@ alloc_sarray(j_common_ptr cinfo, int pool_id, JDIMENSION samplesperrow, JDIMENSI
   JSAMPARRAY result;
   JSAMPROW   workspace;
   JDIMENSION rowsperchunk, currow, i;
-  IJG_LONG       ltemp;
+  IJG_LONG   ltemp;
 
   /* Calculate max # of rows allowed in one allocation chunk */
   ltemp = (MAX_ALLOC_CHUNK - SIZEOF(large_pool_hdr)) / ((IJG_LONG)samplesperrow * SIZEOF(JSAMPLE));
@@ -450,7 +450,7 @@ alloc_barray(j_common_ptr cinfo, int pool_id, JDIMENSION blocksperrow, JDIMENSIO
   JBLOCKARRAY result;
   JBLOCKROW   workspace;
   JDIMENSION  rowsperchunk, currow, i;
-  IJG_LONG        ltemp;
+  IJG_LONG    ltemp;
 
   /* Calculate max # of rows allowed in one allocation chunk */
   ltemp = (MAX_ALLOC_CHUNK - SIZEOF(large_pool_hdr)) / ((IJG_LONG)blocksperrow * SIZEOF(JBLOCK));
@@ -498,7 +498,7 @@ alloc_darray(j_common_ptr cinfo, int pool_id, JDIMENSION diffsperrow, JDIMENSION
   JDIFFARRAY result;
   JDIFFROW   workspace;
   JDIMENSION rowsperchunk, currow, i;
-  IJG_LONG       ltemp;
+  IJG_LONG   ltemp;
 
   /* Calculate max # of rows allowed in one allocation chunk */
   ltemp = (MAX_ALLOC_CHUNK - SIZEOF(large_pool_hdr)) / ((IJG_LONG)diffsperrow * SIZEOF(JDIFF));
@@ -639,8 +639,8 @@ realize_virt_arrays(j_common_ptr cinfo)
 /* Allocate the in-memory buffers for any unrealized virtual arrays */
 {
   my_mem_ptr       mem = (my_mem_ptr)cinfo->mem;
-  IJG_LONG             space_per_minheight, maximum_space, avail_mem;
-  IJG_LONG             minheights, max_minheights;
+  IJG_LONG         space_per_minheight, maximum_space, avail_mem;
+  IJG_LONG         minheights, max_minheights;
   jvirt_sarray_ptr sptr;
   jvirt_barray_ptr bptr;
 
@@ -1115,7 +1115,7 @@ GLOBAL(void)
 jinit_memory_mgr(j_common_ptr cinfo)
 {
   my_mem_ptr mem;
-  IJG_LONG       max_to_use;
+  IJG_LONG   max_to_use;
   int        pool;
   size_t     test_mac;
 

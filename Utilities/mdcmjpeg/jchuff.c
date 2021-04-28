@@ -146,7 +146,7 @@ jpeg_gen_optimal_table(j_compress_ptr cinfo, JHUFF_TBL * htbl, IJG_LONG freq[])
   int       others[257];        /* next symbol in current branch of tree */
   int       c1, c2;
   int       p, i, j;
-  IJG_LONG      v;
+  IJG_LONG  v;
 
   /* This algorithm is explained in section K.2 of the JPEG standard */
 
