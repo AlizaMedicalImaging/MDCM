@@ -19,7 +19,7 @@
  * but don't destroy the object itself.
  *
  * For this, we merely clean up all the nonpermanent memory pools.
- * Note that temp files (virtual arrays) are not allowed to belong long to
+ * Note that temp files (virtual arrays) are not allowed to belong to
  * the permanent pool, so we will be able to close all temp files here.
  * Closing a data source or destination, if necessary, is the application's
  * responsibility.

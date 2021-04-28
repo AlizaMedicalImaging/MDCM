@@ -112,7 +112,7 @@ jpeg_abort_compress(j_compress_ptr cinfo)
  * by a subsequent jpeg_start_compress call.
  *
  * This routine is exported for use by applications that want to produce
- * abbreviated JPEG datastreams.  It logically belong longs in jcparam.c, but
+ * abbreviated JPEG datastreams.  It logically belongs in jcparam.c, but
  * since it is called by jpeg_start_compress, we put it here --- otherwise
  * jcparam.o would be linked whether the application used it or not.
  */

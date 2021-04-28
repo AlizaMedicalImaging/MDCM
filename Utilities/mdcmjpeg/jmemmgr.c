@@ -52,7 +52,7 @@ extern char * getenv JPP((const char * name));
 
 
 /*
- * Many machines require storage alignment: long longs must start on 4-byte
+ * Many machines require storage alignment: longs must start on 4-byte
  * boundaries, doubles on 8-byte boundaries, etc.  On such machines, malloc()
  * always returns pointers that are multiples of the worst-case alignment
  * requirement, and we had better do so too.
@@ -65,8 +65,8 @@ extern char * getenv JPP((const char * name));
  * you can save a few bytes by making ALIGN_TYPE smaller.
  * The only place I know of where this will NOT work is certain Macintosh
  * 680x0 compilers that define double as a 10-byte IEEE extended float.
- * Doing 10-byte alignment is counterproductive because long longwords won't be
- * aligned well.  Put "#define ALIGN_TYPE long long" in jconfig.h if you have
+ * Doing 10-byte alignment is counterproductive because long words won't be
+ * aligned well.  Put "#define ALIGN_TYPE long" in jconfig.h if you have
  * such a compiler.
  */
 
@@ -199,7 +199,7 @@ print_mem_stats(j_common_ptr cinfo, int pool_id)
 
   /* Since this is only a debugging stub, we can cheat a little by using
    * fprintf directly rather than going through the trace message code.
-   * This is helpful because message parm array can't handle long longs.
+   * This is helpful because message parm array can't handle longs.
    */
   fprintf(stderr, "Freeing pool %d, total space = %ld\n", pool_id, mem->total_space_allocated);
 
@@ -240,7 +240,7 @@ out_of_memory(j_common_ptr cinfo, int which)
  * A different slop value is provided for each pool class (lifetime),
  * and we also distinguish the first pool of a class from later ones.
  * NOTE: the values given work fairly well on both 16- and 32-bit-int
- * machines, but may be too small if long longs are 64 bits or more.
+ * machines, but may be too small if longs are 64 bits or more.
  */
 
 static const size_t first_pool_slop[JPOOL_NUMPOOLS] = {
@@ -1006,7 +1006,7 @@ access_virt_barray(j_common_ptr     cinfo,
 
 
 /*
- * Release all objects belong longing to a specified pool.
+ * Release all objects belonging to a specified pool.
  */
 
 METHODDEF(void)

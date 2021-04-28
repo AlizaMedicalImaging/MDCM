@@ -278,7 +278,7 @@ consume_data(j_decompress_ptr cinfo)
   {
     for (MCU_col_num = coef->MCU_ctr; MCU_col_num < cinfo->MCUs_per_row; MCU_col_num++)
     {
-      /* Construct list of pointers to DCT blocks belong longing to this MCU */
+      /* Construct list of pointers to DCT blocks belonging to this MCU */
       blkn = 0; /* index of current DCT block within MCU */
       for (ci = 0; ci < cinfo->comps_in_scan; ci++)
       {
