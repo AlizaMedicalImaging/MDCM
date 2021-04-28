@@ -158,7 +158,7 @@ start_pass_huff_decoder(j_decompress_ptr cinfo)
 
 static const int extend_test[18] = /* entry n is 2**(n-1) */
   { 0,      0x0001, 0x0002, 0x0004, 0x0008, 0x0010, 0x0020, 0x0040, 0x0080,
-    0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0,      0 };
+    0x0100, 0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000, 0 };
 
 static const int extend_offset[18] = /* entry n is (-1 << n) + 1 */
   { 0,
@@ -177,7 +177,7 @@ static const int extend_offset[18] = /* entry n is (-1 << n) + 1 */
     (int)((~0U) << 13) + 1,
     (int)((~0U) << 14) + 1,
     (int)((~0U) << 15) + 1,
-    0,
+    (int)((~0U) << 16) + 1,
     0 };
 
 #endif /* AVOID_TABLES */
