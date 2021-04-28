@@ -187,7 +187,7 @@ typedef unsigned int IJG_USHRT;
 typedef short IJG_SHRT;
 
 /* IJG_INT must hold at least signed 32-bit values. */
-typedef long IJG_INT;
+typedef int IJG_INT;
 
 typedef long long IJG_LONG;
 
