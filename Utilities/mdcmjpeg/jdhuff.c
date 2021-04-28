@@ -106,6 +106,7 @@ jpeg_make_d_derived_tbl(j_decompress_ptr cinfo, boolean isDC, int tblno, d_deriv
       dtbl->maxcode[l] = -1; /* -1 if no codes of this length */
     }
   }
+  dtbl->valoffset[17] = 0;
   dtbl->maxcode[17] = 0xFFFFFL; /* ensures jpeg_huff_decode terminates */
 
   /* Compute lookahead tables to speed up decoding.

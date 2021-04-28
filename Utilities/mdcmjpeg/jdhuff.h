@@ -29,7 +29,7 @@ typedef struct
   /* Basic tables: (element [0] of each array is unused) */
   IJG_INT maxcode[18]; /* largest code of length k (-1 if none) */
   /* (maxcode[17] is a sentinel to ensure jpeg_huff_decode terminates) */
-  IJG_INT valoffset[17]; /* huffval[] offset for codes of length k */
+  IJG_INT valoffset[18]; /* huffval[] offset for codes of length k */
   /* valoffset[k] = huffval[] index of 1st symbol of code length k, less
    * the smallest code of length k; so given a code of length k, the
    * corresponding symbol is huffval[code + valoffset[k]]
@@ -70,13 +70,11 @@ EXTERN(void) jpeg_make_d_derived_tbl JPP((j_decompress_ptr cinfo, boolean isDC, 
  */
 
 typedef IJG_INT bit_buf_type; /* type of bit-extraction buffer */
-#define BIT_BUF_SIZE 32       /* size of buffer in bits */
+#define BIT_BUF_SIZE (sizeof(bit_buf_type)*8) /* size of buffer in bits */
 
-/* If long is > 32 bits on your machine, and shifting/masking longs is
- * reasonably fast, making bit_buf_type be long and setting BIT_BUF_SIZE
- * appropriately should be a win.  Unfortunately we can't define the size
- * with something like  #define BIT_BUF_SIZE (sizeof(bit_buf_type)*8)
- * because not all machines measure sizeof in 8-bit bytes.
+/*
+ * Warning: define BIT_BUF_SIZE manually if plantform doesn't measure
+ * sizeof in 8-bit bytes!
  */
 
 typedef struct
