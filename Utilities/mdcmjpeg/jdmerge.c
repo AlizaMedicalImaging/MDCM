@@ -103,9 +103,9 @@ build_ycc_rgb_table(j_decompress_ptr cinfo)
     /* The Cb or Cr value we are thinking of is x = i - CENTERJSAMPLE */
     /* Cr=>R value is nearest int to 1.40200 * x */
 #  if (BITS_IN_JSAMPLE == 16 && REMOVE_OVERFLOW_WARN_JPEG16 == 1)
-    upsample->Cr_r_tab[i] = (int)RIGHT_SHIFT((IJG_INT)((IJG_LONG)FIX(1.40200) * x + ONE_HALF), SCALEBITS);
+    upsample->Cr_r_tab[i] = (int)RIGHT_SHIFT((IJG_INT)((long long)FIX(1.40200) * x + ONE_HALF), SCALEBITS);
     /* Cb=>B value is nearest int to 1.77200 * x */
-    upsample->Cb_b_tab[i] = (int)RIGHT_SHIFT((IJG_INT)((IJG_LONG)FIX(1.77200) * x + ONE_HALF), SCALEBITS);
+    upsample->Cb_b_tab[i] = (int)RIGHT_SHIFT((IJG_INT)((long long)FIX(1.77200) * x + ONE_HALF), SCALEBITS);
 #  else
     upsample->Cr_r_tab[i] = (int)RIGHT_SHIFT(FIX(1.40200) * x + ONE_HALF, SCALEBITS);
     /* Cb=>B value is nearest int to 1.77200 * x */
