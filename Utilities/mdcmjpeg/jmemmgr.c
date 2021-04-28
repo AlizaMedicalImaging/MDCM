@@ -65,7 +65,7 @@ extern char * getenv JPP((const char * name));
  * you can save a few bytes by making ALIGN_TYPE smaller.
  * The only place I know of where this will NOT work is certain Macintosh
  * 680x0 compilers that define double as a 10-byte IEEE extended float.
- * Doing 10-byte alignment is counterproductive because long words won't be
+ * Doing 10-byte alignment is counterproductive because longwords won't be
  * aligned well.  Put "#define ALIGN_TYPE long" in jconfig.h if you have
  * such a compiler.
  */

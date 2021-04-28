@@ -75,7 +75,6 @@ typedef my_downsampler * my_downsample_ptr;
 METHODDEF(void)
 start_pass_downsample(j_compress_ptr cinfo)
 {
-  (void)cinfo;
   /* no work for now */
 }
 
@@ -322,8 +321,8 @@ h2v2_smooth_downsample(j_compress_ptr        cinfo,
    * Also recall that SF = smoothing_factor / 1024.
    */
 
-  memberscale = 16384 - (IJG_INT)cinfo->smoothing_factor * 80; /* scaled (1-5*SF)/4 */
-  neighscale = (IJG_INT)cinfo->smoothing_factor * 16;          /* scaled SF/4 */
+  memberscale = 16384 - cinfo->smoothing_factor * 80; /* scaled (1-5*SF)/4 */
+  neighscale = cinfo->smoothing_factor * 16;          /* scaled SF/4 */
 
   inrow = 0;
   for (outrow = 0; outrow < compptr->v_samp_factor; outrow++)
@@ -415,8 +414,8 @@ fullsize_smooth_downsample(j_compress_ptr        cinfo,
    * Also recall that SF = smoothing_factor / 1024.
    */
 
-  memberscale = 65536L - (IJG_INT)cinfo->smoothing_factor * 512L; /* scaled 1-8*SF */
-  neighscale = (IJG_INT)cinfo->smoothing_factor * 64;             /* scaled SF */
+  memberscale = 65536 - cinfo->smoothing_factor * 512; /* scaled 1-8*SF */
+  neighscale = cinfo->smoothing_factor * 64;           /* scaled SF */
 
   for (outrow = 0; outrow < compptr->v_samp_factor; outrow++)
   {

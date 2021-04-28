@@ -57,7 +57,7 @@ const char * const jpeg_std_message_table[] = {
  * Error exit handler: must not return to caller.
  *
  * Applications may override this if they want to get control back after
- * an error.  Typically one would IJG_LONGjmp somewhere instead of exiting.
+ * an error.  Typically one would longjmp somewhere instead of exiting.
  * The setjmp buffer can be made a private field within an expanded error
  * handler object.  Note that the info needed to generate an error message
  * is stored in the error object, so you can generate the message now or

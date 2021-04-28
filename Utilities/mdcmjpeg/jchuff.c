@@ -73,9 +73,11 @@ jpeg_make_c_derived_tbl(j_compress_ptr cinfo, boolean isDC, int tblno, c_derived
       huffcode[p++] = code;
       code++;
     }
-    /* code is now 1 more than the last code used for codelength si; but
-     * it must still fit in si bits, since no code is allowed to be all ones.
-     * BUG FIX 2001-09-03: Comparison must be >, not >=
+    /* Code is now 1 more than the last code used for codelength si,
+     * but it must still fit in si bits, since no code is allowed to
+     * be all ones.
+     *
+     * Comparison changed from >= to >.
      */
     if (((IJG_INT)code) > (((IJG_INT)1) << si))
       ERREXIT(cinfo, JERR_BAD_HUFF_TABLE);
@@ -223,8 +225,7 @@ jpeg_gen_optimal_table(j_compress_ptr cinfo, JHUFF_TBL * htbl, IJG_LONG freq[])
   {
     if (codesize[i])
     {
-      /* The JPEG standard seems to think that this can't happen, */
-      /* but I'm paranoid... */
+      /* The JPEG standard seems to think that this can't happen. */
       if (codesize[i] > MAX_CLEN)
         ERREXIT(cinfo, JERR_HUFF_CLEN_OVERFLOW);
 

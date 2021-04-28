@@ -244,7 +244,6 @@ jpeg_undifference_first_row(j_decompress_ptr cinfo,
   j_lossless_d_ptr losslsd = (j_lossless_d_ptr)cinfo->codec;
 
   UNDIFFERENCE_1D(INITIAL_PREDICTORx);
-  (void)prev_row;
 
   /*
    * Now that we have undifferenced the first row, we want to use the
