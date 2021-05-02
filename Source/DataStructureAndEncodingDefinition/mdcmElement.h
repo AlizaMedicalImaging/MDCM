@@ -57,14 +57,18 @@ class EncodingImplementation;
 template <long long TVR, int TVM>
 class ElementDisableCombinations
 {};
+
 template <>
 class ElementDisableCombinations<VR::OB, VM::VM1_n>
 {};
+
 template <>
 class ElementDisableCombinations<VR::OW, VM::VM1_n>
 {};
+
 template <int TVM>
 class ElementDisableCombinations<VR::OB, TVM>;
+
 template <int TVM>
 class ElementDisableCombinations<VR::OW, TVM>;
 
@@ -99,16 +103,6 @@ public:
   GetLength() const
   {
     return VMToLength<TVM>::Length;
-  }
-
-  void
-  Print(std::ostream & _os) const
-  {
-    _os << Internal[0];
-    for (int i = 1; i < VMToLength<TVM>::Length; ++i)
-    {
-      _os << "," << Internal[i];
-    }
   }
 
   const typename VRToType<TVR>::Type *
@@ -189,6 +183,7 @@ public:
     return EncodingImplementation<VRToEncoding<TVR>::Mode>::Read(Internal, GetLength(), _is);
   }
   void
+
   Write(std::ostream & _os) const
   {
     return EncodingImplementation<VRToEncoding<TVR>::Mode>::Write(Internal, GetLength(), _os);
@@ -248,39 +243,30 @@ public:
   static inline void
   ReadComputeLength(T * data, unsigned int & length, std::istream & _is)
   {
-    assert(data);
     length = 0;
-    assert(_is);
-#if 0
-    char sep;
-    while(_is >> data[length++])
-    {
-      // Get the separator in between the values
-      assert(_is);
-      _is.get(sep);
-      if(sep == ' ') length--; // FIXME
-    }
-#else
+    if (!data)
+      return;
     while (_is >> std::ws >> data[length++] >> std::ws >> backslash)
     {
+      ;;
     }
-#endif
   }
 
   template <typename T> // may be VRToType<TVR>::Type
   static inline void
   Read(T * data, unsigned long length, std::istream & _is)
   {
-    assert(data);
-    assert(length);
-    assert(_is);
+    if (!data || length < 1)
+      return;
     _is >> std::ws >> data[0];
-    char sep;
-    for (unsigned long i = 1; i < length; ++i)
+    if (length > 1)
     {
-      assert(_is);
-      _is >> std::ws >> sep;
-      _is >> std::ws >> data[i];
+      char sep;
+      for (unsigned long i = 1; i < length; ++i)
+      {
+        _is >> std::ws >> sep;
+        _is >> std::ws >> data[i];
+      }
     }
   }
 
@@ -295,14 +281,15 @@ public:
   static inline void
   Write(const T * data, unsigned long length, std::ostream & _os)
   {
-    assert(data);
-    assert(length);
-    assert(_os);
+    if (!data || length < 1)
+      return;
     _os << data[0];
-    for (unsigned long i = 1; i < length; ++i)
+    if (length > 1)
     {
-      assert(_os);
-      _os << "\\" << data[i];
+      for (unsigned long i = 1; i < length; ++i)
+      {
+        _os << "\\" << data[i];
+      }
     }
   }
 };
@@ -494,9 +481,8 @@ template <>
 inline void
 EncodingImplementation<VR::VRASCII>::Write(const double * data, unsigned long length, std::ostream & _os)
 {
-  assert(data);
-  assert(length);
-  assert(_os);
+  if (!data || length < 1)
+    return;
 #ifdef VRDS16ILLEGAL
   _os << to_string(data[0]);
 #else
@@ -504,15 +490,17 @@ EncodingImplementation<VR::VRASCII>::Write(const double * data, unsigned long le
   x16printf(buf, 16, data[0]);
   _os << buf;
 #endif
-  for (unsigned long i = 1; i < length; ++i)
+  if (length > 1)
   {
-    assert(_os);
+    for (unsigned long i = 1; i < length; ++i)
+    {
 #ifdef VRDS16ILLEGAL
-    _os << "\\" << to_string(data[i]);
+      _os << "\\" << to_string(data[i]);
 #else
-    x16printf(buf, 16, data[i]);
-    _os << "\\" << buf;
+      x16printf(buf, 16, data[i]);
+      _os << "\\" << buf;
 #endif
+    }
   }
 }
 
@@ -524,14 +512,15 @@ public:
   static inline void
   ReadComputeLength(T * data, unsigned int & length, std::istream & _is)
   {
-    const unsigned int type_size = sizeof(T);
-    assert(data);
-    length /= type_size;
-    assert(_is);
-    _is.read(reinterpret_cast<char *>(data + 0), type_size);
-    for (unsigned long i = 1; i < length; ++i)
+    if (!data)
     {
-      assert(_is);
+      length = 0;
+      return;
+    }
+    const unsigned int type_size = sizeof(T);
+    length /= type_size;
+    for (unsigned long i = 0; i < length; ++i)
+    {
       _is.read(reinterpret_cast<char *>(data + i), type_size);
     }
   }
@@ -540,14 +529,11 @@ public:
   static inline void
   ReadNoSwap(T * data, unsigned long length, std::istream & _is)
   {
+    if (!data || length < 1)
+      return;
     const unsigned int type_size = sizeof(T);
-    assert(data);
-    assert(length);
-    assert(_is);
-    _is.read(reinterpret_cast<char *>(data + 0), type_size);
-    for (unsigned long i = 1; i < length; ++i)
+    for (unsigned long i = 0; i < length; ++i)
     {
-      assert(_is);
       _is.read(reinterpret_cast<char *>(data + i), type_size);
     }
   }
@@ -556,14 +542,11 @@ public:
   static inline void
   Read(T * data, unsigned long length, std::istream & _is)
   {
+    if (!data || length < 1)
+      return;
     const unsigned int type_size = sizeof(T);
-    assert(data);
-    assert(length);
-    assert(_is);
-    _is.read(reinterpret_cast<char *>(data + 0), type_size);
-    for (unsigned long i = 1; i < length; ++i)
+    for (unsigned long i = 0; i < length; ++i)
     {
-      assert(_is);
       _is.read(reinterpret_cast<char *>(data + i), type_size);
     }
     SwapperNoOp::SwapArray(data, length);
@@ -573,16 +556,12 @@ public:
   static inline void
   Write(const T * data, unsigned long length, std::ostream & _os)
   {
+    if (!data || length < 1)
+      return;
     const unsigned int type_size = sizeof(T);
-    assert(data);
-    assert(length);
-    assert(_os);
-    T swappedData = SwapperNoOp::Swap(data[0]);
-    _os.write(reinterpret_cast<const char *>(&swappedData), type_size);
-    for (unsigned long i = 1; i < length; ++i)
+    for (unsigned long i = 0; i < length; ++i)
     {
-      assert(_os);
-      swappedData = SwapperNoOp::Swap(data[i]);
+      const T swappedData = SwapperNoOp::Swap(data[i]);
       _os.write(reinterpret_cast<const char *>(&swappedData), type_size);
     }
   }
@@ -608,7 +587,8 @@ public:
   {
     if (Save)
     {
-      delete[] Internal;
+      if (Internal)
+        delete[] Internal;
     }
     Internal = NULL;
   }
@@ -618,6 +598,7 @@ public:
   {
     return (VR::VRType)TVR;
   }
+
   static VM
   GetVM()
   {
@@ -652,7 +633,7 @@ public:
           return;
         }
         assert(Save == false);
-        Save = true; // ?
+        Save = true; //
         if (Internal)
         {
           memcpy(internal, Internal, len);
@@ -664,7 +645,6 @@ public:
     Length = len / size;
   }
 
-  // If save is set to zero user should not delete the pointer
   void
   SetArray(const Type * array, unsigned long len, bool save = false)
   {
@@ -676,9 +656,8 @@ public:
     }
     else
     {
-      // TODO rewrite
       assert(Length == 0);
-      assert(Internal == 0);
+      assert(Internal == NULL);
       assert(Save == false);
       Length = len / sizeof(Type);
       if ((len / sizeof(Type)) * sizeof(Type) != len)
@@ -714,7 +693,10 @@ public:
     return Internal[idx];
   }
 
-  typename VRToType<TVR>::Type operator[](unsigned int idx) const { return GetValue(idx); }
+  typename VRToType<TVR>::Type operator[](unsigned int idx) const
+  {
+    return GetValue(idx);
+  }
 
   void
   Set(Value const & v)
@@ -727,7 +709,7 @@ public:
       const Type * array = (const Type *)bv->GetVoidPointer();
       if (array)
       {
-        assert(Internal == 0);
+        assert(Internal == NULL);
         SetArray(array, bv->GetLength());
       }
     }
@@ -771,12 +753,15 @@ public:
   void
   Print(std::ostream & _os) const
   {
-    assert(Length);
-    assert(Internal);
+    if (!Internal || Length < 1)
+      return;
     _os << Internal[0];
-    const unsigned long length = GetLength() < 25 ? GetLength() : 25;
-    for (unsigned long i = 1; i < length; ++i)
-      _os << "," << Internal[i];
+    if (Length > 1)
+    {
+      const unsigned long length = Length < 25 ? Length : 25; //
+      for (unsigned long i = 1; i < length; ++i)
+        _os << "," << Internal[i];
+    }
   }
 
   void
@@ -830,8 +815,12 @@ public:
   Element &
   operator=(const Element & _val)
   {
-    Length = 0;
-    Internal = 0;
+    if (Length > 0 && Internal != NULL)
+    {
+      // TODO check delete
+      Internal = NULL;
+      Length = 0;
+    }
     SetArray(_val.Internal, _val.Length, true);
     return *this;
   }
@@ -848,7 +837,7 @@ protected:
       const Type * array = (const Type *)bv->GetVoidPointer();
       if (array)
       {
-        assert(Internal == 0);
+        assert(Internal == NULL);
         SetArray(array, bv->GetLength());
       }
     }
