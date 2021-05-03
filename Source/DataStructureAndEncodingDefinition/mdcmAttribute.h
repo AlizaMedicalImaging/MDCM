@@ -424,7 +424,7 @@ public:
   {
     DataElement        ret(GetTag());
     std::ostringstream os;
-    EncodingImplementation<VRToEncoding<TVR>::Mode>::Write(&Internal, GetNumberOfValues(), os);
+    EncodingImplementation<VRToEncoding<TVR>::Mode>::WriteOne(Internal, GetNumberOfValues(), os);
     ret.SetVR(GetVR());
     assert(ret.GetVR() != VR::SQ);
     if ((VR::VRType)VRToEncoding<TVR>::Mode == VR::VRASCII)
@@ -491,7 +491,7 @@ protected:
     std::stringstream ss;
     std::string       s = std::string(bv->GetPointer(), bv->GetLength());
     ss.str(s);
-    EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadNoSwap(&Internal, GetNumberOfValues(), ss);
+    EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadNoSwapOne(Internal, GetNumberOfValues(), ss);
   }
 
   void
@@ -503,7 +503,7 @@ protected:
     std::stringstream ss;
     std::string       s = std::string(bv->GetPointer(), bv->GetLength());
     ss.str(s);
-    EncodingImplementation<VRToEncoding<TVR>::Mode>::Read(&Internal, GetNumberOfValues(), ss);
+    EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadOne(Internal, GetNumberOfValues(), ss);
   }
 };
 
@@ -747,7 +747,7 @@ protected:
 private:
   ArrayType *  Internal;
   unsigned int Length;
-  bool         Own : 1;
+  bool         Own;
 };
 
 template <uint16_t Group, uint16_t Element, long long TVR>
