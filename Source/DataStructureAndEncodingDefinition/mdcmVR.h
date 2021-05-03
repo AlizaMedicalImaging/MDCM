@@ -11,8 +11,12 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
+
+// clang-format off
+
 #ifndef MDCMVR_H
 #define MDCMVR_H
+
 
 #include "mdcmTag.h"
 #include "mdcmTrace.h"
@@ -111,17 +115,12 @@ public:
 
   static const char * GetVRString(VRType);
   // This function will only look at the very first two chars nothing else
-  static VRType
-  GetVRTypeFromFile(const char *);
-  static VRType
-                      GetVRType(const char *);
+  static VRType GetVRTypeFromFile(const char *);
+  static VRType GetVRType(const char *);
   static const char * GetVRStringFromFile(VRType);
-  static bool
-  IsValid(const char *);
-  static bool
-  IsValid(const char *, VRType);
-  static bool
-  IsSwap(const char *);
+  static bool IsValid(const char *);
+  static bool IsValid(const char *, VRType);
+  static bool IsSwap(const char *);
 
   unsigned int
   GetLength() const
@@ -215,19 +214,19 @@ template <long long T>
 struct VRToEncoding;
 template <long long T>
 struct VRToType;
-#define TYPETOENCODING(type, rep, rtype)                                                                               \
-  template <>                                                                                                          \
-  struct VRToEncoding<VR::type>                                                                                        \
-  {                                                                                                                    \
-    enum : long long                                                                                                   \
-    {                                                                                                                  \
-      Mode = VR::rep                                                                                                   \
-    };                                                                                                                 \
-  };                                                                                                                   \
-  template <>                                                                                                          \
-  struct VRToType<VR::type>                                                                                            \
-  {                                                                                                                    \
-    typedef rtype Type;                                                                                                \
+#define TYPETOENCODING(type, rep, rtype) \
+  template <>                            \
+  struct VRToEncoding<VR::type>          \
+  {                                      \
+    enum : long long                     \
+    {                                    \
+      Mode = VR::rep                     \
+    };                                   \
+  };                                     \
+  template <>                            \
+  struct VRToType<VR::type>              \
+  {                                      \
+    typedef rtype Type;                  \
   };
 
 
@@ -282,29 +281,56 @@ TYPETOENCODING(US, VRBINARY, unsigned short)
 TYPETOENCODING(UT, VRASCII, UTComp)
 TYPETOENCODING(UV, VRBINARY, unsigned long long)
 
-#define VRTypeTemplateCase(type)                                                                                       \
-  case VR::type:                                                                                                       \
+#define VRTypeTemplateCase(type)             \
+  case VR::type:                             \
     return sizeof(VRToType<VR::type>::Type);
 
 
 inline unsigned int
 VR::GetSize() const
 {
-  switch (VRField)
+  switch(VRField)
   {
-    VRTypeTemplateCase(AE) VRTypeTemplateCase(AS) VRTypeTemplateCase(AT) VRTypeTemplateCase(CS) VRTypeTemplateCase(DA)
-      VRTypeTemplateCase(DS) VRTypeTemplateCase(DT) VRTypeTemplateCase(FL) VRTypeTemplateCase(FD) VRTypeTemplateCase(IS)
-        VRTypeTemplateCase(LO) VRTypeTemplateCase(LT) VRTypeTemplateCase(OB) VRTypeTemplateCase(OD)
-          VRTypeTemplateCase(OF) VRTypeTemplateCase(OL) VRTypeTemplateCase(OV) VRTypeTemplateCase(OW)
-            VRTypeTemplateCase(PN) VRTypeTemplateCase(SH) VRTypeTemplateCase(SL) VRTypeTemplateCase(SQ)
-              VRTypeTemplateCase(SS) VRTypeTemplateCase(ST) VRTypeTemplateCase(SV) VRTypeTemplateCase(TM)
-                VRTypeTemplateCase(UC) VRTypeTemplateCase(UI) VRTypeTemplateCase(UL) VRTypeTemplateCase(UN)
-                  VRTypeTemplateCase(UR) VRTypeTemplateCase(US) VRTypeTemplateCase(UT)
-                    VRTypeTemplateCase(UV) case VR::US_SS : return 2;
-    case VR::INVALID:
-    case VR::OB_OW:
+    VRTypeTemplateCase(AE)
+    VRTypeTemplateCase(AS)
+    VRTypeTemplateCase(AT)
+    VRTypeTemplateCase(CS)
+    VRTypeTemplateCase(DA)
+    VRTypeTemplateCase(DS)
+    VRTypeTemplateCase(DT)
+    VRTypeTemplateCase(FL)
+    VRTypeTemplateCase(FD)
+    VRTypeTemplateCase(IS)
+    VRTypeTemplateCase(LO)
+    VRTypeTemplateCase(LT)
+    VRTypeTemplateCase(OB)
+    VRTypeTemplateCase(OD)
+    VRTypeTemplateCase(OF)
+    VRTypeTemplateCase(OL)
+    VRTypeTemplateCase(OV)
+    VRTypeTemplateCase(OW)
+    VRTypeTemplateCase(PN)
+    VRTypeTemplateCase(SH)
+    VRTypeTemplateCase(SL)
+    VRTypeTemplateCase(SQ)
+    VRTypeTemplateCase(SS)
+    VRTypeTemplateCase(ST)
+    VRTypeTemplateCase(SV)
+    VRTypeTemplateCase(TM)
+    VRTypeTemplateCase(UC)
+    VRTypeTemplateCase(UI)
+    VRTypeTemplateCase(UL)
+    VRTypeTemplateCase(UN)
+    VRTypeTemplateCase(UR)
+    VRTypeTemplateCase(US)
+    VRTypeTemplateCase(UT)
+    VRTypeTemplateCase(UV)
+    case VR::US_SS:
     case VR::US_SS_OW:
     case VR::US_OW:
+      return 2;
+    case VR::OB_OW: //
+    case VR::INVALID:
     case VR::VL16:
     case VR::VL32:
     case VR::VRASCII:
@@ -321,3 +347,5 @@ VR::GetSize() const
 } // end namespace mdcm
 
 #endif // MDCMVR_H
+
+// clang-format on

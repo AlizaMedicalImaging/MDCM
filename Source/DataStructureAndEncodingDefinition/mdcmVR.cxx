@@ -11,6 +11,9 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
+
+// clang-format off
+
 #include "mdcmVR.h"
 #include <algorithm>
 #include <cstring>
@@ -115,115 +118,117 @@ unsigned int
 VR::GetSizeof() const
 {
   unsigned int size;
-  switch (VRField)
+  switch(VRField)
   {
-    case VR::AE:
-      size = sizeof(VRToType<VR::AE>::Type);
-      break;
-    case VR::AS:
-      size = sizeof(VRToType<VR::AS>::Type);
-      break;
-    case VR::AT:
-      size = sizeof(VRToType<VR::AT>::Type);
-      break;
-    case VR::CS:
-      size = sizeof(VRToType<VR::CS>::Type);
-      break;
-    case VR::DA:
-      size = sizeof(VRToType<VR::DA>::Type);
-      break;
-    case VR::DS:
-      size = sizeof(VRToType<VR::DS>::Type);
-      break;
-    case VR::DT:
-      size = sizeof(VRToType<VR::DT>::Type);
-      break;
-    case VR::FD:
-      size = sizeof(VRToType<VR::FD>::Type);
-      break;
-    case VR::FL:
-      size = sizeof(VRToType<VR::FL>::Type);
-      break;
-    case VR::IS:
-      size = sizeof(VRToType<VR::IS>::Type);
-      break;
-    case VR::LO:
-      size = sizeof(VRToType<VR::LO>::Type);
-      break;
-    case VR::LT:
-      size = sizeof(VRToType<VR::LT>::Type);
-      break;
-    case VR::OB:
-      size = sizeof(VRToType<VR::OB>::Type);
-      break;
-    case VR::OD:
-      size = sizeof(VRToType<VR::OD>::Type);
-      break;
-    case VR::OF:
-      size = sizeof(VRToType<VR::OF>::Type);
-      break;
-    case VR::OL:
-      size = sizeof(VRToType<VR::OL>::Type);
-      break;
-    case VR::OV:
-      size = sizeof(VRToType<VR::OV>::Type);
-      break;
-    case VR::OW:
-      size = sizeof(VRToType<VR::OW>::Type);
-      break;
-    case VR::PN:
-      size = sizeof(VRToType<VR::PN>::Type);
-      break;
-    case VR::SH:
-      size = sizeof(VRToType<VR::SH>::Type);
-      break;
-    case VR::SL:
-      size = sizeof(VRToType<VR::SL>::Type);
-      break;
-    case VR::SQ:
-      size = sizeof(VRToType<VR::SQ>::Type);
-      break;
-    case VR::SS:
-      size = sizeof(VRToType<VR::SS>::Type);
-      break;
-    case VR::ST:
-      size = sizeof(VRToType<VR::ST>::Type);
-      break;
-    case VR::SV:
-      size = sizeof(VRToType<VR::SV>::Type);
-      break;
-    case VR::TM:
-      size = sizeof(VRToType<VR::TM>::Type);
-      break;
-    case VR::UC:
-      size = sizeof(VRToType<VR::UC>::Type);
-      break;
-    case VR::UI:
-      size = sizeof(VRToType<VR::UI>::Type);
-      break;
-    case VR::UL:
-      size = sizeof(VRToType<VR::UL>::Type);
-      break;
-    case VR::UN:
-      size = sizeof(VRToType<VR::UN>::Type);
-      break;
-    case VR::UR:
-      size = sizeof(VRToType<VR::UR>::Type);
-      break;
-    case VR::US:
-      size = sizeof(VRToType<VR::US>::Type);
-      break;
-    case VR::UT:
-      size = sizeof(VRToType<VR::UT>::Type);
-      break;
-    case VR::UV:
-      size = sizeof(VRToType<VR::UV>::Type);
-      break;
-    case VR::US_SS:
-      size = sizeof(VRToType<VR::US>::Type); //
-      break;
-    default:
-      size = 0;
+  case VR::AE:
+    size = sizeof(VRToType<VR::AE>::Type);
+    break;
+  case VR::AS:
+    size = sizeof(VRToType<VR::AS>::Type);
+    break;
+  case VR::AT:
+    size = sizeof(VRToType<VR::AT>::Type);
+    break;
+  case VR::CS:
+    size = sizeof(VRToType<VR::CS>::Type);
+    break;
+  case VR::DA:
+    size = sizeof(VRToType<VR::DA>::Type);
+    break;
+  case VR::DS:
+    size = sizeof(VRToType<VR::DS>::Type);
+    break;
+  case VR::DT:
+    size = sizeof(VRToType<VR::DT>::Type);
+    break;
+  case VR::FD:
+    size = sizeof(VRToType<VR::FD>::Type);
+    break;
+  case VR::FL:
+    size = sizeof(VRToType<VR::FL>::Type);
+    break;
+  case VR::IS:
+    size = sizeof(VRToType<VR::IS>::Type);
+    break;
+  case VR::LO:
+    size = sizeof(VRToType<VR::LO>::Type);
+    break;
+  case VR::LT:
+    size = sizeof(VRToType<VR::LT>::Type);
+    break;
+  case VR::OB:
+    size = sizeof(VRToType<VR::OB>::Type);
+    break;
+  case VR::OD:
+    size = sizeof(VRToType<VR::OD>::Type);
+    break;
+  case VR::OF:
+    size = sizeof(VRToType<VR::OF>::Type);
+    break;
+  case VR::OL:
+    size = sizeof(VRToType<VR::OL>::Type);
+    break;
+  case VR::OV:
+    size = sizeof(VRToType<VR::OV>::Type);
+    break;
+  case VR::OW:
+    size = sizeof(VRToType<VR::OW>::Type);
+    break;
+  case VR::PN:
+    size = sizeof(VRToType<VR::PN>::Type);
+    break;
+  case VR::SH:
+    size = sizeof(VRToType<VR::SH>::Type);
+    break;
+  case VR::SL:
+    size = sizeof(VRToType<VR::SL>::Type);
+    break;
+  case VR::SQ:
+    size = sizeof(VRToType<VR::SQ>::Type);
+    break;
+  case VR::SS:
+    size = sizeof(VRToType<VR::SS>::Type);
+    break;
+  case VR::ST:
+    size = sizeof(VRToType<VR::ST>::Type);
+    break;
+  case VR::SV:
+    size = sizeof(VRToType<VR::SV>::Type);
+    break;
+  case VR::TM:
+    size = sizeof(VRToType<VR::TM>::Type);
+    break;
+  case VR::UC:
+    size = sizeof(VRToType<VR::UC>::Type);
+    break;
+  case VR::UI:
+    size = sizeof(VRToType<VR::UI>::Type);
+    break;
+  case VR::UL:
+    size = sizeof(VRToType<VR::UL>::Type);
+    break;
+  case VR::UN:
+    size = sizeof(VRToType<VR::UN>::Type);
+    break;
+  case VR::UR:
+    size = sizeof(VRToType<VR::UR>::Type);
+    break;
+  case VR::US:
+    size = sizeof(VRToType<VR::US>::Type);
+    break;
+  case VR::UT:
+    size = sizeof(VRToType<VR::UT>::Type);
+    break;
+  case VR::UV:
+    size = sizeof(VRToType<VR::UV>::Type);
+    break;
+  case VR::US_SS:
+  case VR::US_SS_OW:
+  case VR::US_OW:
+    size = sizeof(short); //
+    break;
+  default:
+    size = 0;
   }
   assert(size);
   return size;
@@ -389,27 +394,55 @@ VR::IsSwap(const char * vr)
   return (GetVRType(vr_swap) != VR::VR_END);
 }
 
-#define VRTemplateCase(type, rep)                                                                                      \
-  case VR::type:                                                                                                       \
-    return (VR::VRType)VRToEncoding<VR::type>::Mode == VR::rep;
+#define VRTemplateCase(type, rep) \
+  case VR::type: \
+    return (VR::VRType)VRToEncoding<VR::type>::Mode  \
+       == VR::rep;
 
-#define VRTemplate(rep)                                                                                                \
-  VRTemplateCase(UI, rep) VRTemplateCase(AE, rep) VRTemplateCase(AS, rep) VRTemplateCase(AT, rep)                      \
-    VRTemplateCase(CS, rep) VRTemplateCase(DA, rep) VRTemplateCase(DS, rep) VRTemplateCase(DT, rep)                    \
-      VRTemplateCase(FD, rep) VRTemplateCase(FL, rep) VRTemplateCase(IS, rep) VRTemplateCase(LO, rep)                  \
-        VRTemplateCase(LT, rep) VRTemplateCase(OB, rep) VRTemplateCase(OD, rep) VRTemplateCase(OF, rep)                \
-          VRTemplateCase(OL, rep) VRTemplateCase(OV, rep) VRTemplateCase(OW, rep) VRTemplateCase(PN, rep)              \
-            VRTemplateCase(SH, rep) VRTemplateCase(SL, rep) VRTemplateCase(SQ, rep) VRTemplateCase(SS, rep)            \
-              VRTemplateCase(ST, rep) VRTemplateCase(SV, rep) VRTemplateCase(TM, rep) VRTemplateCase(UC, rep)          \
-                VRTemplateCase(UL, rep) VRTemplateCase(UN, rep) VRTemplateCase(UR, rep) VRTemplateCase(US, rep)        \
-                  VRTemplateCase(UT, rep) VRTemplateCase(UV, rep)
+#define VRTemplate(rep) \
+VRTemplateCase(UI,rep) \
+VRTemplateCase(AE,rep) \
+VRTemplateCase(AS,rep) \
+VRTemplateCase(AT,rep) \
+VRTemplateCase(CS,rep) \
+VRTemplateCase(DA,rep) \
+VRTemplateCase(DS,rep) \
+VRTemplateCase(DT,rep) \
+VRTemplateCase(FD,rep) \
+VRTemplateCase(FL,rep) \
+VRTemplateCase(IS,rep) \
+VRTemplateCase(LO,rep) \
+VRTemplateCase(LT,rep) \
+VRTemplateCase(OB,rep) \
+VRTemplateCase(OD,rep) \
+VRTemplateCase(OF,rep) \
+VRTemplateCase(OL,rep) \
+VRTemplateCase(OV,rep) \
+VRTemplateCase(OW,rep) \
+VRTemplateCase(PN,rep) \
+VRTemplateCase(SH,rep) \
+VRTemplateCase(SL,rep) \
+VRTemplateCase(SQ,rep) \
+VRTemplateCase(SS,rep) \
+VRTemplateCase(ST,rep) \
+VRTemplateCase(SV,rep) \
+VRTemplateCase(TM,rep) \
+VRTemplateCase(UC,rep) \
+VRTemplateCase(UL,rep) \
+VRTemplateCase(UN,rep) \
+VRTemplateCase(UR,rep) \
+VRTemplateCase(US,rep) \
+VRTemplateCase(UT,rep) \
+VRTemplateCase(UV,rep)
 
 bool
 VR::IsASCII(VRType vr)
 {
   switch (vr)
   {
-    VRTemplate(VRASCII) default : return false;
+    VRTemplate(VRASCII)
+    default:
+      return false;
   }
 }
 
@@ -426,7 +459,9 @@ VR::IsBinary(VRType vr)
 {
   switch (vr)
   {
-    VRTemplate(VRBINARY) case VR::US_SS_OW : return true;
+    VRTemplate(VRBINARY)
+    case VR::US_SS_OW:
+      return true;
     case VR::US_SS:
       return true;
     case VR::OB_OW:
@@ -468,3 +503,5 @@ VR::IsDual() const
 }
 
 } // end of namespace mdcm
+
+// clang-format on
