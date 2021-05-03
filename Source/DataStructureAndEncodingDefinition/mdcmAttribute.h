@@ -114,21 +114,25 @@ public:
   MDCM_STATIC_ASSERT(((VM::VMType)TVM & (VM::VMType)(TagToType<Group, Element>::VMType)));
   MDCM_STATIC_ASSERT(((((VR::VRType)TVR & VR::VR_VM1) && ((VM::VMType)TVM == VM::VM1)) ||
                       !((VR::VRType)TVR & VR::VR_VM1)));
+
   static Tag
   GetTag()
   {
     return Tag(Group, Element);
   }
+
   static VR
   GetVR()
   {
     return (VR::VRType)TVR;
   }
+
   static VM
   GetVM()
   {
     return (VM::VMType)TVM;
   }
+
   // The following two methods do make sense only in case of public element,
   // when the template is intanciated with private element the VR/VM are simply
   // defaulted to allow everything (see mdcmTagToType.h default template for TagToType)
@@ -137,16 +141,19 @@ public:
   {
     return (VR::VRType)(TagToType<Group, Element>::VRType);
   }
+
   static VM
   GetDictVM()
   {
     return (VM::VMType)(TagToType<Group, Element>::VMType);
   }
+
   unsigned int
   GetNumberOfValues() const
   {
     return VMToLength<TVM>::Length;
   }
+
   void
   Print(std::ostream & os) const
   {
@@ -320,21 +327,25 @@ public:
   MDCM_STATIC_ASSERT(((VM::VMType)VM::VM1 & (VM::VMType)(TagToType<Group, Element>::VMType)));
   MDCM_STATIC_ASSERT(((((VR::VRType)TVR & VR::VR_VM1) && ((VM::VMType)VM::VM1 == VM::VM1)) ||
                       !((VR::VRType)TVR & VR::VR_VM1)));
+
   static Tag
   GetTag()
   {
     return Tag(Group, Element);
   }
+
   static VR
   GetVR()
   {
     return (VR::VRType)TVR;
   }
+
   static VM
   GetVM()
   {
     return (VM::VMType)VM::VM1;
   }
+
   // The following two methods do make sense only in case of public element,
   // when the template is intanciated with private element the VR/VM are simply
   // defaulted to allow everything (see mdcmTagToType.h default template for TagToType)
@@ -343,11 +354,13 @@ public:
   {
     return (VR::VRType)(TagToType<Group, Element>::VRType);
   }
+
   static VM
   GetDictVM()
   {
     return (VM::VMType)(TagToType<Group, Element>::VMType);
   }
+
   unsigned int
   GetNumberOfValues() const
   {
@@ -399,7 +412,6 @@ public:
   {
     Internal = v;
   }
-
 
   const ArrayType *
   GetValues() const
@@ -505,31 +517,37 @@ public:
   MDCM_STATIC_ASSERT((VM::VM1_n & (VM::VMType)(TagToType<Group, Element>::VMType)));
   MDCM_STATIC_ASSERT(((((VR::VRType)TVR & VR::VR_VM1) && ((VM::VMType)TagToType<Group, Element>::VMType == VM::VM1)) ||
                       !((VR::VRType)TVR & VR::VR_VM1)));
+
   static Tag
   GetTag()
   {
     return Tag(Group, Element);
   }
+
   static VR
   GetVR()
   {
     return (VR::VRType)TVR;
   }
+
   static VM
   GetVM()
   {
     return VM::VM1_n;
   }
+
   static VR
   GetDictVR()
   {
     return (VR::VRType)(TagToType<Group, Element>::VRType);
   }
+
   static VM
   GetDictVM()
   {
     return GetVM();
   }
+
   explicit Attribute()
   {
     Internal = NULL;
