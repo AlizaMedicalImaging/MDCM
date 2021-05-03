@@ -747,7 +747,7 @@ protected:
 private:
   ArrayType *  Internal;
   unsigned int Length;
-  bool         Own : 1;
+  bool         Own;
 };
 
 template <uint16_t Group, uint16_t Element, long long TVR>
