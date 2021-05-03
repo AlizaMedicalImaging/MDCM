@@ -100,17 +100,17 @@ public:
     //
     VR_END = UV + 1,
     //
-    OB_OW = OB | OW,
-    US_SS = US | SS,
+    OB_OW    = OB | OW,
+    US_SS    = US | SS,
     US_SS_OW = US | SS | OW,
-    US_OW = US | OW,
+    US_OW    = US | OW,
     //
-    VL16 = AE | AS | AT | CS | DA | DS | DT | FD | FL | IS | LO | LT | PN | SH | SL | SS | ST | TM | UI | UL | US,
-    VL32 = OB | OW | OD | OF | OL | OV | SQ | SV | UC | UN | UR | UT | UV,
-    VRASCII = AE | AS | CS | DA | DS | DT | IS | LO | LT | PN | SH | ST | TM | UC | UI | UR | UT,
+    VL16     = AE | AS | AT | CS | DA | DS | DT | FD | FL | IS | LO | LT | PN | SH | SL | SS | ST | TM | UI | UL | US,
+    VL32     = OB | OW | OD | OF | OL | OV | SQ | SV | UC | UN | UR | UT | UV,
+    VRASCII  = AE | AS | CS | DA | DS | DT | IS | LO | LT | PN | SH | ST | TM | UC | UI | UR | UT,
     VRBINARY = AT | FL | FD | OB | OD | OF | OL | OV | OW | SL | SQ | SS | SV | UL | UN | US | UV,
-    VR_VM1 = AS | LT | ST | UT | SQ | OF | OL | OV | OD | OW | OB | UN,
-    VRALL = VRASCII | VRBINARY
+    VR_VM1   = AS | LT | ST | UT | SQ | OF | OL | OV | OD | OW | OB | UN,
+    VRALL    = VRASCII | VRBINARY
   } VRType;
 
   static const char * GetVRString(VRType);
@@ -227,7 +227,7 @@ struct VRToType;
   struct VRToType<VR::type>              \
   {                                      \
     typedef rtype Type;                  \
-  };
+  }
 
 
 typedef String<'\\', 16>         AEComp;
@@ -246,40 +246,40 @@ typedef String<'\\', 16>         TMComp;
 typedef String<'\\', 64, 0>      UIComp;
 typedef String<'\\', 64>         UTComp;
 
-TYPETOENCODING(AE, VRASCII, AEComp)
-TYPETOENCODING(AS, VRASCII, ASComp)
-TYPETOENCODING(AT, VRBINARY, Tag)
-TYPETOENCODING(CS, VRASCII, CSComp)
-TYPETOENCODING(DA, VRASCII, DAComp)
-TYPETOENCODING(DS, VRASCII, double)
-TYPETOENCODING(DT, VRASCII, DTComp)
-TYPETOENCODING(FL, VRBINARY, float)
-TYPETOENCODING(FD, VRBINARY, double)
-TYPETOENCODING(IS, VRASCII, signed int)
-TYPETOENCODING(LO, VRASCII, LOComp)
-TYPETOENCODING(LT, VRASCII, LTComp)
-TYPETOENCODING(OB, VRBINARY, unsigned char)
-TYPETOENCODING(OD, VRBINARY, double)
-TYPETOENCODING(OF, VRBINARY, float)
-TYPETOENCODING(OL, VRBINARY, unsigned int)
-TYPETOENCODING(OV, VRBINARY, unsigned long long)
-TYPETOENCODING(OW, VRBINARY, unsigned short)
-TYPETOENCODING(PN, VRASCII, PNComp)
-TYPETOENCODING(SH, VRASCII, SHComp)
-TYPETOENCODING(SL, VRBINARY, signed int)
-TYPETOENCODING(SQ, VRBINARY, unsigned char)
-TYPETOENCODING(SS, VRBINARY, signed short)
-TYPETOENCODING(ST, VRASCII, STComp)
-TYPETOENCODING(SV, VRBINARY, signed long long)
-TYPETOENCODING(TM, VRASCII, TMComp)
-TYPETOENCODING(UC, VRASCII, UCComp)
-TYPETOENCODING(UI, VRASCII, UIComp)
-TYPETOENCODING(UL, VRBINARY, unsigned int)
-TYPETOENCODING(UN, VRBINARY, unsigned char)
-TYPETOENCODING(UR, VRASCII, URComp)
-TYPETOENCODING(US, VRBINARY, unsigned short)
-TYPETOENCODING(UT, VRASCII, UTComp)
-TYPETOENCODING(UV, VRBINARY, unsigned long long)
+TYPETOENCODING(AE, VRASCII,  AEComp);
+TYPETOENCODING(AS, VRASCII,  ASComp);
+TYPETOENCODING(AT, VRBINARY, Tag);
+TYPETOENCODING(CS, VRASCII,  CSComp);
+TYPETOENCODING(DA, VRASCII,  DAComp);
+TYPETOENCODING(DS, VRASCII,  double);
+TYPETOENCODING(DT, VRASCII,  DTComp);
+TYPETOENCODING(FL, VRBINARY, float);
+TYPETOENCODING(FD, VRBINARY, double);
+TYPETOENCODING(IS, VRASCII,  signed int);
+TYPETOENCODING(LO, VRASCII,  LOComp);
+TYPETOENCODING(LT, VRASCII,  LTComp);
+TYPETOENCODING(OB, VRBINARY, unsigned char);
+TYPETOENCODING(OD, VRBINARY, double);
+TYPETOENCODING(OF, VRBINARY, float);
+TYPETOENCODING(OL, VRBINARY, unsigned int);
+TYPETOENCODING(OV, VRBINARY, unsigned long long);
+TYPETOENCODING(OW, VRBINARY, unsigned short);
+TYPETOENCODING(PN, VRASCII,  PNComp);
+TYPETOENCODING(SH, VRASCII,  SHComp);
+TYPETOENCODING(SL, VRBINARY, signed int);
+TYPETOENCODING(SQ, VRBINARY, unsigned char);
+TYPETOENCODING(SS, VRBINARY, signed short);
+TYPETOENCODING(ST, VRASCII,  STComp);
+TYPETOENCODING(SV, VRBINARY, signed long long);
+TYPETOENCODING(TM, VRASCII,  TMComp);
+TYPETOENCODING(UC, VRASCII,  UCComp);
+TYPETOENCODING(UI, VRASCII,  UIComp);
+TYPETOENCODING(UL, VRBINARY, unsigned int);
+TYPETOENCODING(UN, VRBINARY, unsigned char);
+TYPETOENCODING(UR, VRASCII,  URComp);
+TYPETOENCODING(US, VRBINARY, unsigned short);
+TYPETOENCODING(UT, VRASCII,  UTComp);
+TYPETOENCODING(UV, VRBINARY, unsigned long long);
 
 #define VRTypeTemplateCase(type)             \
   case VR::type:                             \
@@ -291,40 +291,40 @@ VR::GetSize() const
 {
   switch(VRField)
   {
-    VRTypeTemplateCase(AE)
-    VRTypeTemplateCase(AS)
-    VRTypeTemplateCase(AT)
-    VRTypeTemplateCase(CS)
-    VRTypeTemplateCase(DA)
-    VRTypeTemplateCase(DS)
-    VRTypeTemplateCase(DT)
-    VRTypeTemplateCase(FL)
-    VRTypeTemplateCase(FD)
-    VRTypeTemplateCase(IS)
-    VRTypeTemplateCase(LO)
-    VRTypeTemplateCase(LT)
-    VRTypeTemplateCase(OB)
-    VRTypeTemplateCase(OD)
-    VRTypeTemplateCase(OF)
-    VRTypeTemplateCase(OL)
-    VRTypeTemplateCase(OV)
-    VRTypeTemplateCase(OW)
-    VRTypeTemplateCase(PN)
-    VRTypeTemplateCase(SH)
-    VRTypeTemplateCase(SL)
-    VRTypeTemplateCase(SQ)
-    VRTypeTemplateCase(SS)
-    VRTypeTemplateCase(ST)
-    VRTypeTemplateCase(SV)
-    VRTypeTemplateCase(TM)
-    VRTypeTemplateCase(UC)
-    VRTypeTemplateCase(UI)
-    VRTypeTemplateCase(UL)
-    VRTypeTemplateCase(UN)
-    VRTypeTemplateCase(UR)
-    VRTypeTemplateCase(US)
-    VRTypeTemplateCase(UT)
-    VRTypeTemplateCase(UV)
+    VRTypeTemplateCase(AE);
+    VRTypeTemplateCase(AS);
+    VRTypeTemplateCase(AT);
+    VRTypeTemplateCase(CS);
+    VRTypeTemplateCase(DA);
+    VRTypeTemplateCase(DS);
+    VRTypeTemplateCase(DT);
+    VRTypeTemplateCase(FL);
+    VRTypeTemplateCase(FD);
+    VRTypeTemplateCase(IS);
+    VRTypeTemplateCase(LO);
+    VRTypeTemplateCase(LT);
+    VRTypeTemplateCase(OB);
+    VRTypeTemplateCase(OD);
+    VRTypeTemplateCase(OF);
+    VRTypeTemplateCase(OL);
+    VRTypeTemplateCase(OV);
+    VRTypeTemplateCase(OW);
+    VRTypeTemplateCase(PN);
+    VRTypeTemplateCase(SH);
+    VRTypeTemplateCase(SL);
+    VRTypeTemplateCase(SQ);
+    VRTypeTemplateCase(SS);
+    VRTypeTemplateCase(ST);
+    VRTypeTemplateCase(SV);
+    VRTypeTemplateCase(TM);
+    VRTypeTemplateCase(UC);
+    VRTypeTemplateCase(UI);
+    VRTypeTemplateCase(UL);
+    VRTypeTemplateCase(UN);
+    VRTypeTemplateCase(UR);
+    VRTypeTemplateCase(US);
+    VRTypeTemplateCase(UT);
+    VRTypeTemplateCase(UV);
     case VR::US_SS:
     case VR::US_SS_OW:
     case VR::US_OW:
