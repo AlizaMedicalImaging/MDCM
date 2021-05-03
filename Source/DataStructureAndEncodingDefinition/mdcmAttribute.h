@@ -570,9 +570,9 @@ public:
   }
 
   void
-  SetNumberOfValues(unsigned int numel)
+  SetNumberOfValues(unsigned int n)
   {
-    SetValues(NULL, numel, true);
+    SetValues(NULL, n, true);
   }
 
   const ArrayType *
@@ -587,9 +587,13 @@ public:
     os << GetTag() << " ";
     os << GetVR() << " ";
     os << GetVM() << " ";
-    os << Internal[0];
-    for (unsigned int i = 1; i < GetNumberOfValues(); ++i)
-      os << "," << Internal[i];
+    if (Length > 0)
+      os << Internal[0];
+    if (Length > 1)
+    {
+      for (unsigned int i = 1; i < GetNumberOfValues(); ++i)
+        os << "," << Internal[i];
+    }
   }
 
   ArrayType &
@@ -713,35 +717,23 @@ protected:
   {
     if (!bv)
       return;
-    // TODO
     std::stringstream ss;
     std::string       s = std::string(bv->GetPointer(), bv->GetLength());
     Length = bv->GetLength(); // overallocation
     ss.str(s);
     ArrayType * internal;
-    ArrayType   buffer[256];
-    if (bv->GetLength() < 256)
+    try
     {
-      internal = buffer;
+      internal = new ArrayType[(VL::Type)bv->GetLength()]; // overallocation
     }
-    else
+    catch (std::bad_alloc &)
     {
-      try
-      {
-        // overallocation
-        internal = new ArrayType[(VL::Type)bv->GetLength()];
-      }
-      catch (std::bad_alloc &)
-      {
-        return;
-      }
+      return;
     }
+    // update length
     EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadComputeLength(internal, Length, ss);
     SetValues(internal, Length, true);
-    if (!(bv->GetLength() < 256))
-    {
-      delete[] internal;
-    }
+    delete[] internal;
   }
 
 private:
