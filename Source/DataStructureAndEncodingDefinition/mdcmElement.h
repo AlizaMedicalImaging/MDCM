@@ -683,6 +683,7 @@ public:
     Length = 0;
     Save = false;
   }
+
   ~Element()
   {
     if (Save)
@@ -1090,6 +1091,7 @@ public:
   {
     _os << Internal;
   }
+
   unsigned long
   GetLength() const
   {
