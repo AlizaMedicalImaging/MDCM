@@ -209,7 +209,7 @@ ImplicitDataElement::ReadValue(std::istream & is, bool readvalues)
   {
     // TestImages/elbow.pap
     mdcmWarningMacro("Replacing a VL. To be able to read a supposively "
-                     "broken Payrus file.");
+                     "broken Papyrus file.");
     ValueLengthField = 202; // 0xca
   }
 #endif
@@ -229,23 +229,30 @@ ImplicitDataElement::ReadValue(std::istream & is, bool readvalues)
     assert(vrsize == 1 || vrsize == 2 || vrsize == 4 || vrsize == 8);
     if (vrfield == VR::AT)
       vrsize = 2;
-    switch (vrsize)
+    if (vrfield == VR::OF || vrfield == VR::OD || vrfield == VR::FD || vrfield == VR::FL)
     {
-      case 1:
-        failed = !ValueIO<ImplicitDataElement, TSwap, uint8_t>::Read(is, *ValueField, readvalues);
-        break;
-      case 2:
-        failed = !ValueIO<ImplicitDataElement, TSwap, uint16_t>::Read(is, *ValueField, readvalues);
-        break;
-      case 4:
-        failed = !ValueIO<ImplicitDataElement, TSwap, uint32_t>::Read(is, *ValueField, readvalues);
-        break;
-      case 8:
-        failed = !ValueIO<ImplicitDataElement, TSwap, uint64_t>::Read(is, *ValueField, readvalues);
-        break;
-      default:
-        failed = true;
-        assert(0);
+      failed = !ValueIO<ImplicitDataElement, TSwap>::Read(is, *ValueField, readvalues);
+    }
+    else
+    {
+      switch (vrsize)
+      {
+        case 1:
+          failed = !ValueIO<ImplicitDataElement, TSwap, uint8_t>::Read(is, *ValueField, readvalues);
+          break;
+        case 2:
+          failed = !ValueIO<ImplicitDataElement, TSwap, uint16_t>::Read(is, *ValueField, readvalues);
+          break;
+        case 4:
+          failed = !ValueIO<ImplicitDataElement, TSwap, uint32_t>::Read(is, *ValueField, readvalues);
+          break;
+        case 8:
+          failed = !ValueIO<ImplicitDataElement, TSwap, uint64_t>::Read(is, *ValueField, readvalues);
+          break;
+        default:
+          failed = true;
+          assert(0);
+      }
     }
   }
 #else
