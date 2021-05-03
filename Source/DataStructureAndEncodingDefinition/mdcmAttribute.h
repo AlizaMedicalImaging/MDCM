@@ -37,6 +37,7 @@
 namespace mdcm
 {
 
+#if 0
 template <int T>
 class VRVLSize;
 
@@ -79,6 +80,7 @@ public:
     (void)os;
   }
 };
+#endif
 
 /**
  * Attribute class
@@ -92,8 +94,6 @@ public:
  *
  * Attribute<0x0018,0x1182, VR::IS, VM::VM1> fd1 = {}; // not enough parameters
  * Attribute<0x0018,0x1182, VR::IS, VM::VM2> fd2 = {0,1,2}; // too many initializers
- * Attribute<0x0018,0x1182, VR::IS, VM::VM3> fd3 = {0,1,2}; // VM3 is not valid
- * Attribute<0x0018,0x1182, VR::UL, VM::VM2> fd3 = {0,1}; // UL is not valid VR
  */
 
 template <uint16_t  Group,
@@ -108,8 +108,9 @@ public:
   {
     VMType = VMToLength<TVM>::Length
   };
+
   ArrayType Internal[VMToLength<TVM>::Length];
-  // Make sure that user specified VR/VM are compatible with the public dictionary:
+  // VR/VM must be compatible with the public dictionary
   MDCM_STATIC_ASSERT(((VR::VRType)TVR & (VR::VRType)(TagToType<Group, Element>::VRType)));
   MDCM_STATIC_ASSERT(((VM::VMType)TVM & (VM::VMType)(TagToType<Group, Element>::VMType)));
   MDCM_STATIC_ASSERT(((((VR::VRType)TVR & VR::VR_VM1) && ((VM::VMType)TVM == VM::VM1)) ||
@@ -248,8 +249,7 @@ public:
   void
   SetFromDataElement(DataElement const & de)
   {
-    // This is kind of hackish but since I do not generate other element than the first one: 0x6000 I should be ok
-    assert(GetTag() == de.GetTag() || GetTag().GetGroup() == 0x6000 || GetTag().GetGroup() == 0x5000);
+    assert(GetTag() == de.GetTag() || GetTag().GetGroup() == 0x6000 || GetTag().GetGroup() == 0x5000); // ?
     assert(GetVR() != VR::INVALID);
     assert(GetVR().Compatible(de.GetVR()) ||
            de.GetVR() == VR::INVALID); // In case of VR::INVALID cannot use the & operator
@@ -322,7 +322,7 @@ public:
   };
   ArrayType Internal;
   MDCM_STATIC_ASSERT(VMToLength<VM::VM1>::Length == 1);
-  // Make sure that user specified VR/VM are compatible with the public dictionary
+  // VR/VM must be compatible with the public dictionary
   MDCM_STATIC_ASSERT(((VR::VRType)TVR & (VR::VRType)(TagToType<Group, Element>::VRType)));
   MDCM_STATIC_ASSERT(((VM::VMType)VM::VM1 & (VM::VMType)(TagToType<Group, Element>::VMType)));
   MDCM_STATIC_ASSERT(((((VR::VRType)TVR & VR::VR_VM1) && ((VM::VMType)VM::VM1 == VM::VM1)) ||
@@ -424,7 +424,7 @@ public:
   {
     DataElement        ret(GetTag());
     std::ostringstream os;
-    EncodingImplementation<VRToEncoding<TVR>::Mode>::Write(&Internal, GetNumberOfValues(), os);
+    EncodingImplementation<VRToEncoding<TVR>::Mode>::WriteOne(Internal, GetNumberOfValues(), os);
     ret.SetVR(GetVR());
     assert(ret.GetVR() != VR::SQ);
     if ((VR::VRType)VRToEncoding<TVR>::Mode == VR::VRASCII)
@@ -445,8 +445,7 @@ public:
   void
   SetFromDataElement(DataElement const & de)
   {
-    // This is kind of hackish but since I do not generate other element than the first one: 0x6000 I should be ok
-    assert(GetTag() == de.GetTag() || GetTag().GetGroup() == 0x6000 || GetTag().GetGroup() == 0x5000);
+    assert(GetTag() == de.GetTag() || GetTag().GetGroup() == 0x6000 || GetTag().GetGroup() == 0x5000); // ?
     assert(GetVR() != VR::INVALID);
     assert(GetVR().Compatible(de.GetVR()) || de.GetVR() == VR::INVALID);
     if (de.IsEmpty())
@@ -491,7 +490,7 @@ protected:
     std::stringstream ss;
     std::string       s = std::string(bv->GetPointer(), bv->GetLength());
     ss.str(s);
-    EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadNoSwap(&Internal, GetNumberOfValues(), ss);
+    EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadNoSwapOne(Internal, GetNumberOfValues(), ss);
   }
 
   void
@@ -503,7 +502,7 @@ protected:
     std::stringstream ss;
     std::string       s = std::string(bv->GetPointer(), bv->GetLength());
     ss.str(s);
-    EncodingImplementation<VRToEncoding<TVR>::Mode>::Read(&Internal, GetNumberOfValues(), ss);
+    EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadOne(Internal, GetNumberOfValues(), ss);
   }
 };
 
@@ -512,7 +511,7 @@ class Attribute<Group, Element, TVR, VM::VM1_n>
 {
 public:
   typedef typename VRToType<TVR>::Type ArrayType;
-  // Make sure that user specified VR/VM are compatible with the public dictionary
+  // VR/VM must be compatible with the public dictionary
   MDCM_STATIC_ASSERT(((VR::VRType)TVR & (VR::VRType)(TagToType<Group, Element>::VRType)));
   MDCM_STATIC_ASSERT((VM::VM1_n & (VM::VMType)(TagToType<Group, Element>::VMType)));
   MDCM_STATIC_ASSERT(((((VR::VRType)TVR & VR::VR_VM1) && ((VM::VMType)TagToType<Group, Element>::VMType == VM::VM1)) ||
@@ -571,9 +570,9 @@ public:
   }
 
   void
-  SetNumberOfValues(unsigned int numel)
+  SetNumberOfValues(unsigned int n)
   {
-    SetValues(NULL, numel, true);
+    SetValues(NULL, n, true);
   }
 
   const ArrayType *
@@ -588,9 +587,13 @@ public:
     os << GetTag() << " ";
     os << GetVR() << " ";
     os << GetVM() << " ";
-    os << Internal[0];
-    for (unsigned int i = 1; i < GetNumberOfValues(); ++i)
-      os << "," << Internal[i];
+    if (Length > 0)
+      os << Internal[0];
+    if (Length > 1)
+    {
+      for (unsigned int i = 1; i < GetNumberOfValues(); ++i)
+        os << "," << Internal[i];
+    }
   }
 
   ArrayType &
@@ -686,8 +689,7 @@ public:
   void
   SetFromDataElement(DataElement const & de)
   {
-    // This is kind of hackish but since I do not generate other element than the first one: 0x6000 I should be ok
-    assert(GetTag() == de.GetTag() || GetTag().GetGroup() == 0x6000 || GetTag().GetGroup() == 0x5000);
+    assert(GetTag() == de.GetTag() || GetTag().GetGroup() == 0x6000 || GetTag().GetGroup() == 0x5000); // ?
     assert(GetVR().Compatible(de.GetVR()));
     assert(!de.IsEmpty());
     const ByteValue * bv = de.GetByteValue();
@@ -713,35 +715,25 @@ protected:
   void
   SetByteValue(const ByteValue * bv)
   {
-    assert(bv); // FIXME
+    if (!bv)
+      return;
     std::stringstream ss;
     std::string       s = std::string(bv->GetPointer(), bv->GetLength());
-    Length = bv->GetLength(); // FIXME
+    Length = bv->GetLength(); // overallocation
     ss.str(s);
     ArrayType * internal;
-    ArrayType   buffer[256];
-    if (bv->GetLength() < 256)
+    try
     {
-      internal = buffer;
+      internal = new ArrayType[(VL::Type)bv->GetLength()]; // overallocation
     }
-    else
+    catch (std::bad_alloc &)
     {
-      try
-      {
-        // overallocation
-        internal = new ArrayType[(VL::Type)bv->GetLength()];
-      }
-      catch (std::bad_alloc &)
-      {
-        return;
-      }
+      return;
     }
+    // update length
     EncodingImplementation<VRToEncoding<TVR>::Mode>::ReadComputeLength(internal, Length, ss);
     SetValues(internal, Length, true);
-    if (!(bv->GetLength() < 256))
-    {
-      delete[] internal;
-    }
+    delete[] internal;
   }
 
 private:

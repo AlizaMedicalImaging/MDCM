@@ -66,11 +66,39 @@ template <>
 class ElementDisableCombinations<VR::OW, VM::VM1_n>
 {};
 
+template <>
+class ElementDisableCombinations<VR::OL, VM::VM1_n>
+{};
+
+template <>
+class ElementDisableCombinations<VR::OD, VM::VM1_n>
+{};
+
+template <>
+class ElementDisableCombinations<VR::OF, VM::VM1_n>
+{};
+
+template <>
+class ElementDisableCombinations<VR::OV, VM::VM1_n>
+{};
+
 template <int TVM>
 class ElementDisableCombinations<VR::OB, TVM>;
 
 template <int TVM>
 class ElementDisableCombinations<VR::OW, TVM>;
+
+template <int TVM>
+class ElementDisableCombinations<VR::OL, TVM>;
+
+template <int TVM>
+class ElementDisableCombinations<VR::OD, TVM>;
+
+template <int TVM>
+class ElementDisableCombinations<VR::OF, TVM>;
+
+template <int TVM>
+class ElementDisableCombinations<VR::OV, TVM>;
 
 /**
  * Element class
@@ -291,6 +319,27 @@ public:
         _os << "\\" << data[i];
       }
     }
+  }
+
+  template <typename T> // may be VRToType<TVR>::Type
+  static inline void
+  ReadOne(T & data, unsigned long, std::istream & _is)
+  {
+    _is >> std::ws >> data;
+  }
+
+  template <typename T>
+  static inline void
+  ReadNoSwapOne(T & data, unsigned long l, std::istream & _is)
+  {
+    ReadOne(data, l, _is);
+  }
+
+  template <typename T>
+  static inline void
+  WriteOne(const T & data, unsigned long, std::ostream & _os)
+  {
+    _os << data;
   }
 };
 
@@ -565,6 +614,57 @@ public:
       _os.write(reinterpret_cast<const char *>(&swappedData), type_size);
     }
   }
+
+  template <typename T> // may be VRToType<TVR>::Type
+  static inline void
+  ReadComputeLengthOne(T & data, unsigned int & length, std::istream & _is)
+  {
+    const unsigned int type_size = sizeof(T);
+    length /= type_size;
+	char * cdata = reinterpret_cast<char *>(&data);
+    for (unsigned long i = 0; i < length; ++i)
+    {
+      _is.read(cdata + i, type_size);
+    }
+  }
+
+  template <typename T>
+  static inline void
+  ReadNoSwapOne(T & data, unsigned long length, std::istream & _is)
+  {
+    const unsigned int type_size = sizeof(T);
+	char * cdata = reinterpret_cast<char *>(&data);
+    for (unsigned long i = 0; i < length; ++i)
+    {
+      _is.read(cdata + i, type_size);
+    }
+  }
+
+  template <typename T>
+  static inline void
+  ReadOne(T & data, unsigned long length, std::istream & _is)
+  {
+    const unsigned int type_size = sizeof(T);
+	char * cdata = reinterpret_cast<char *>(&data);
+    for (unsigned long i = 0; i < length; ++i)
+    {
+      _is.read(cdata + i, type_size);
+    }
+    SwapperNoOp::SwapArray(cdata, length);
+  }
+
+  template <typename T>
+  static inline void
+  WriteOne(const T & data, unsigned long length, std::ostream & _os)
+  {
+    const unsigned int type_size = sizeof(T);
+	const char * cdata = reinterpret_cast<const char *>(&data);
+    for (unsigned long i = 0; i < length; ++i)
+    {
+      const char * swappedData = SwapperNoOp::Swap(cdata + i);
+      _os.write(swappedData, type_size);
+    }
+  }
 };
 
 // Implementation for the undefined length (dynamically allocated array)
@@ -583,6 +683,7 @@ public:
     Length = 0;
     Save = false;
   }
+
   ~Element()
   {
     if (Save)
@@ -990,6 +1091,7 @@ public:
   {
     _os << Internal;
   }
+
   unsigned long
   GetLength() const
   {
