@@ -1074,7 +1074,7 @@ bool
 JPEG2000Codec::GetHeaderInfo(std::istream & is, TransferSyntax & ts)
 {
   is.seekg(0, std::ios::end);
-  const size_t buf_size = (size_t)is.tellg();
+  const size_t buf_size = is.tellg();
   char *       dummy_buffer;
   try
   {
