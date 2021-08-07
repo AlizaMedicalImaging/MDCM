@@ -148,6 +148,8 @@ protected:
   bool
   TryJPEG2000Codec2(std::ostream & os) const;
   bool
+  TryJPEG2000Codec3(char * buffer, bool & lossyflag) const;
+  bool
   TryRLECodec(char * buffer, bool & lossyflag) const;
   unsigned int                      PlanarConfiguration;
   unsigned int                      NumberOfDimensions;

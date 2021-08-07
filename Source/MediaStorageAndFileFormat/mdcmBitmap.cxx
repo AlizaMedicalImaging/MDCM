@@ -1030,6 +1030,94 @@ Bitmap::TryJPEG2000Codec2(std::ostream & os) const
 }
 
 bool
+Bitmap::TryJPEG2000Codec3(char * buffer, bool & lossyflag) const
+{
+  JPEG2000Codec          codec;
+  const TransferSyntax & ts = GetTransferSyntax();
+  if (!buffer)
+  {
+    if (codec.CanDecode(ts))
+    {
+      TransferSyntax              ts2;
+      const SequenceOfFragments * sf = PixelData.GetSequenceOfFragments();
+      if (!sf)
+        return false;
+      const Fragment &  frag = sf->GetFragment(0);
+      const ByteValue & bv2 = dynamic_cast<const ByteValue &>(frag.GetValue());
+      const bool        b = codec.GetHeaderInfo(bv2.GetPointer(), bv2.GetLength(), ts2);
+      if (!b)
+        return false;
+      lossyflag = codec.IsLossy();
+      const PixelFormat & cpf = codec.GetPixelFormat();
+      const PixelFormat & pf = GetPixelFormat();
+      if (cpf.GetBitsAllocated() == pf.GetBitsAllocated())
+      {
+        if (cpf.GetPixelRepresentation() == pf.GetPixelRepresentation())
+        {
+          if (cpf.GetSamplesPerPixel() == pf.GetSamplesPerPixel())
+          {
+            if (cpf.GetBitsStored() < pf.GetBitsStored())
+            {
+              Bitmap * i = const_cast<Bitmap *>(this);
+              mdcmWarningMacro("Encapsulated stream has fewer bits actually stored on disk. correcting.");
+              i->GetPixelFormat().SetBitsStored(cpf.GetBitsStored());
+            }
+          }
+        }
+      }
+      else
+      {
+        mdcmWarningMacro("Bits Allocated are different. This is pretty bad using info from codestream");
+        Bitmap * i = const_cast<Bitmap *>(this);
+        i->SetPixelFormat(codec.GetPixelFormat());
+      }
+      return true;
+    }
+    return false;
+  }
+  if (codec.CanDecode(ts))
+  {
+    const unsigned long long len = GetBufferLength();
+    codec.SetPixelFormat(GetPixelFormat());
+    codec.SetNumberOfDimensions(GetNumberOfDimensions());
+    codec.SetPlanarConfiguration(GetPlanarConfiguration());
+    codec.SetPhotometricInterpretation(GetPhotometricInterpretation());
+    codec.SetNeedOverlayCleanup(AreOverlaysInPixelData() ||
+                                (ImageHelper::GetCleanUnusedBits() && UnusedBitsPresentInPixelData()));
+    codec.SetDimensions(GetDimensions());
+    const bool r = codec.Decode2(PixelData, buffer, len);
+    if (!r)
+      return false;
+    lossyflag = codec.IsLossy();
+    if (codec.IsLossy() && !ts.IsLossy())
+    {
+      assert(codec.IsLossy());
+      assert(!ts.IsLossy());
+      mdcmErrorMacro("declared as lossless but is in fact lossy.");
+    }
+    const PixelFormat & cpf = codec.GetPixelFormat();
+    const PixelFormat & pf = GetPixelFormat();
+    if (cpf.GetBitsAllocated() == pf.GetBitsAllocated())
+    {
+      if (cpf.GetPixelRepresentation() == pf.GetPixelRepresentation())
+      {
+        if (cpf.GetSamplesPerPixel() == pf.GetSamplesPerPixel())
+        {
+          if (cpf.GetBitsStored() < pf.GetBitsStored())
+          {
+            Bitmap * i = const_cast<Bitmap *>(this);
+            mdcmWarningMacro("Encapsulated stream has fewer bits actually stored on disk. correcting.");
+            i->GetPixelFormat().SetBitsStored(cpf.GetBitsStored());
+          }
+        }
+      }
+    }
+    return r;
+  }
+  return false;
+}
+
+bool
 Bitmap::TryRLECodec(char * buffer, bool & lossyflag) const
 {
   unsigned long long     len = GetBufferLength();
@@ -1074,7 +1162,11 @@ Bitmap::GetBufferInternal(char * buffer, bool & lossyflag) const
   if (!success)
     success = TryPVRGCodec(buffer, lossyflag);
   if (!success)
+#ifdef DATA_MORE_THAN_4GB
     success = TryJPEG2000Codec(buffer, lossyflag);
+#else
+    success = TryJPEG2000Codec3(buffer, lossyflag);
+#endif
   if (!success)
 #ifdef DATA_MORE_THAN_4GB
     success = TryJPEGLSCodec2(buffer, lossyflag);
