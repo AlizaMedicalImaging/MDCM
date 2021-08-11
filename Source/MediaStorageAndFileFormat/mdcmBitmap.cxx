@@ -531,7 +531,7 @@ Bitmap::TryJPEGCodec(char * buffer, bool & lossyflag) const
     return false;
   }
   const unsigned long long len = GetBufferLength();
-  if (len >= 0xffffffff)
+  if (len > 0xffffffff)
   {
     mdcmAlwaysWarnMacro("TryJPEGCodec: value too big for ByteValue" << len);
     return false;
@@ -775,7 +775,7 @@ Bitmap::TryPVRGCodec(char * buffer, bool & lossyflag) const
 {
   if (!buffer) return false;
   const unsigned long long len = GetBufferLength();
-  if (len >= 0xffffffff)
+  if (len > 0xffffffff)
   {
     mdcmAlwaysWarnMacro("TryPVRGCodec: value too big for ByteValue" << len);
     return false;
@@ -839,7 +839,7 @@ Bitmap::TryJPEGLSCodec(char * buffer, bool & lossyflag) const
     return false;
   }
   const unsigned long long len = GetBufferLength();
-  if (len >= 0xffffffff)
+  if (len > 0xffffffff)
   {
     mdcmAlwaysWarnMacro("TryJPEGLSCodec: value too big for ByteValue" << len);
     return false;
@@ -970,7 +970,7 @@ Bitmap::TryJPEG2000Codec(char * buffer, bool & lossyflag) const
     return false;
   }
   const unsigned long long len = GetBufferLength();
-  if (len >= 0xffffffff)
+  if (len > 0xffffffff)
   {
     mdcmAlwaysWarnMacro("TryJPEG2000Codec: value too big for ByteValue" << len);
     return false;
@@ -1143,7 +1143,7 @@ Bitmap::TryRLECodec(char * buffer, bool & lossyflag) const
 {
   if (!buffer) return false;
   const unsigned long long len = GetBufferLength();
-  if (len >= 0xffffffff)
+  if (len > 0xffffffff)
   {
     mdcmAlwaysWarnMacro("TryRLECodec: value too big for ByteValue" << len);
     return false;
