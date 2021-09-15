@@ -45,7 +45,6 @@
 =========================================================================*/
 #include "mdcmVR.h"
 #include "mdcmVM.h"
-#include "mdcmStaticAssert.h"
 
 namespace mdcm {
 VR::VRType GetVRFromTag( Tag const &amp; t ) {
