@@ -6,7 +6,6 @@ include_directories(
 
 set(DICT_SRCS
   mdcmDicts.cxx
-  mdcmDictEntry.cxx
   mdcmDefaultDicts.cxx
   mdcmPrivateDefaultDicts.cxx
   mdcmGlobal.cxx
