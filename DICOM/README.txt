@@ -27,6 +27,9 @@ typedef mdcm::Attribute<0x300a, 0x0782> ;
 
 5. xsltproc DefaultDicts.xsl Part6.xml > mdcmDefaultDicts.cxx
 
+6. manually removed duplicated entries (0x7fe0, 0x0010), (0x7fe0, 0x0020), (0x7fe0, 0x0030), (0x7fe0, 0x0040)
+
+
 UIDs
 ----
 
