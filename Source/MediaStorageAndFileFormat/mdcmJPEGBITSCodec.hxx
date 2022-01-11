@@ -704,7 +704,7 @@ JPEGBITSCodec::DecodeByStreams(std::istream & is, std::ostream & os)
         }
         break;
       case JCS_YCbCr:
-#if 0
+#if 1
         if((GetPhotometricInterpretation() == PhotometricInterpretation::YBR_FULL)
 #  if 1
           || (GetPhotometricInterpretation() == PhotometricInterpretation::YBR_FULL_422)
