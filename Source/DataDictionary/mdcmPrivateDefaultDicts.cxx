@@ -4943,7 +4943,7 @@ const PRIV_DICT_ENTRY DICOMV3DataDict[] = {
   { 0x0003, 0x0022, "MEDIS_IS&C 1.0", VR::UL, VM::VM1, "?", false },
   { 0x0003, 0x0030, "MEDIS_IS&C 1.0", VR::US, VM::VM1, "?", false },
   { 0x0009, 0x0000, "MERGE TECHNOLOGIES, INC.", VR::OB, VM::VM1, "?", false },
-  { 0x0031, 0x0020, "MITRA LINKED ATTRIBUTES 1.0", VR::IS, VM::VM1, "?", false },
+  { 0x0031, 0x0020, "MITRA LINKED ATTRIBUTES 1.0", VR::LO, VM::VM1, "Global Patient ID", false },
   { 0x0033, 0x0002, "MITRA OBJECT ATTRIBUTES 1.0", VR::LO, VM::VM1, "?", false },
   { 0x0033, 0x0004, "MITRA OBJECT ATTRIBUTES 1.0", VR::LO, VM::VM1, "?", false },
   { 0x0033, 0x0006, "MITRA OBJECT ATTRIBUTES 1.0", VR::LO, VM::VM1, "?", false },
