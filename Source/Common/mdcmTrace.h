@@ -44,7 +44,7 @@ namespace mdcm
 #    define MDCM_FUNCTION "<unknown>"
 #  endif
 
-#  ifndef NDEBUG
+#  ifdef NDEBUG
 
 #    define mdcmDebugMacro(msg) {} 
 #    define mdcmWarningMacro(msg) {}
