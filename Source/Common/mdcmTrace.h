@@ -22,10 +22,6 @@
 #ifndef MDCMTRACE_H
 #  define MDCMTRACE_H
 
-#  ifdef NDEBUG
-#    define MDCM_SUPRESS_OUTPUT
-#  endif
-
 #  include "mdcmSystem.h"
 #  include <iosfwd>
 #  include <cassert>
@@ -48,7 +44,7 @@ namespace mdcm
 #    define MDCM_FUNCTION "<unknown>"
 #  endif
 
-#  ifdef MDCM_SUPRESS_OUTPUT
+#  ifndef NDEBUG
 
 #    define mdcmDebugMacro(msg) {} 
 #    define mdcmWarningMacro(msg) {}
@@ -58,52 +54,52 @@ namespace mdcm
 
 #  else
 
-#    define mdcmDebugMacro(msg)                                                                               \
-     {                                                                                                        \
-       std::ostringstream osmacro;                                                                            \
-       osmacro << "Debug: In " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << '\n'       \
-               << "Last system error was: " << mdcm::System::GetLastSystemError() << '\n'                     \
-               << msg;                                                                                        \
-       std::cout << osmacro.str() << "\n\n" << std::endl;                                                     \
+#    define mdcmDebugMacro(msg)                                                                             \
+     {                                                                                                      \
+       std::ostringstream osmacro;                                                                          \
+       osmacro << "Debug: in " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n"     \
+               << msg;                                                                                      \
+       std::cout << osmacro.str() << "\n\n" << std::endl;                                                   \
      }
 
-#    define mdcmWarningMacro(msg)                                                                             \
-     {                                                                                                        \
-       std::ostringstream osmacro;                                                                            \
-       osmacro << "Warning: In " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n"     \
-               << msg << "\n\n";                                                                              \
-       std::cout << osmacro.str() << std::endl;                                                               \
+#    define mdcmWarningMacro(msg)                                                                           \
+     {                                                                                                      \
+       std::ostringstream osmacro;                                                                          \
+       osmacro << "Warning: in " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n"   \
+               << msg << "\n\n";                                                                            \
+       std::cout << osmacro.str() << std::endl;                                                             \
      }
 
-#    define mdcmErrorMacro(msg)                                                                               \
-     {                                                                                                        \
-       std::ostringstream osmacro;                                                                            \
-       osmacro << "Error: In " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << '\n'       \
-               << msg << "\n\n";                                                                              \
-       std::cout << osmacro.str() << std::endl;                                                               \
+#    define mdcmErrorMacro(msg)                                                                             \
+     {                                                                                                      \
+       std::ostringstream osmacro;                                                                          \
+       osmacro << "Error: in " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n"     \
+               << msg << "\n"                                                                               \
+               << "Last system error was: " << mdcm::System::GetLastSystemError() << "\n\n";                \
+       std::cout << osmacro.str() << std::endl;                                                             \
      }
 
-#    define mdcmAssertMacro(arg)                                                                              \
-     {                                                                                                        \
-       if (!(arg))                                                                                            \
-       {                                                                                                      \
-         std::ostringstream osmacro;                                                                          \
-         osmacro << "Assert: In " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n\n"; \
-         std::cout << osmacro.str() << std::endl;                                                             \
-         assert(arg);                                                                                         \
-       }                                                                                                      \
+#    define mdcmAssertMacro(arg)                                                                            \
+     {                                                                                                      \
+       if (!(arg))                                                                                          \
+       {                                                                                                    \
+         std::ostringstream osmacro;                                                                        \
+         osmacro << "Assert: in " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n"; \
+         std::cout << osmacro.str() << std::endl;                                                           \
+         assert(arg);                                                                                       \
+       }                                                                                                    \
      }
 
 #    define mdcmAssertAlwaysMacro(arg) mdcmAssertMacro(arg)
 
 #  endif
 
-#  define mdcmAlwaysWarnMacro(msg)              \
-    {                                           \
-      std::ostringstream osmacro;               \
-      osmacro << "Warning:\n" << msg << "\n\n"; \
-      std::cout << osmacro.str() << std::endl;  \
-    }
+#  define mdcmAlwaysWarnMacro(msg)             \
+   {                                           \
+     std::ostringstream osmacro;               \
+     osmacro << "Warning:\n" << msg << "\n\n"; \
+     std::cout << osmacro.str() << std::endl;  \
+   }
 
 } // end namespace mdcm
 // clang-format on

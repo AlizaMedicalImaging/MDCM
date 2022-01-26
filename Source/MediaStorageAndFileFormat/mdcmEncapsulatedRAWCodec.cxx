@@ -35,15 +35,88 @@ EncapsulatedRAWCodec::CanDecode(TransferSyntax const & ts) const
 }
 
 bool
-EncapsulatedRAWCodec::Code(DataElement const & in, DataElement & out)
+EncapsulatedRAWCodec::Code(const char * in, unsigned long long len, DataElement & out)
 {
-  return false;
+  const unsigned int * dims = this->GetDimensions();
+  if ((len % dims[2]) != 0)
+  {
+    mdcmAlwaysWarnMacro("(len % dims[2]) != 0, " << len << " % " << dims[2]
+                                                 << " = " << len % dims[2]);
+    return false;
+  }
+  const PixelFormat & pf = this->GetPixelFormat();
+  const size_t        frag_len = len / dims[2];
+  const size_t        frag_len2 = (size_t)dims[0] * dims[1] * pf.GetSamplesPerPixel() * (pf.GetBitsAllocated() / 8);
+  if (frag_len != frag_len2)
+  {
+    mdcmAlwaysWarnMacro("frag_len != frag_len2, " << frag_len << " != " << frag_len2);
+    return false;
+  }
+  SmartPointer<SequenceOfFragments> sq = new SequenceOfFragments;
+  for (size_t j = 0; j < dims[2]; ++j)
+  {
+    const char * data = in + j * frag_len;
+    Fragment frag;
+    frag.SetByteValue(data, frag_len);
+    sq->AddFragment(frag);
+  }
+  if (sq->GetNumberOfFragments() != dims[2])
+  {
+    mdcmAlwaysWarnMacro("Number of fragments " << sq->GetNumberOfFragments()
+                                               << " != dims[2] "
+                                               << dims[2]);
+    return false;
+  }
+  out.SetValue(*sq);
+  return true;
 }
 
 bool
-EncapsulatedRAWCodec::Decode(DataElement const & in, DataElement & out)
+EncapsulatedRAWCodec::Decode2(DataElement const & in, char * out_buffer, unsigned long long out_len)
 {
-  return false;
+  const SequenceOfFragments * sf = in.GetSequenceOfFragments();
+  if (!sf)
+    return false;
+  const unsigned int n = sf->GetNumberOfFragments();
+  if (sf->GetNumberOfFragments() != Dimensions[2])
+    return false;
+  std::stringstream os;
+  for (unsigned int i = 0; i < n; ++i)
+  {
+    const Fragment & frag = sf->GetFragment(i);
+    if (frag.IsEmpty())
+      return false;
+    const ByteValue * bv = frag.GetByteValue();
+    if (!bv)
+      return false;
+    if (!bv->GetPointer())
+      return false;
+    const size_t len = bv->GetLength();
+    const char * buffer = bv->GetPointer();
+    os.write(buffer, len);
+  }
+  const size_t len2 = os.tellp();
+  if (len2 != out_len)
+  {
+    mdcmAlwaysWarnMacro("EncapsulatedRAWCodec::Decode2: out_len=" << out_len << " len2=" << len2);
+    if (out_len > len2)
+    {
+      memset(out_buffer, 0, out_len);
+    }
+  }
+  os.seekp(0, std::ios::beg);
+#if 1
+  std::stringbuf * pbuf = os.rdbuf();
+  pbuf->sgetn(out_buffer, ((out_len < len2) ? out_len : len2));
+#else
+  const std::string & tmp0 = os.str();
+  const char * tmp1 = tmp0.data();
+  memcpy(
+    out_buffer,
+    tmp1,
+    ((len < len2) ? out_len : len2));
+#endif
+  return true;
 }
 
 bool
@@ -54,15 +127,15 @@ EncapsulatedRAWCodec::GetHeaderInfo(std::istream &, TransferSyntax & ts)
 }
 
 bool
-EncapsulatedRAWCodec::DecodeBytes(const char * inBytes, size_t inBufferLength, char * outBytes, size_t inOutBufferLength)
+EncapsulatedRAWCodec::DecodeBytes(const char *, size_t, char *, size_t)
 {
   return false;
 }
 
 bool
-EncapsulatedRAWCodec::DecodeByStreams(std::istream & is, std::ostream & os)
+EncapsulatedRAWCodec::DecodeByStreams(std::istream &, std::ostream &)
 {
-  return ImageCodec::DecodeByStreams(is, os);
+  return false;
 }
 
 } // end namespace mdcm

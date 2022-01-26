@@ -26,9 +26,9 @@ public:
   bool
   CanDecode(TransferSyntax const &) const override;
   bool
-  Code(DataElement const &, DataElement &) override;
+  Code(const char *, unsigned long long, DataElement &);
   bool
-  Decode(DataElement const &, DataElement &) override;
+  Decode2(DataElement const &, char *, unsigned long long);
   bool
   GetHeaderInfo(std::istream &, TransferSyntax &) override;
   bool
