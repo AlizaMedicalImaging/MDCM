@@ -45,6 +45,11 @@ EncapsulatedRAWCodec::Code(const char * in, unsigned long long len, DataElement 
     return false;
   }
   const PixelFormat & pf = this->GetPixelFormat();
+  if (pf.GetBitsAllocated() % 8 != 0)
+  {
+    mdcmAlwaysWarnMacro("pf.GetBitsAllocated() % 8 != 0");
+    return false;
+  }
   const size_t        frag_len = len / dims[2];
   const size_t        frag_len2 = (size_t)dims[0] * dims[1] * pf.GetSamplesPerPixel() * (pf.GetBitsAllocated() / 8);
   if (frag_len != frag_len2)
@@ -74,6 +79,11 @@ EncapsulatedRAWCodec::Code(const char * in, unsigned long long len, DataElement 
 bool
 EncapsulatedRAWCodec::Decode2(DataElement const & in, char * out_buffer, unsigned long long out_len)
 {
+  if (NeedByteSwap)
+  {
+    mdcmAlwaysWarnMacro("NeedByteSwap is currently not supported for EncapsulatedRAWCodec");
+    return false;
+  }
   const SequenceOfFragments * sf = in.GetSequenceOfFragments();
   if (!sf)
     return false;

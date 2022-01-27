@@ -504,7 +504,8 @@ Bitmap::TryEncapsulatedRAWCodec(char * buffer, bool & lossyflag) const
       return false;
     if (GetNeedByteSwap())
     {
-      ; // TODO
+      // TODO
+      return false;
     }
     return true;
   }

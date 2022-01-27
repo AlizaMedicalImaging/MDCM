@@ -22,7 +22,6 @@
 #ifndef MDCMTRACE_H
 #  define MDCMTRACE_H
 
-#  include "mdcmSystem.h"
 #  include <iosfwd>
 #  include <cassert>
 #  include <iostream>
@@ -74,8 +73,7 @@ namespace mdcm
      {                                                                                                      \
        std::ostringstream osmacro;                                                                          \
        osmacro << "Error: in " __FILE__ ", line " << __LINE__ << ", function " << MDCM_FUNCTION << "\n"     \
-               << msg << "\n"                                                                               \
-               << "Last system error was: " << mdcm::System::GetLastSystemError() << "\n\n";                \
+               << msg << "\n\n";                                                                            \
        std::cout << osmacro.str() << std::endl;                                                             \
      }
 
