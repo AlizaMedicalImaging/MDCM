@@ -71,18 +71,11 @@ struct FImpl
   }
 };
 
-// http://stackoverflow.com/questions/485525/round-for-float-in-c
-// http://en.cppreference.com/w/c/numeric/math/round
 template <typename T>
 static inline T
 round_impl(const double d)
 {
-#ifdef MDCM_HAVE_LROUND
-  // round() is C99, std::round() is C++11
-  return (T)lround(d);
-#else
-  return (T)((d > 0.0) ? floor(d + 0.5) : ceil(d - 0.5));
-#endif
+  return (T)llround(d);
 }
 
 template <typename TOut>
