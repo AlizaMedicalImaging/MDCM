@@ -1,8 +1,5 @@
 include_regular_expression("^mdcm.*$")
 
-option(MDCM_SUPPORT_BROKEN_IMPLEMENTATION "Handle broken DICOM" ON)
-mark_as_advanced(MDCM_SUPPORT_BROKEN_IMPLEMENTATION)
-
 CHECK_INCLUDE_FILE_CONCAT("sys/time.h" MDCM_HAVE_SYS_TIME_H)
 CHECK_INCLUDE_FILE_CONCAT("byteswap.h" MDCM_HAVE_BYTESWAP_FILE_H)
 # s. GDCM bug #324
