@@ -3,8 +3,7 @@ if(NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION)
 endif()
 
 if(NOT ZLIB_NAMESPACE)
-  set(ZLIB_NAMESPACE "ZLIB")
-  set(ZLIB_STANDALONE 1)
+  message(FATAL_ERROR "This version of Zlib should not be used stand-alone")
 endif()
 
 string(TOLOWER ${ZLIB_NAMESPACE} ZLIB_LIBRARY_NAME)
