@@ -46,7 +46,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # TMP
 # set "ON" to build with GCC 4.8
-option(MDCM_FORCE_CXX11 "Set standard to C++11" ON)
+option(MDCM_FORCE_CXX11 "Set standard to C++11" OFF)
 mark_as_advanced(MDCM_FORCE_CXX11)
 if(MDCM_FORCE_CXX11)
   set(CMAKE_CXX_STANDARD 11)
