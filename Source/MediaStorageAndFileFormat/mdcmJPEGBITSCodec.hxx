@@ -397,8 +397,8 @@ JPEGBITSCodec::GetHeaderInfo(std::istream & is, TransferSyntax & ts)
       assert(0);
       return false;
     }
-    this->PF.SetPixelRepresentation((uint16_t)prep);
-    this->PF.SetBitsStored((uint16_t)precision);
+    this->PF.SetPixelRepresentation(static_cast<uint16_t>(prep));
+    this->PF.SetBitsStored(static_cast<uint16_t>(precision));
     this->PlanarConfiguration = 0;
     //
     //
@@ -788,7 +788,7 @@ JPEGBITSCodec::DecodeByStreams(std::istream & is, std::ostream & os)
       Internals->StateSuspension = 3;
       return true;
     }
-    os.write((char *)buffer[0], row_stride);
+    os.write(reinterpret_cast<char *>(buffer[0]), row_stride);
   }
   /* Step 7: Finish decompression */
   if (jpeg_finish_decompress(&cinfo) == FALSE)
