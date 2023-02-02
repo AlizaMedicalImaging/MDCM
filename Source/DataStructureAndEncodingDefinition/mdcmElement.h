@@ -381,15 +381,15 @@ static void ds16print(char * buf, double f)
 {
   char * line = new char[100]; // overallocated
   memset(line, 0, 100);
-  int l = snprintf(line, sizeof(line), "%.17g", f);
+  int l = snprintf(line, 100, "%.17g", f);
   if (l > 16)
   {
     int prec = 33 - static_cast<int>(strlen(line));
-    l = snprintf(line, sizeof(line), "%.*g", prec, f);
+    l = snprintf(line, 100, "%.*g", prec, f);
     while(l > 16)
     {
       --prec;
-      l = snprintf(line, sizeof(line),"%.*g", prec, f);
+      l = snprintf(line, 100,"%.*g", prec, f);
     }
   }
   strcpy(buf, line);
