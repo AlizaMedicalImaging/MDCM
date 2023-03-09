@@ -27,15 +27,6 @@
 #include "mdcmDirectionCosines.h"
 #include <cmath>
 
-namespace mdcm
-{
-
-SplitMosaicFilter::SplitMosaicFilter()
-  : F(new File)
-  , I(new Image)
-{}
-SplitMosaicFilter::~SplitMosaicFilter() {}
-
 namespace
 {
 
@@ -96,6 +87,15 @@ reorganize_mosaic_invert(const T *            input,
 #endif
 
 }
+
+namespace mdcm
+{
+
+SplitMosaicFilter::SplitMosaicFilter()
+  : F(new File)
+  , I(new Image)
+{}
+SplitMosaicFilter::~SplitMosaicFilter() {}
 
 void
 SplitMosaicFilter::SetImage(const Image & image)
