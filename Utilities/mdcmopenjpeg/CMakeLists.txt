@@ -1,13 +1,3 @@
-# Main CMakeLists.txt to build the OpenJPEG project using CMake (www.cmake.org)
-# Written by Mathieu Malaterre
-
-# This CMake project will by default create a library called openjpeg
-# But if you want to use this project within your own (CMake) project
-# you will eventually like to prefix the library to avoid linking confusion
-# For this purpose you can define a CMake var: OPENJPEG_NAMESPACE to whatever you like
-# e.g.:
-# set(OPENJPEG_NAMESPACE "MDCMOPENJPEG")
-
 if(NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION)
   cmake_minimum_required(VERSION 3.0.0)
 endif()
@@ -30,10 +20,10 @@ project(${OPENJPEG_NAMESPACE} C)
 
 include_regular_expression("^.*$")
 
-# OPENJPEG version number, useful for packaging and doxygen doc:
+# OPENJPEG version number
 set(OPENJPEG_VERSION_MAJOR 2)
-set(OPENJPEG_VERSION_MINOR 3)
-set(OPENJPEG_VERSION_BUILD 1)
+set(OPENJPEG_VERSION_MINOR 5)
+set(OPENJPEG_VERSION_BUILD 0)
 set(OPENJPEG_VERSION
   "${OPENJPEG_VERSION_MAJOR}.${OPENJPEG_VERSION_MINOR}.${OPENJPEG_VERSION_BUILD}")
 set(PACKAGE_VERSION
@@ -46,8 +36,7 @@ set(OPENJPEG_LIBRARY_PROPERTIES
   VERSION   "${OPENJPEG_VERSION_MAJOR}.${OPENJPEG_VERSION_MINOR}.${OPENJPEG_VERSION_BUILD}"
   SOVERSION "${OPENJPEG_SOVERSION}")
 
-# --------------------------------------------------------------------------
-# Path to additional CMake modules
+# Path to CMake modules
 set(CMAKE_MODULE_PATH
     ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake
     ${CMAKE_MODULE_PATH})
@@ -59,33 +48,23 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/openjpeg_mangle.h.in
                ${CMAKE_CURRENT_BINARY_DIR}/openjpeg_mangle.h
                @ONLY)
 
-# --------------------------------------------------------------------------
-set(MANGLE_PREFIX ${MDCM_OPENJPEG_LIBRARIES})
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/openjpeg_mangle.h.in
-               ${CMAKE_CURRENT_BINARY_DIR}/openjpeg_mangle.h
-               @ONLY)
-
-# --------------------------------------------------------------------------
-# On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
-# warnings
+# This removes MSVC warnings
 if(WIN32)
   if(NOT BORLAND)
     if(NOT CYGWIN)
       if(NOT MINGW)
-        if(NOT ITK_ENABLE_VISUAL_STUDIO_DEPRECATED_C_WARNINGS)
-          add_definitions(
-            -D_CRT_FAR_MAPPINGS_NO_DEPRECATE
-            -D_CRT_IS_WCTYPE_NO_DEPRECATE
-            -D_CRT_MANAGED_FP_NO_DEPRECATE
-            -D_CRT_NONSTDC_NO_DEPRECATE
-            -D_CRT_SECURE_NO_DEPRECATE
-            -D_CRT_SECURE_NO_DEPRECATE_GLOBALS
-            -D_CRT_SETERRORMODE_BEEP_SLEEP_NO_DEPRECATE
-            -D_CRT_TIME_FUNCTIONS_NO_DEPRECATE
-            -D_CRT_VCCLRIT_NO_DEPRECATE
-            -D_SCL_SECURE_NO_DEPRECATE
-            )
-        endif()
+        add_definitions(
+          -D_CRT_FAR_MAPPINGS_NO_DEPRECATE
+          -D_CRT_IS_WCTYPE_NO_DEPRECATE
+          -D_CRT_MANAGED_FP_NO_DEPRECATE
+          -D_CRT_NONSTDC_NO_DEPRECATE
+          -D_CRT_SECURE_NO_DEPRECATE
+          -D_CRT_SECURE_NO_DEPRECATE_GLOBALS
+          -D_CRT_SETERRORMODE_BEEP_SLEEP_NO_DEPRECATE
+          -D_CRT_TIME_FUNCTIONS_NO_DEPRECATE
+          -D_CRT_VCCLRIT_NO_DEPRECATE
+          -D_SCL_SECURE_NO_DEPRECATE
+          )
       endif()
     endif()
   endif()
@@ -134,26 +113,23 @@ if (APPLE)
 	option(OPJ_USE_DSYMUTIL "Call dsymutil on binaries after build." OFF)
 endif()
 
-#-----------------------------------------------------------------------------
-# Big endian test:
+# Big endian test
 include(${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
 TEST_BIG_ENDIAN(OPJ_BIG_ENDIAN)
 
-#-----------------------------------------------------------------------------
 # Setup file for setting custom ctest vars
 configure_file(
   ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/CTestCustom.cmake.in
   ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/CTestCustom.cmake
   @ONLY)
 
-#-----------------------------------------------------------------------------
-# OpenJPEG build configuration options.
+# OpenJPEG build configuration options
 #option(BUILD_SHARED_LIBS "Build OpenJPEG shared library and link executables against it." ON)
 set(EXECUTABLE_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all executables.")
 set(LIBRARY_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all libraries.")
 mark_as_advanced(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 
-# Compiler specific flags:
+# Compiler specific flags
 if(CMAKE_COMPILER_IS_GNUCC)
   # For all builds, make sure openjpeg is std99 compliant:
   # set(CMAKE_C_FLAGS "-Wall -std=c99 ${CMAKE_C_FLAGS}") # FIXME: this setting prevented us from setting a coverage build.
@@ -161,7 +137,6 @@ if(CMAKE_COMPILER_IS_GNUCC)
   set(OPENJPEG_LIBRARY_COMPILE_OPTIONS ${OPENJPEG_LIBRARY_COMPILE_OPTIONS} "$<$<CONFIG:Release>:-ffast-math>")
 endif()
 
-#-----------------------------------------------------------------------------
 # opj_config.h generation (1/2)
 
 # Check if some include files are provided by the system
@@ -177,23 +152,22 @@ ensure_file_include("time.h"   HAVE_TIME_H   YES)
 ensure_file_include("stdarg.h" HAVE_STDARG_H YES)
 ensure_file_include("ctype.h"  HAVE_CTYPE_H  YES)
 ensure_file_include("assert.h" HAVE_ASSERT_H YES)
-
-# For the following files, we provide an alternative, they are not mandatory
+# Not mandatory
 ensure_file_include("stdint.h"   OPJ_HAVE_STDINT_H   NO)
 ensure_file_include("inttypes.h" OPJ_HAVE_INTTYPES_H NO)
 
-# why check this one ? for openjpip ?
+# For openjpip?
 include (${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
 CHECK_INCLUDE_FILE("strings.h"   HAVE_STRINGS_H)
 CHECK_INCLUDE_FILE("sys/stat.h"  HAVE_SYS_STAT_H)
 CHECK_INCLUDE_FILE("sys/types.h" HAVE_SYS_TYPES_H)
 CHECK_INCLUDE_FILE("unistd.h"    HAVE_UNISTD_H)
 
-# Enable Large file support
+# Large file support
 include(TestLargeFiles)
 OPJ_TEST_LARGE_FILES(OPJ_HAVE_LARGEFILES)
 
-# Allocating Aligned Memory Blocks
+# Allocating aligned memory blocks
 include(CheckIncludeFiles)
 check_include_files(malloc.h OPJ_HAVE_MALLOC_H)
 include(CheckSymbolExists)
@@ -205,10 +179,9 @@ check_symbol_exists(posix_memalign stdlib.h OPJ_HAVE_POSIX_MEMALIGN)
 unset(CMAKE_REQUIRED_DEFINITIONS)
 # memalign (obsolete)
 check_symbol_exists(memalign malloc.h OPJ_HAVE_MEMALIGN)
-#-----------------------------------------------------------------------------
+
 add_subdirectory(src/lib)
 
-#-----------------------------------------------------------------------------
 # opj_config.h generation (2/2)
 configure_file(
  ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/openjp2/opj_config.h.cmake.in
@@ -220,7 +193,6 @@ configure_file(
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config_private.h
  @ONLY)
 
-#-----------------------------------------------------------------------------
 # Buld Testing
 #option(BUILD_TESTING "Build the tests." OFF)
 #if(BUILD_TESTING)
@@ -243,7 +215,6 @@ configure_file(
 #  endif()
 #endif()
 
-#-----------------------------------------------------------------------------
 # install all targets referenced as OPENJPEGTargets
 #install(EXPORT OpenJPEGTargets DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
 

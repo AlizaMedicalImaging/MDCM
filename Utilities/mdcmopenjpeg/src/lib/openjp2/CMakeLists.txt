@@ -16,6 +16,7 @@ set(OPENJPEG_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/dwt.h
   ${CMAKE_CURRENT_SOURCE_DIR}/event.c
   ${CMAKE_CURRENT_SOURCE_DIR}/event.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/ht_dec.c
   ${CMAKE_CURRENT_SOURCE_DIR}/image.c
   ${CMAKE_CURRENT_SOURCE_DIR}/image.h
   ${CMAKE_CURRENT_SOURCE_DIR}/invert.c
@@ -52,7 +53,8 @@ set(OPENJPEG_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_malloc.h
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_stdint.h
   ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.h)
+  ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.h
+)
 
 option(OPJ_DISABLE_TPSOT_FIX "Disable TPsot==TNsot fix. See https://github.com/uclouvain/openjpeg/issues/254." OFF)
 mark_as_advanced(OPJ_DISABLE_TPSOT_FIX)
