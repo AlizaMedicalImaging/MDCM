@@ -34,6 +34,8 @@
 #endif
 #include "mdcm_openjpeg.h"
 
+//#define MDCM_JPEG2000_VERBOSE
+
 namespace mdcm
 {
 
@@ -1537,30 +1539,29 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   LossyFlag = !reversible;
   assert(image->numcomps == this->GetPixelFormat().GetSamplesPerPixel());
   assert(image->numcomps == this->GetPhotometricInterpretation().GetSamplesPerPixel());
-#if 0
-  std::cout << "GetPhotometricInterpretation() = "
-    << this->GetPhotometricInterpretation() << ", mct = " << (int)mct << std::endl;
-#endif
-#if 0
-  if (this->GetPhotometricInterpretation() == PhotometricInterpretation::RGB
-#  if 1
-     || this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_FULL
-#  endif
-    )
+#ifdef MDCM_JPEG2000_VERBOSE
+  std::cout << "Photometric " << this->GetPhotometricInterpretation()
+    << ", MCT " << static_cast<int>(mct)
+    << ", reversible " <<  static_cast<int>(reversible) << std::endl;
+  if (this->GetPhotometricInterpretation() == PhotometricInterpretation::RGB ||
+      this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_FULL)
   {
     if (mct)
-      mdcmAlwaysWarnMacro("JPEG2000 warning: (RGB || YBR_FULL), mct = " << (int)mct);
+      mdcmAlwaysWarnMacro("JPEG2000Codec: " << this->GetPhotometricInterpretation()
+                          << ", but MCT is " << static_cast<int>(mct));
   }
   else if (this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_RCT ||
            this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_ICT)
   {
-    if(!mct)
-      mdcmAlwaysWarnMacro("JPEG2000 warning: (YBR_ICT || YBR_RCT), mct = " << (int)mct);
+    if (!mct)
+      mdcmAlwaysWarnMacro("JPEG2000Codec: " << this->GetPhotometricInterpretation()
+                          << ", but MCT is " << static_cast<int>(mct));
   }
 #endif
   // Close the byte stream
   opj_stream_destroy(cio);
-  const size_t len = static_cast<size_t>(Dimensions[0]) * Dimensions[1] * (PF.GetBitsAllocated() / 8) * image->numcomps;
+  const size_t len =
+    static_cast<size_t>(Dimensions[0]) * Dimensions[1] * (PF.GetBitsAllocated() / 8) * image->numcomps;
   char *       raw;
   try
   {
