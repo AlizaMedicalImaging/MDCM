@@ -1148,10 +1148,14 @@ JPEG2000Codec::SetNumberOfResolutions(unsigned int nres)
 }
 
 void
-JPEG2000Codec::SetReversible(bool res)
+JPEG2000Codec::SetReversible(bool b)
 {
-  LossyFlag = !res;
-  Internals->coder_param.irreversible = !res;
+  // 1 : use the irreversible DWT 9-7, 0 : use lossless compression (default)
+  LossyFlag = !b;
+  if (b)
+    Internals->coder_param.irreversible = 0;
+  else
+    Internals->coder_param.irreversible = 1;
 }
 
 /*
@@ -1184,10 +1188,28 @@ Input PI + MCT 1 -> Not allowed
 void
 JPEG2000Codec::SetMCT(bool mct)
 {
-  // Set the Multiple Component Transformation value (COD -> SGcod)
+  // Set the Multiple Component Transformation (COD -> SGcod)
   // 0 for none, 1 to apply to components 0, 1, 2
-  if (mct) Internals->coder_param.tcp_mct = 1;
-  else     Internals->coder_param.tcp_mct = 0;
+  if (mct)
+    Internals->coder_param.tcp_mct = 1;
+  else
+    Internals->coder_param.tcp_mct = 0;
+}
+
+bool
+JPEG2000Codec::GetReversible() const
+{
+  if (Internals->coder_param.irreversible == 0)
+    return true;
+  return false;
+}
+
+bool
+JPEG2000Codec::GetMCT() const
+{
+  if (Internals->coder_param.tcp_mct == 1)
+    return true;
+  return false;
 }
 
 bool
@@ -1547,15 +1569,21 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
       this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_FULL)
   {
     if (mct)
-      mdcmAlwaysWarnMacro("JPEG2000Codec: " << this->GetPhotometricInterpretation()
-                          << ", but MCT is " << static_cast<int>(mct));
+      std::cout << this->GetPhotometricInterpretation() << ", but MCT is 1" << std::endl;
   }
-  else if (this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_RCT ||
-           this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_ICT)
+  else if (this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_RCT)
   {
     if (!mct)
-      mdcmAlwaysWarnMacro("JPEG2000Codec: " << this->GetPhotometricInterpretation()
-                          << ", but MCT is " << static_cast<int>(mct));
+      std::cout << "YBR_RCT, but MCT is 0" << std::endl;
+    if (!reversible)
+      std::cout << "YBR_RCT, but is not reversible" << std::endl;
+  }
+  else if (this->GetPhotometricInterpretation() == PhotometricInterpretation::YBR_ICT)
+  {
+    if (!mct)
+      std::cout << "YBR_ICT, but MCT is 0" << std::endl;;
+    if (reversible)
+      std::cout << "YBR_ICT, but is reversible" << std::endl;;
   }
 #endif
   // Close the byte stream
