@@ -515,7 +515,7 @@ Bitmap::TryEncapsulatedRAWCodec(char * buffer, bool & lossyflag) const
   const SequenceOfFragments * sf = PixelData.GetSequenceOfFragments();
   if (!sf)
   {
-    mdcmAlwaysWarnMacro("EncapsulatedRAWCodec: SequenceOfFragments is nullptr");
+    mdcmAlwaysWarnMacro("EncapsulatedRAWCodec: SequenceOfFragments is null");
     return false;
   }
   if (codec.CanDecode(ts))
@@ -557,7 +557,7 @@ Bitmap::TryJPEGCodec(char * buffer, bool & lossyflag) const
       const SequenceOfFragments * sf = PixelData.GetSequenceOfFragments();
       if (!sf)
       {
-        mdcmAlwaysWarnMacro("JPEG: SequenceOfFragments is nullptr");
+        mdcmAlwaysWarnMacro("JPEG: SequenceOfFragments is null");
         return false;
       }
       const Fragment &  frag = sf->GetFragment(0);
@@ -742,7 +742,7 @@ Bitmap::TryJPEGCodec3(char * buffer, bool & lossyflag) const
       const SequenceOfFragments * sf = PixelData.GetSequenceOfFragments();
       if (!sf)
       {
-        mdcmAlwaysWarnMacro("JPEG: SequenceOfFragments is nullptr");
+        mdcmAlwaysWarnMacro("JPEG: SequenceOfFragments is null");
         return false;
       }
       const Fragment &  frag = sf->GetFragment(0);

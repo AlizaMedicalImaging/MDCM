@@ -101,7 +101,7 @@ FileMetaInformation::SetImplementationVersionName(const char * version)
   }
   else
   {
-    mdcmAlwaysWarnMacro("Failed SetImplementationVersionName, nullptr or > 16"); 
+    mdcmAlwaysWarnMacro("Failed SetImplementationVersionName, null or > 16"); 
   }
 }
 
