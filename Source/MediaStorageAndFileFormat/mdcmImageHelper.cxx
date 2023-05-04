@@ -207,7 +207,7 @@ ComputeZSpacingFromIPP(const DataSet & ds, double & zspacing)
   if (!(sqi && sqi->GetNumberOfItems() > 0))
     return false;
   double           normal[3];
-  DirectionCosines dc(&cosines[0]);
+  DirectionCosines dc(cosines.data());
   dc.Cross(normal);
   std::vector<double> distances;
   std::vector<double> dircos_subds2;
@@ -417,7 +417,7 @@ ImageHelper::GetDirectionCosinesFromDataSet(DataSet const & ds, std::vector<doub
     {
       dircos[i] = at.GetValue(i);
     }
-    DirectionCosines dc(&dircos[0]);
+    DirectionCosines dc(dircos.data());
     if (!dc.IsValid())
     {
       dc.Normalize();
@@ -1870,7 +1870,7 @@ ImageHelper::SetOriginValue(DataSet & ds, const Image & image)
   assert(MediaStorage::IsImage(ms));
   if (ms == MediaStorage::SecondaryCaptureImageStorage)
   {
-    // https://sourceforge.net/p/mdcm/bugs/322/
+    // https://sourceforge.net/p/gdcm/bugs/322/
     // default behavior is simply to pass
     return;
   }
@@ -2176,7 +2176,7 @@ ImageHelper::SetDirectionCosinesValue(DataSet & ds, const std::vector<double> & 
   assert(MediaStorage::IsImage(ms));
   if (ms == MediaStorage::SecondaryCaptureImageStorage)
   {
-    // https://sourceforge.net/p/mdcm/bugs/322/
+    // https://sourceforge.net/p/gdcm/bugs/322/
     // default behavior is simply to pass
     return;
   }
@@ -2202,7 +2202,7 @@ ImageHelper::SetDirectionCosinesValue(DataSet & ds, const std::vector<double> & 
   // Image Orientation Patient
   Attribute<0x0020, 0x0037> iop = { { 1, 0, 0, 0, 1, 0 } };
   assert(dircos.size() == 6);
-  DirectionCosines dc(&dircos[0]);
+  DirectionCosines dc(dircos.data());
   if (!dc.IsValid())
   {
     mdcmWarningMacro("Direction Cosines are not valid. Using default value (1\\0\\0\\0\\1\\0)");
