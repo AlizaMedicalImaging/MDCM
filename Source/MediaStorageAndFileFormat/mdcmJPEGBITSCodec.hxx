@@ -470,6 +470,7 @@ JPEGBITSCodec::GetHeaderInfo(std::istream & is, TransferSyntax & ts)
         assert(this->BitSample == cinfo.data_precision);
       }
       jpeg_destroy_decompress(&cinfo);
+      // TODO: www.dcm4che.org/jira/secure/attachment/10185/ct-implicit-little.dcm weird Icon Image from GE
       return false;
     }
   }
@@ -730,6 +731,8 @@ JPEGBITSCodec::DecodeByStreams(std::istream & is, std::ostream & os)
         this->BitSample = jerr.pub.msg_parm.i[0];
       }
       jpeg_destroy_decompress(&cinfo);
+      // www.dcm4che.org/jira/secure/attachment/10185/ct-implicit-little.dcm
+      // weird Icon Image from GE
       return false;
     }
   }
