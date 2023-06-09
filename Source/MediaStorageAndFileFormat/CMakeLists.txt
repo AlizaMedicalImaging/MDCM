@@ -101,10 +101,6 @@ else()
     "${MDCM_BINARY_DIR}/Utilities/mdcmopenjpeg/src/lib/openjp2")
 endif()
 
-if(MDCM_USE_SYSTEM_LJPEG)
-  include_directories(${LJPEG_INCLUDE_DIRS})
-endif()
-
 if(NOT MDCM_USE_SYSTEM_ZLIB)
   include_directories("${MDCM_BINARY_DIR}/Utilities/mdcmzlib")
 endif()
