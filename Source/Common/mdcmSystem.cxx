@@ -29,8 +29,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <climits> // PATH_MAX
 #include <sys/stat.h>
-#include <limits.h> // PATH_MAX
 
 #ifdef MDCM_HAVE_SYS_TIME_H
 #  include <sys/time.h>
@@ -58,6 +58,89 @@
 #  include <strings.h>
 #endif
 
+#ifndef PATH_MAX
+#  define PATH_MAX 4096
+#endif
+
+#if (defined(_MSC_VER) && defined(MDCM_WIN32_UNC))
+namespace
+{
+
+std::wstring
+utf8_decode(const std::string & str)
+{
+  if (str.empty())
+    return std::wstring();
+  const int    len = MultiByteToWideChar(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), nullptr, 0);
+  std::wstring ret(len, 0);
+  MultiByteToWideChar(CP_UTF8, 0, str.data(), -1, &ret[0], len);
+  return ret;
+}
+
+std::string
+utf8_encode(const std::wstring & wstr)
+{
+  if (wstr.empty())
+    return std::string();
+  const int   len = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), nullptr, 0, nullptr, nullptr);
+  std::string ret(len, 0);
+  WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), &ret[0], len, nullptr, nullptr);
+  return ret;
+}
+
+// http://arsenmk.blogspot.com/2015/12/handling-long-paths-on-windows.html
+bool
+ComputeFullPath(const std::wstring & in, std::wstring & out)
+{
+  // consider an input fileName of type PCWSTR (const wchar_t*)
+  const wchar_t * fileName = in.c_str();
+  DWORD           requiredBufferLength = GetFullPathNameW(fileName, 0, nullptr, nullptr);
+  if (0 == requiredBufferLength)
+    return false;
+  out.resize(requiredBufferLength);
+  wchar_t * buffer = &out[0];
+  DWORD     result = GetFullPathNameW(fileName, requiredBufferLength, buffer, nullptr);
+  if (0 == result)
+    return false;
+  return true;
+}
+
+std::wstring
+HandleMaxPath(const std::wstring & in)
+{
+  if (in.size() >= MAX_PATH)
+  {
+    std::wstring out;
+    bool         ret = ComputeFullPath(in, out);
+    if (!ret)
+      return in;
+    if (out.size() < 4)
+      return in;
+    if (out[0] == '\\' && out[1] == '\\' && out[2] == '?')
+    {
+      ;
+    }
+    else if (out[0] == '\\' && out[1] == '\\' && out[2] != '?')
+    {
+      // server path
+      std::wstring prefix = LR"(\\?\UNC\)";
+      out = prefix + (out.c_str() + 2);
+    }
+    else
+    {
+      // regular C:\ style path:
+      assert(out[1] == ':');
+      std::wstring prefix = LR"(\\?\)";
+      out = prefix + out.c_str();
+    }
+    return out;
+  }
+  return in;
+}
+
+}
+#endif
+
 namespace mdcm
 {
 
@@ -80,7 +163,10 @@ System::FileExists(const char * filename)
   {
     return false;
   }
-  else { return true; }
+  else
+  {
+    return true;
+  }
 }
 
 bool
@@ -101,7 +187,10 @@ System::FileIsDirectory(const char * name)
     return S_ISDIR(fs.st_mode);
 #endif
   }
-  else { return false; }
+  else
+  {
+    return false;
+  }
 }
 
 bool
@@ -141,97 +230,6 @@ System::FileTime(const char * filename)
   }
   return 0;
 }
-
-const char *
-System::GetLastSystemError()
-{
-  int e = errno;
-  return strerror(e);
-}
-
-#ifndef PATH_MAX
-#  define PATH_MAX 4096
-#endif
-
-#if (defined(_MSC_VER) && defined(MDCM_WIN32_UNC))
-namespace
-{
-
-static std::wstring
-utf8_decode(const std::string & str)
-{
-  if (str.empty())
-    return std::wstring();
-  const int    len = MultiByteToWideChar(CP_UTF8, 0, str.data(), static_cast<int>(str.size()), nullptr, 0);
-  std::wstring ret(len, 0);
-  MultiByteToWideChar(CP_UTF8, 0, str.data(), -1, &ret[0], len);
-  return ret;
-}
-
-static std::string
-utf8_encode(const std::wstring & wstr)
-{
-  if (wstr.empty())
-    return std::string();
-  const int   len = WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), nullptr, 0, nullptr, nullptr);
-  std::string ret(len, 0);
-  WideCharToMultiByte(CP_UTF8, 0, wstr.data(), static_cast<int>(wstr.size()), &ret[0], len, nullptr, nullptr);
-  return ret;
-}
-
-// http://arsenmk.blogspot.com/2015/12/handling-long-paths-on-windows.html
-static bool
-ComputeFullPath(const std::wstring & in, std::wstring & out)
-{
-  // consider an input fileName of type PCWSTR (const wchar_t*)
-  const wchar_t * fileName = in.c_str();
-  DWORD           requiredBufferLength = GetFullPathNameW(fileName, 0, nullptr, nullptr);
-  if (0 == requiredBufferLength)
-    return false;
-  out.resize(requiredBufferLength);
-  wchar_t * buffer = &out[0];
-  DWORD     result = GetFullPathNameW(fileName, requiredBufferLength, buffer, nullptr);
-  if (0 == result)
-    return false;
-  return true;
-}
-
-static std::wstring
-HandleMaxPath(const std::wstring & in)
-{
-  if (in.size() >= MAX_PATH)
-  {
-    std::wstring out;
-    bool         ret = ComputeFullPath(in, out);
-    if (!ret)
-      return in;
-    if (out.size() < 4)
-      return in;
-    if (out[0] == '\\' && out[1] == '\\' && out[2] == '?')
-    {
-      ;
-      ;
-    }
-    else if (out[0] == '\\' && out[1] == '\\' && out[2] != '?')
-    {
-      // server path
-      std::wstring prefix = LR"(\\?\UNC\)";
-      out = prefix + (out.c_str() + 2);
-    }
-    else
-    {
-      // regular C:\ style path:
-      assert(out[1] == ':');
-      std::wstring prefix = LR"(\\?\)";
-      out = prefix + out.c_str();
-    }
-    return out;
-  }
-  return in;
-}
-
-} // namespace
-#endif
 
 std::wstring
 System::ConvertToUtf16(const char * utf8path)

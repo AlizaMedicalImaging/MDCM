@@ -38,8 +38,6 @@ public:
   FileIsSymlink(const char *);
   static time_t
   FileTime(const char *);
-  static const char *
-  GetLastSystemError();
   static std::wstring
   ConvertToUtf16(const char *);
   static size_t
