@@ -29,22 +29,30 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
-#include <climits> // PATH_MAX
+#include <ctime>
 #include <sys/stat.h>
 
 #ifdef MDCM_HAVE_SYS_TIME_H
 #  include <sys/time.h>
 #endif
-#include <ctime>
+
 #ifdef _WIN32
 #  include <windows.h>
 #endif
+
 #if defined(MDCM_HAVE_SNPRINTF)
 #elif defined(MDCM_HAVE__SNPRINTF)
 #  define snprintf _snprintf
 #endif
-#ifdef MDCM_USE_COREFOUNDATION_LIBRARY
-#  include <CoreFoundation/CoreFoundation.h>
+
+#ifdef MDCM_USE_PVRG
+#  include <climits> // PATH_MAX
+#  ifdef MDCM_USE_COREFOUNDATION_LIBRARY
+#    include <CoreFoundation/CoreFoundation.h>
+#  endif
+#  ifndef PATH_MAX
+#    define PATH_MAX 4096
+#  endif
 #endif
 
 #if defined(_WIN32) && (defined(_MSC_VER) || defined(__WATCOMC__) || defined(__BORLANDC__) || defined(__MINGW32__))
@@ -56,10 +64,6 @@
 #  include <fcntl.h>
 #  include <unistd.h>
 #  include <strings.h>
-#endif
-
-#ifndef PATH_MAX
-#  define PATH_MAX 4096
 #endif
 
 #if (defined(_MSC_VER) && defined(MDCM_WIN32_UNC))
@@ -280,6 +284,7 @@ System::FileSize(const char * filename)
 }
 
 // TODO remove, only required for PVRG command
+#ifdef MDCM_USE_PVRG
 const char *
 System::GetCurrentProcessFileName()
 {
@@ -326,6 +331,7 @@ System::GetCurrentProcessFileName()
 #endif
   return nullptr;
 }
+#endif
 
 /*
  * Encode the mac address on a fixed length string of 15 characters.
