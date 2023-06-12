@@ -5,17 +5,12 @@ CHECK_INCLUDE_FILE_CONCAT("byteswap.h" MDCM_HAVE_BYTESWAP_FILE_H)
 # s. GDCM bug #324
 if(MDCM_HAVE_BYTESWAP_FILE_H)
   include(CheckCXXSourceCompiles)
-  CHECK_CXX_SOURCE_COMPILES("\#include <byteswap.h>\nint main(){return bswap_32(42);}"
+  CHECK_CXX_SOURCE_COMPILES("#include <byteswap.h>\nint main(){return bswap_32(42);}"
     MDCM_HAVE_BYTESWAP_H)
 endif()
 CHECK_INCLUDE_FILE("rpc.h" MDCM_HAVE_RPC_H)
 
 include(CheckFunctionExists)
-include(CheckSymbolExists)
-CHECK_SYMBOL_EXISTS(strcasecmp "strings.h" MDCM_HAVE_STRCASECMP)
-CHECK_SYMBOL_EXISTS(snprintf "cstdio" MDCM_HAVE_SNPRINTF)
-CHECK_FUNCTION_EXISTS(_stricmp  MDCM_HAVE__STRICMP)
-CHECK_FUNCTION_EXISTS(_snprintf MDCM_HAVE__SNPRINTF)
 CHECK_FUNCTION_EXISTS(gettimeofday MDCM_HAVE_GETTIMEOFDAY)
 
 include(CheckCXXSourceCompiles)
@@ -24,7 +19,7 @@ CHECK_CXX_SOURCE_COMPILES("int main(){const char *f =__FUNCTION__;return 0;}"
 if(MDCM_USE_SYSTEM_OPENSSL)
   set(CMAKE_REQUIRED_INCLUDES ${OPENSSL_INCLUDE_DIR})
   set(CMAKE_REQUIRED_LIBRARIES ${OPENSSL_LIBRARIES} ${CMAKE_DL_LIBS})
-  CHECK_CXX_SOURCE_COMPILES("\#include <openssl/cms.h>\nint main(){CMS_add0_recipient_password(0,0,0,0,0,0,0);return 0;}"
+  CHECK_CXX_SOURCE_COMPILES("#include <openssl/cms.h>\nint main(){CMS_add0_recipient_password(0,0,0,0,0,0,0);return 0;}"
     MDCM_HAVE_CMS_RECIPIENT_PASSWORD)
 endif()
 # "\#include <openssl/cms.h>\nint main() { CMS_add0_recipient_key(0); return 0;}"
