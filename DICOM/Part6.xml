@@ -18,7 +18,7 @@ This file was automatically created from a docbook version of PS 3.6
 <!ENTITY part7a SYSTEM "Part7a.xml">
 <!ENTITY part7b SYSTEM "Part7b.xml">
 ]>
-<dicts edition="2021d">
+<dicts edition="2023c">
 &part7a;
 &part7b;
 <dict ref="6" name="Registry of DICOM Data Elements">

@@ -37,7 +37,7 @@ This file was automatically created from a docbook version of PS 3.6
 &lt;!ENTITY part7b SYSTEM "Part7b.xml"&gt;
 ]&gt;
 </xsl:text>
-<dicts edition="2021d">
+<dicts edition="2023c">
 <xsl:text disable-output-escaping="yes">
 &amp;part7a;
 &amp;part7b;
