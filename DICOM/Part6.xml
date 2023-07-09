@@ -34,7 +34,9 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="0014" keyword="InstanceCreatorUID" vr="UI" vm="1" name="Instance Creator UID"/>
                 <entry group="0008" element="0015" keyword="InstanceCoercionDateTime" vr="DT" vm="1" name="Instance Coercion DateTime"/>
                 <entry group="0008" element="0016" keyword="SOPClassUID" vr="UI" vm="1" name="SOP Class UID"/>
+                <entry group="0008" element="0017" keyword="AcquisitionUID" vr="UI" vm="1" name="Acquisition UID"/>
                 <entry group="0008" element="0018" keyword="SOPInstanceUID" vr="UI" vm="1" name="SOP Instance UID"/>
+                <entry group="0008" element="0019" keyword="PyramidUID" vr="UI" vm="1" name="Pyramid UID"/>
                 <entry group="0008" element="001a" keyword="RelatedGeneralSOPClassUID" vr="UI" vm="1-n" name="Related General SOP Class UID"/>
                 <entry group="0008" element="001b" keyword="OriginalSpecializedSOPClassUID" vr="UI" vm="1" name="Original Specialized SOP Class UID"/>
                 <entry group="0008" element="0020" keyword="StudyDate" vr="DA" vm="1" name="Study Date"/>
@@ -128,6 +130,48 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="030e" keyword="PrivateDataElementDescription" vr="UT" vm="1" name="Private Data Element Description"/>
                 <entry group="0008" element="030f" keyword="PrivateDataElementEncoding" vr="UT" vm="1" name="Private Data Element Encoding"/>
                 <entry group="0008" element="0310" keyword="PrivateDataElementDefinitionSequence" vr="SQ" vm="1" name="Private Data Element Definition Sequence"/>
+                <entry group="0008" element="0400" keyword="ScopeOfInventorySequence" vr="SQ" vm="1" name="Scope of Inventory Sequence"/>
+                <entry group="0008" element="0401" keyword="InventoryPurpose" vr="LT" vm="1" name="Inventory Purpose"/>
+                <entry group="0008" element="0402" keyword="InventoryInstanceDescription" vr="LT" vm="1" name="Inventory Instance Description"/>
+                <entry group="0008" element="0403" keyword="InventoryLevel" vr="CS" vm="1" name="Inventory Level"/>
+                <entry group="0008" element="0404" keyword="ItemInventoryDateTime" vr="DT" vm="1" name="Item Inventory DateTime"/>
+                <entry group="0008" element="0405" keyword="RemovedFromOperationalUse" vr="CS" vm="1" name="Removed from Operational Use"/>
+                <entry group="0008" element="0406" keyword="ReasonForRemovalCodeSequence" vr="SQ" vm="1" name="Reason for Removal Code Sequence"/>
+                <entry group="0008" element="0407" keyword="StoredInstanceBaseURI" vr="UR" vm="1" name="Stored Instance Base URI"/>
+                <entry group="0008" element="0408" keyword="FolderAccessURI" vr="UR" vm="1" name="Folder Access URI"/>
+                <entry group="0008" element="0409" keyword="FileAccessURI" vr="UR" vm="1" name="File Access URI"/>
+                <entry group="0008" element="040a" keyword="ContainerFileType" vr="CS" vm="1" name="Container File Type"/>
+                <entry group="0008" element="040b" keyword="FilenameInContainer" vr="UR" vm="1" name="Filename in Container"/>
+                <entry group="0008" element="040c" keyword="FileOffsetInContainer" vr="UV" vm="1" name="File Offset in Container"/>
+                <entry group="0008" element="040d" keyword="FileLengthInContainer" vr="UV" vm="1" name="File Length in Container"/>
+                <entry group="0008" element="040e" keyword="StoredInstanceTransferSyntaxUID" vr="UI" vm="1" name="Stored Instance Transfer Syntax UID"/>
+                <entry group="0008" element="040f" keyword="ExtendedMatchingMechanisms" vr="CS" vm="1-n" name="Extended Matching Mechanisms"/>
+                <entry group="0008" element="0410" keyword="RangeMatchingSequence" vr="SQ" vm="1" name="Range Matching Sequence"/>
+                <entry group="0008" element="0411" keyword="ListOfUIDMatchingSequence" vr="SQ" vm="1" name="List of UID Matching Sequence"/>
+                <entry group="0008" element="0412" keyword="EmptyValueMatchingSequence" vr="SQ" vm="1" name="Empty Value Matching Sequence"/>
+                <entry group="0008" element="0413" keyword="GeneralMatchingSequence" vr="SQ" vm="1" name="General Matching Sequence"/>
+                <entry group="0008" element="0414" keyword="RequestedStatusInterval" vr="US" vm="1" name="Requested Status Interval"/>
+                <entry group="0008" element="0415" keyword="RetainInstances" vr="CS" vm="1" name="Retain Instances"/>
+                <entry group="0008" element="0416" keyword="ExpirationDateTime" vr="DT" vm="1" name="Expiration DateTime"/>
+                <entry group="0008" element="0417" keyword="TransactionStatus" vr="CS" vm="1" name="Transaction Status"/>
+                <entry group="0008" element="0418" keyword="TransactionStatusComment" vr="LT" vm="1" name="Transaction Status Comment"/>
+                <entry group="0008" element="0419" keyword="FileSetAccessSequence" vr="SQ" vm="1" name="File Set Access Sequence"/>
+                <entry group="0008" element="041a" keyword="FileAccessSequence" vr="SQ" vm="1" name="File Access Sequence"/>
+                <entry group="0008" element="041b" keyword="RecordKey" vr="OB" vm="1" name="Record Key"/>
+                <entry group="0008" element="041c" keyword="PriorRecordKey" vr="OB" vm="1" name="Prior Record Key"/>
+                <entry group="0008" element="041d" keyword="MetadataSequence" vr="SQ" vm="1" name="Metadata Sequence"/>
+                <entry group="0008" element="041e" keyword="UpdatedMetadataSequence" vr="SQ" vm="1" name="Updated Metadata Sequence"/>
+                <entry group="0008" element="041f" keyword="StudyUpdateDateTime" vr="DT" vm="1" name="Study Update DateTime"/>
+                <entry group="0008" element="0420" keyword="InventoryAccessEndPointsSequence" vr="SQ" vm="1" name="Inventory Access End Points Sequence"/>
+                <entry group="0008" element="0421" keyword="StudyAccessEndPointsSequence" vr="SQ" vm="1" name="Study Access End Points Sequence"/>
+                <entry group="0008" element="0422" keyword="IncorporatedInventoryInstanceSequence" vr="SQ" vm="1" name="Incorporated Inventory Instance Sequence"/>
+                <entry group="0008" element="0423" keyword="InventoriedStudiesSequence" vr="SQ" vm="1" name="Inventoried Studies Sequence"/>
+                <entry group="0008" element="0424" keyword="InventoriedSeriesSequence" vr="SQ" vm="1" name="Inventoried Series Sequence"/>
+                <entry group="0008" element="0425" keyword="InventoriedInstancesSequence" vr="SQ" vm="1" name="Inventoried Instances Sequence"/>
+                <entry group="0008" element="0426" keyword="InventoryCompletionStatus" vr="CS" vm="1" name="Inventory Completion Status"/>
+                <entry group="0008" element="0427" keyword="NumberOfStudyRecordsInInstance" vr="UL" vm="1" name="Number of Study Records in Instance"/>
+                <entry group="0008" element="0428" keyword="TotalNumberOfStudyRecords" vr="UV" vm="1" name="Total Number of Study Records"/>
+                <entry group="0008" element="0429" keyword="MaximumNumberOfRecords" vr="UV" vm="1" name="Maximum Number of Records"/>
                 <entry group="0008" element="1000" keyword="NetworkID" vr="AE" vm="1" retired="true" name="Network ID"/>
                 <entry group="0008" element="1010" keyword="StationName" vr="SH" vm="1" name="Station Name"/>
                 <entry group="0008" element="1030" keyword="StudyDescription" vr="LO" vm="1" name="Study Description"/>
@@ -146,6 +190,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="1072" keyword="OperatorIdentificationSequence" vr="SQ" vm="1" name="Operator Identification Sequence"/>
                 <entry group="0008" element="1080" keyword="AdmittingDiagnosesDescription" vr="LO" vm="1-n" name="Admitting Diagnoses Description"/>
                 <entry group="0008" element="1084" keyword="AdmittingDiagnosesCodeSequence" vr="SQ" vm="1" name="Admitting Diagnoses Code Sequence"/>
+                <entry group="0008" element="1088" keyword="PyramidDescription" vr="LO" vm="1" name="Pyramid Description"/>
                 <entry group="0008" element="1090" keyword="ManufacturerModelName" vr="LO" vm="1" name="Manufacturer's Model Name"/>
                 <entry group="0008" element="1100" keyword="ReferencedResultsSequence" vr="SQ" vm="1" retired="true" name="Referenced Results Sequence"/>
                 <entry group="0008" element="1110" keyword="ReferencedStudySequence" vr="SQ" vm="1" name="Referenced Study Sequence"/>
@@ -224,7 +269,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="3011" keyword="SourceIrradiationEventSequence" vr="SQ" vm="1" name="Source Irradiation Event Sequence"/>
                 <entry group="0008" element="3012" keyword="RadiopharmaceuticalAdministrationEventUID" vr="UI" vm="1" name="Radiopharmaceutical Administration Event UID"/>
                 <entry group="0008" element="4000" keyword="IdentifyingComments" vr="LT" vm="1" retired="true" name="Identifying Comments"/>
-                <entry group="0008" element="9007" keyword="FrameType" vr="CS" vm="4" name="Frame Type"/>
+                <entry group="0008" element="9007" keyword="FrameType" vr="CS" vm="4-5" name="Frame Type"/>
                 <entry group="0008" element="9092" keyword="ReferencedImageEvidenceSequence" vr="SQ" vm="1" name="Referenced Image Evidence Sequence"/>
                 <entry group="0008" element="9121" keyword="ReferencedRawDataSequence" vr="SQ" vm="1" name="Referenced Raw Data Sequence"/>
                 <entry group="0008" element="9123" keyword="CreatorVersionUID" vr="UI" vm="1" name="Creator-Version UID"/>
@@ -328,6 +373,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0012" element="0051" keyword="ClinicalTrialTimePointDescription" vr="ST" vm="1" name="Clinical Trial Time Point Description"/>
                 <entry group="0012" element="0052" keyword="LongitudinalTemporalOffsetFromEvent" vr="FD" vm="1" name="Longitudinal Temporal Offset from Event"/>
                 <entry group="0012" element="0053" keyword="LongitudinalTemporalEventType" vr="CS" vm="1" name="Longitudinal Temporal Event Type"/>
+                <entry group="0012" element="0054" keyword="ClinicalTrialTimePointTypeCodeSequence" vr="SQ" vm="1" name="Clinical Trial Time Point Type Code Sequence"/>
                 <entry group="0012" element="0060" keyword="ClinicalTrialCoordinatingCenterName" vr="LO" vm="1" name="Clinical Trial Coordinating Center Name"/>
                 <entry group="0012" element="0062" keyword="PatientIdentityRemoved" vr="CS" vm="1" name="Patient Identity Removed"/>
                 <entry group="0012" element="0063" keyword="DeidentificationMethod" vr="LO" vm="1-n" name="De-identification Method"/>
@@ -365,6 +411,14 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0014" element="0106" keyword="MultipleComponentApprovalSequence" vr="SQ" vm="1" name="Multiple Component Approval Sequence"/>
                 <entry group="0014" element="0107" keyword="OtherApprovalStatus" vr="CS" vm="1-n" name="Other Approval Status"/>
                 <entry group="0014" element="0108" keyword="OtherSecondaryApprovalStatus" vr="CS" vm="1-n" name="Other Secondary Approval Status"/>
+                <entry group="0014" element="0200" keyword="DataElementLabelSequence" vr="SQ" vm="1" name="Data Element Label Sequence"/>
+                <entry group="0014" element="0201" keyword="DataElementLabelItemSequence" vr="SQ" vm="1" name="Data Element Label Item Sequence"/>
+                <entry group="0014" element="0202" keyword="DataElement" vr="AT" vm="1" name="Data Element"/>
+                <entry group="0014" element="0203" keyword="DataElementName" vr="LO" vm="1" name="Data Element Name"/>
+                <entry group="0014" element="0204" keyword="DataElementDescription" vr="LO" vm="1" name="Data Element Description"/>
+                <entry group="0014" element="0205" keyword="DataElementConditionality" vr="CS" vm="1" name="Data Element Conditionality"/>
+                <entry group="0014" element="0206" keyword="DataElementMinimumCharacters" vr="IS" vm="1" name="Data Element Minimum Characters"/>
+                <entry group="0014" element="0207" keyword="DataElementMaximumCharacters" vr="IS" vm="1" name="Data Element Maximum Characters"/>
                 <entry group="0014" element="1010" keyword="ActualEnvironmentalConditions" vr="ST" vm="1" name="Actual Environmental Conditions"/>
                 <entry group="0014" element="1020" keyword="ExpiryDate" vr="DA" vm="1" name="Expiry Date"/>
                 <entry group="0014" element="1040" keyword="EnvironmentalConditions" vr="ST" vm="1" name="Environmental Conditions"/>
@@ -839,6 +893,9 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0018" element="1200" keyword="DateOfLastCalibration" vr="DA" vm="1-n" name="Date of Last Calibration"/>
                 <entry group="0018" element="1201" keyword="TimeOfLastCalibration" vr="TM" vm="1-n" name="Time of Last Calibration"/>
                 <entry group="0018" element="1202" keyword="DateTimeOfLastCalibration" vr="DT" vm="1" name="DateTime of Last Calibration"/>
+                <entry group="0018" element="1203" keyword="CalibrationDateTime" vr="DT" vm="1" name="Calibration DateTime"/>
+                <entry group="0018" element="1204" keyword="DateOfManufacture" vr="DA" vm="1" name="Date of Manufacture"/>
+                <entry group="0018" element="1205" keyword="DateOfInstallation" vr="DA" vm="1" name="Date of Installation"/>
                 <entry group="0018" element="1210" keyword="ConvolutionKernel" vr="SH" vm="1-n" name="Convolution Kernel"/>
                 <entry group="0018" element="1240" keyword="UpperLowerPixelValues" vr="IS" vm="1-n" retired="true" name="Upper/Lower Pixel Values"/>
                 <entry group="0018" element="1242" keyword="ActualFrameDuration" vr="IS" vm="1" name="Actual Frame Duration"/>
@@ -1458,6 +1515,27 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0018" element="980e" keyword="TransducerBeamSteeringCodeSequence" vr="SQ" vm="1" name="Transducer Beam Steering Code Sequence"/>
                 <entry group="0018" element="980f" keyword="TransducerApplicationCodeSequence" vr="SQ" vm="1" name="Transducer Application Code Sequence"/>
                 <entry group="0018" element="9810" keyword="ZeroVelocityPixelValue" vr="US_SS" vm="1" name="Zero Velocity Pixel Value"/>
+                <entry group="0018" element="9821" keyword="PhotoacousticExcitationCharacteristicsSequence" vr="SQ" vm="1" name="Photoacoustic Excitation Characteristics Sequence"/>
+                <entry group="0018" element="9822" keyword="ExcitationSpectralWidth" vr="FD" vm="1" name="Excitation Spectral Width"/>
+                <entry group="0018" element="9823" keyword="ExcitationEnergy" vr="FD" vm="1" name="Excitation Energy"/>
+                <entry group="0018" element="9824" keyword="ExcitationPulseDuration" vr="FD" vm="1" name="Excitation Pulse Duration"/>
+                <entry group="0018" element="9825" keyword="ExcitationWavelengthSequence" vr="SQ" vm="1" name="Excitation Wavelength Sequence"/>
+                <entry group="0018" element="9826" keyword="ExcitationWavelength" vr="FD" vm="1" name="Excitation Wavelength"/>
+                <entry group="0018" element="9828" keyword="IlluminationTranslationFlag" vr="CS" vm="1" name="Illumination Translation Flag"/>
+                <entry group="0018" element="9829" keyword="AcousticCouplingMediumFlag" vr="CS" vm="1" name="Acoustic Coupling Medium Flag"/>
+                <entry group="0018" element="982a" keyword="AcousticCouplingMediumCodeSequence" vr="SQ" vm="1" name="Acoustic Coupling Medium Code Sequence"/>
+                <entry group="0018" element="982b" keyword="AcousticCouplingMediumTemperature" vr="FD" vm="1" name="Acoustic Coupling Medium Temperature"/>
+                <entry group="0018" element="982c" keyword="TransducerResponseSequence" vr="SQ" vm="1" name="Transducer Response Sequence"/>
+                <entry group="0018" element="982d" keyword="CenterFrequency" vr="FD" vm="1" name="Center Frequency"/>
+                <entry group="0018" element="982e" keyword="FractionalBandwidth" vr="FD" vm="1" name="Fractional Bandwidth"/>
+                <entry group="0018" element="982f" keyword="LowerCutoffFrequency" vr="FD" vm="1" name="Lower Cutoff Frequency"/>
+                <entry group="0018" element="9830" keyword="UpperCutoffFrequency" vr="FD" vm="1" name="Upper Cutoff Frequency"/>
+                <entry group="0018" element="9831" keyword="TransducerTechnologySequence" vr="SQ" vm="1" name="Transducer Technology Sequence"/>
+                <entry group="0018" element="9832" keyword="SoundSpeedCorrectionMechanismCodeSequence" vr="SQ" vm="1" name="Sound Speed Correction Mechanism Code Sequence"/>
+                <entry group="0018" element="9833" keyword="ObjectSoundSpeed" vr="FD" vm="1" name="Object Sound Speed"/>
+                <entry group="0018" element="9834" keyword="AcousticCouplingMediumSoundSpeed" vr="FD" vm="1" name="Acoustic Coupling Medium Sound Speed"/>
+                <entry group="0018" element="9835" keyword="PhotoacousticImageFrameTypeSequence" vr="SQ" vm="1" name="Photoacoustic Image Frame Type Sequence"/>
+                <entry group="0018" element="9836" keyword="ImageDataTypeCodeSequence" vr="SQ" vm="1" name="Image Data Type Code Sequence"/>
                 <entry group="0018" element="9900" keyword="ReferenceLocationLabel" vr="LO" vm="1" name="Reference Location Label"/>
                 <entry group="0018" element="9901" keyword="ReferenceLocationDescription" vr="UT" vm="1" name="Reference Location Description"/>
                 <entry group="0018" element="9902" keyword="ReferenceBasisCodeSequence" vr="SQ" vm="1" name="Reference Basis Code Sequence"/>
@@ -1536,6 +1614,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0020" element="0022" keyword="OverlayNumber" vr="IS" vm="1" retired="true" name="Overlay Number"/>
                 <entry group="0020" element="0024" keyword="CurveNumber" vr="IS" vm="1" retired="true" name="Curve Number"/>
                 <entry group="0020" element="0026" keyword="LUTNumber" vr="IS" vm="1" retired="true" name="LUT Number"/>
+                <entry group="0020" element="0027" keyword="PyramidLabel" vr="LO" vm="1" name="Pyramid Label"/>
                 <entry group="0020" element="0030" keyword="ImagePosition" vr="DS" vm="3" retired="true" name="Image Position"/>
                 <entry group="0020" element="0032" keyword="ImagePositionPatient" vr="DS" vm="3" name="Image Position (Patient)"/>
                 <entry group="0020" element="0035" keyword="ImageOrientation" vr="DS" vm="6" retired="true" name="Image Orientation"/>
@@ -2067,6 +2146,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0028" element="2112" keyword="LossyImageCompressionRatio" vr="DS" vm="1-n" name="Lossy Image Compression Ratio"/>
                 <entry group="0028" element="2114" keyword="LossyImageCompressionMethod" vr="CS" vm="1-n" name="Lossy Image Compression Method"/>
                 <entry group="0028" element="3000" keyword="ModalityLUTSequence" vr="SQ" vm="1" name="Modality LUT Sequence"/>
+                <entry group="0028" element="3001" keyword="VariableModalityLUTSequence" vr="SQ" vm="1" name="Variable Modality LUT Sequence"/>
                 <entry group="0028" element="3002" keyword="LUTDescriptor" vr="US_SS" vm="3" name="LUT Descriptor"/>
                 <entry group="0028" element="3003" keyword="LUTExplanation" vr="LO" vm="1" name="LUT Explanation"/>
                 <entry group="0028" element="3004" keyword="ModalityLUTType" vr="LO" vm="1" name="Modality LUT Type"/>
@@ -2190,6 +2270,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0032" element="1055" keyword="StudyComponentStatusID" vr="CS" vm="1" retired="true" name="Study Component Status ID"/>
                 <entry group="0032" element="1060" keyword="RequestedProcedureDescription" vr="LO" vm="1" name="Requested Procedure Description"/>
                 <entry group="0032" element="1064" keyword="RequestedProcedureCodeSequence" vr="SQ" vm="1" name="Requested Procedure Code Sequence"/>
+                <entry group="0032" element="1065" keyword="RequestedLateralityCodeSequence" vr="SQ" vm="1" name="Requested Laterality Code Sequence"/>
                 <entry group="0032" element="1066" keyword="ReasonForVisit" vr="UT" vm="1" name="Reason for Visit"/>
                 <entry group="0032" element="1067" keyword="ReasonForVisitCodeSequence" vr="SQ" vm="1" name="Reason for Visit Code Sequence"/>
 
@@ -2282,6 +2363,24 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="003a" element="0314" keyword="ImpedanceMeasurementDateTime" vr="DT" vm="1" name="Impedance Measurement DateTime"/>
                 <entry group="003a" element="0315" keyword="ImpedanceMeasurementFrequency" vr="DS" vm="1" name="Impedance Measurement Frequency"/>
                 <entry group="003a" element="0316" keyword="ImpedanceMeasurementCurrentType" vr="CS" vm="1" name="Impedance Measurement Current Type"/>
+                <entry group="003a" element="0317" keyword="WaveformAmplifierType" vr="CS" vm="1" name="Waveform Amplifier Type"/>
+                <entry group="003a" element="0318" keyword="FilterLowFrequencyCharacteristicsSequence" vr="SQ" vm="1" name="Filter Low Frequency Characteristics Sequence"/>
+                <entry group="003a" element="0319" keyword="FilterHighFrequencyCharacteristicsSequence" vr="SQ" vm="1" name="Filter High Frequency Characteristics Sequence"/>
+                <entry group="003a" element="0320" keyword="SummarizedFilterLookupTable" vr="SQ" vm="1" name="Summarized Filter Lookup Table Sequence"/>
+                <entry group="003a" element="0321" keyword="NotchFilterCharacteristicsSequence" vr="SQ" vm="1" name="Notch Filter Characteristics Sequence"/>
+                <entry group="003a" element="0322" keyword="WaveformFilterType" vr="CS" vm="1" name="Waveform Filter Type"/>
+                <entry group="003a" element="0323" keyword="AnalogFilterCharacteristicsSequence" vr="SQ" vm="1" name="Analog Filter Characteristics Sequence"/>
+                <entry group="003a" element="0324" keyword="AnalogFilterRollOff" vr="DS" vm="1" name="Analog Filter Roll Off "/>
+                <entry group="003a" element="0325" keyword="AnalogFilterType" vr="SQ" vm="1" name="Analog Filter Type Code Sequence"/>
+                <entry group="003a" element="0326" keyword="DigitalFilterCharacteristicsSequence" vr="SQ" vm="1" name="Digital Filter Characteristics Sequence"/>
+                <entry group="003a" element="0327" keyword="DigitalFilterOrder" vr="IS" vm="1" name="Digital Filter Order"/>
+                <entry group="003a" element="0328" keyword="DigitalFilterTypeCodeSequence" vr="SQ" vm="1" name="Digital Filter Type Code Sequence"/>
+                <entry group="003a" element="0329" keyword="WaveformFilterDescription" vr="ST" vm="1" name="Waveform Filter Description"/>
+                <entry group="003a" element="032a" keyword="FilterLookupTableSequence" vr="SQ" vm="1" name="Filter Lookup Table Sequence"/>
+                <entry group="003a" element="032b" keyword="FilterLookupTableDescription" vr="ST" vm="1" name="Filter Lookup Table Description"/>
+                <entry group="003a" element="032c" keyword="FrequencyEncodingCodeSequence" vr="SQ" vm="1" name="Frequency Encoding Code Sequence"/>
+                <entry group="003a" element="032d" keyword="MagnitudeEncodingCodeSequence" vr="SQ" vm="1" name="Magnitude Encoding Code Sequence"/>
+                <entry group="003a" element="032e" keyword="FilterLookupTableData" vr="OD" vm="1" name="Filter Lookup Table Data"/>
                 <entry group="0040" element="0001" keyword="ScheduledStationAETitle" vr="AE" vm="1-n" name="Scheduled Station AE Title"/>
                 <entry group="0040" element="0002" keyword="ScheduledProcedureStepStartDate" vr="DA" vm="1" name="Scheduled Procedure Step Start Date"/>
                 <entry group="0040" element="0003" keyword="ScheduledProcedureStepStartTime" vr="TM" vm="1" name="Scheduled Procedure Step Start Time"/>
@@ -2582,7 +2681,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0040" element="a744" keyword="LanguageCodeSequenceTrial" vr="SQ" vm="1" retired="true" name="Language Code Sequence (Trial)"/>
                 <entry group="0040" element="a801" keyword="TabulatedValuesSequence" vr="SQ" vm="1" name="Tabulated Values Sequence"/>
                 <entry group="0040" element="a802" keyword="NumberOfTableRows" vr="UL" vm="1" name="Number of Table Rows"/>
-                <entry group="0040" element="a803" keyword="NumbeOfTableColumns" vr="UL" vm="1" name="Number of Table Columns"/>
+                <entry group="0040" element="a803" keyword="NumberOfTableColumns" vr="UL" vm="1" name="Number of Table Columns"/>
                 <entry group="0040" element="a804" keyword="TableRowNumber" vr="UL" vm="1" name="Table Row Number"/>
                 <entry group="0040" element="a805" keyword="TableColumnNumber" vr="UL" vm="1" name="Table Column Number"/>
                 <entry group="0040" element="a806" keyword="TableRowDefinitionSequence" vr="SQ" vm="1" name="Table Row Definition Sequence"/>
@@ -2904,7 +3003,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0062" element="0007" keyword="SegmentationAlgorithmIdentificationSequence" vr="SQ" vm="1" name="Segmentation Algorithm Identification Sequence"/>
 
                 <entry group="0062" element="0008" keyword="SegmentAlgorithmType" vr="CS" vm="1" name="Segment Algorithm Type"/>
-                <entry group="0062" element="0009" keyword="SegmentAlgorithmName" vr="LO" vm="1" name="Segment Algorithm Name"/>
+                <entry group="0062" element="0009" keyword="SegmentAlgorithmName" vr="LO" vm="1-n" name="Segment Algorithm Name"/>
                 <entry group="0062" element="000a" keyword="SegmentIdentificationSequence" vr="SQ" vm="1" name="Segment Identification Sequence"/>
                 <entry group="0062" element="000b" keyword="ReferencedSegmentNumber" vr="US" vm="1-n" name="Referenced Segment Number"/>
                 <entry group="0062" element="000c" keyword="RecommendedDisplayGrayscaleValue" vr="US" vm="1" name="Recommended Display Grayscale Value"/>
@@ -3182,6 +3281,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0070" element="0311" keyword="FiducialIdentifierCodeSequence" vr="SQ" vm="1" name="Fiducial Identifier Code Sequence"/>
                 <entry group="0070" element="0312" keyword="ContourUncertaintyRadius" vr="FD" vm="1" name="Contour Uncertainty Radius"/>
                 <entry group="0070" element="0314" keyword="UsedFiducialsSequence" vr="SQ" vm="1" name="Used Fiducials Sequence"/>
+                <entry group="0070" element="0315" keyword="UsedRTStructureSetROISequence" vr="SQ" vm="1" name="Used RT Structure Set ROI Sequence"/>
                 <entry group="0070" element="0318" keyword="GraphicCoordinatesDataSequence" vr="SQ" vm="1" name="Graphic Coordinates Data Sequence"/>
                 <entry group="0070" element="031a" keyword="FiducialUID" vr="UI" vm="1" name="Fiducial UID"/>
                 <entry group="0070" element="031b" keyword="ReferencedFiducialUID" vr="UI" vm="1" name="Referenced Fiducial UID"/>
@@ -3694,8 +3794,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="2130" element="0050" keyword="AnnotationContentSequence" vr="SQ" vm="1" retired="true" name="Annotation Content Sequence"/>
                 <entry group="2130" element="0060" keyword="ImageOverlayBoxContentSequence" vr="SQ" vm="1" retired="true" name="Image Overlay Box Content Sequence"/>
                 <entry group="2130" element="0080" keyword="PresentationLUTContentSequence" vr="SQ" vm="1" retired="true" name="Presentation LUT Content Sequence"/>
-                <entry group="2130" element="00a0" keyword="ProposedStudySequence" vr="SQ" vm="1" retired="true" name="Proposed Study Sequence"/>
-                <entry group="2130" element="00c0" keyword="OriginalImageSequence" vr="SQ" vm="1" retired="true" name="Original Image Sequence"/>
+                <entry group="2130" element="00a0" keyword="ProposedStudySequence" vr="SQ" vm="1" name="Proposed Study Sequence"/>
+                <entry group="2130" element="00c0" keyword="OriginalImageSequence" vr="SQ" vm="1" name="Original Image Sequence"/>
                 <entry group="2200" element="0001" keyword="LabelUsingInformationExtractedFromInstances" vr="CS" vm="1" name="Label Using Information Extracted From Instances"/>
                 <entry group="2200" element="0002" keyword="LabelText" vr="UT" vm="1" name="Label Text"/>
                 <entry group="2200" element="0003" keyword="LabelStyleSelection" vr="CS" vm="1" name="Label Style Selection"/>
@@ -3737,6 +3837,60 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3002" element="0050" keyword="PrimaryFluenceModeSequence" vr="SQ" vm="1" name="Primary Fluence Mode Sequence"/>
                 <entry group="3002" element="0051" keyword="FluenceMode" vr="CS" vm="1" name="Fluence Mode"/>
                 <entry group="3002" element="0052" keyword="FluenceModeID" vr="SH" vm="1" name="Fluence Mode ID"/>
+                <entry group="3002" element="0100" keyword="SelectedFrameNumber" vr="IS" vm="1" name="Selected Frame Number"/>
+                <entry group="3002" element="0101" keyword="SelectedFrameFunctionalGroupsSequence" vr="SQ" vm="1" name="Selected Frame Functional Groups Sequence"/>
+                <entry group="3002" element="0102" keyword="RTImageFrameGeneralContentSequence" vr="SQ" vm="1" name="RT Image Frame General Content Sequence"/>
+                <entry group="3002" element="0103" keyword="RTImageFrameContextSequence" vr="SQ" vm="1" name="RT Image Frame Context Sequence"/>
+                <entry group="3002" element="0104" keyword="RTImageScopeSequence" vr="SQ" vm="1" name="RT Image Scope Sequence"/>
+                <entry group="3002" element="0105" keyword="BeamModifierCoordinatesPresenceFlag" vr="CS" vm="1" name="Beam Modifier Coordinates Presence Flag"/>
+                <entry group="3002" element="0106" keyword="StartCumulativeMeterset" vr="FD" vm="1" name="Start Cumulative Meterset"/>
+                <entry group="3002" element="0107" keyword="StopCumulativeMeterset" vr="FD" vm="1" name="Stop Cumulative Meterset"/>
+                <entry group="3002" element="0108" keyword="RTAcquisitionPatientPositionSequence" vr="SQ" vm="1" name="RT Acquisition Patient Position Sequence"/>
+                <entry group="3002" element="0109" keyword="RTImageFrameImagingDevicePositionSequence" vr="SQ" vm="1" name="RT Image Frame Imaging Device Position Sequence"/>
+                <entry group="3002" element="010a" keyword="RTImageFramekVRadiationAcquisitionSequence" vr="SQ" vm="1" name="RT Image Frame kV Radiation Acquisition Sequence"/>
+                <entry group="3002" element="010b" keyword="RTImageFrameMVRadiationAcquisitionSequence" vr="SQ" vm="1" name="RT Image Frame MV Radiation Acquisition Sequence"/>
+                <entry group="3002" element="010c" keyword="RTImageFrameRadiationAcquisitionSequence" vr="SQ" vm="1" name="RT Image Frame Radiation Acquisition Sequence"/>
+                <entry group="3002" element="010d" keyword="ImagingSourcePositionSequence" vr="SQ" vm="1" name="Imaging Source Position Sequence"/>
+                <entry group="3002" element="010e" keyword="ImageReceptorPositionSequence" vr="SQ" vm="1" name="Image Receptor Position Sequence"/>
+                <entry group="3002" element="010f" keyword="DevicePositionToEquipmentMappingMatrix" vr="FD" vm="16" name="Device Position to Equipment Mapping Matrix"/>
+                <entry group="3002" element="0110" keyword="DevicePositionParameterSequence" vr="SQ" vm="1" name="Device Position Parameter Sequence"/>
+                <entry group="3002" element="0111" keyword="ImagingSourceLocationSpecificationType" vr="CS" vm="1" name="Imaging Source Location Specification Type"/>
+                <entry group="3002" element="0112" keyword="ImagingDeviceLocationMatrixSequence" vr="SQ" vm="1" name="Imaging Device Location Matrix Sequence"/>
+                <entry group="3002" element="0113" keyword="ImagingDeviceLocationParameterSequence" vr="SQ" vm="1" name="Imaging Device Location Parameter Sequence"/>
+                <entry group="3002" element="0114" keyword="ImagingApertureSequence" vr="SQ" vm="1" name="Imaging Aperture Sequence"/>
+                <entry group="3002" element="0115" keyword="ImagingApertureSpecificationType" vr="CS" vm="1" name="Imaging Aperture Specification Type"/>
+                <entry group="3002" element="0116" keyword="NumberOfAcquisitionDevices" vr="US" vm="1" name="Number of Acquisition Devices"/>
+                <entry group="3002" element="0117" keyword="AcquisitionDeviceSequence" vr="SQ" vm="1" name="Acquisition Device Sequence"/>
+                <entry group="3002" element="0118" keyword="AcquisitionTaskSequence" vr="SQ" vm="1" name="Acquisition Task Sequence"/>
+                <entry group="3002" element="0119" keyword="AcquisitionTaskWorkitemCodeSequence" vr="SQ" vm="1" name="Acquisition Task Workitem Code Sequence"/>
+                <entry group="3002" element="011a" keyword="AcquisitionSubtaskSequence" vr="SQ" vm="1" name="Acquisition Subtask Sequence"/>
+                <entry group="3002" element="011b" keyword="SubtaskWorkitemCodeSequence" vr="SQ" vm="1" name="Subtask Workitem Code Sequence"/>
+                <entry group="3002" element="011c" keyword="AcquisitionTaskIndex" vr="US" vm="1" name="Acquisition Task Index"/>
+                <entry group="3002" element="011d" keyword="AcquisitionSubtaskIndex" vr="US" vm="1" name="Acquisition Subtask Index"/>
+                <entry group="3002" element="011e" keyword="ReferencedBaselineParametersRTRadiationInstanceSequence" vr="SQ" vm="1" name="Referenced Baseline Parameters RT Radiation Instance Sequence"/>
+                <entry group="3002" element="011f" keyword="PositionAcquisitionTemplateIdentificationSequence" vr="SQ" vm="1" name="Position Acquisition Template Identification Sequence"/>
+                <entry group="3002" element="0120" keyword="PositionAcquisitionTemplateID" vr="ST" vm="1" name="Position Acquisition Template ID"/>
+                <entry group="3002" element="0121" keyword="PositionAcquisitionTemplateName" vr="LO" vm="1" name="Position Acquisition Template Name"/>
+                <entry group="3002" element="0122" keyword="PositionAcquisitionTemplateCodeSequence" vr="SQ" vm="1" name="Position Acquisition Template Code Sequence"/>
+                <entry group="3002" element="0123" keyword="PositionAcquisitionTemplateDescription" vr="LT" vm="1" name="Position Acquisition Template Description"/>
+                <entry group="3002" element="0124" keyword="AcquisitionTaskApplicabilitySequence" vr="SQ" vm="1" name="Acquisition Task Applicability Sequence"/>
+                <entry group="3002" element="0125" keyword="ProjectionImagingAcquisitionParameterSequence" vr="SQ" vm="1" name="Projection Imaging Acquisition Parameter Sequence"/>
+                <entry group="3002" element="0126" keyword="CTImagingAcquisitionParameterSequence" vr="SQ" vm="1" name="CT Imaging Acquisition Parameter Sequence"/>
+                <entry group="3002" element="0127" keyword="KVImagingGenerationParametersSequence" vr="SQ" vm="1" name="KV Imaging Generation Parameters Sequence"/>
+                <entry group="3002" element="0128" keyword="MVImagingGenerationParametersSequence" vr="SQ" vm="1" name="MV Imaging Generation Parameters Sequence"/>
+                <entry group="3002" element="0129" keyword="AcquisitionSignalType" vr="CS" vm="1" name="Acquisition Signal Type"/>
+                <entry group="3002" element="012a" keyword="AcquisitionMethod" vr="CS" vm="1" name="Acquisition Method"/>
+                <entry group="3002" element="012b" keyword="ScanStartPositionSequence" vr="SQ" vm="1" name="Scan Start Position Sequence"/>
+                <entry group="3002" element="012c" keyword="ScanStopPositionSequence" vr="SQ" vm="1" name="Scan Stop Position Sequence"/>
+                <entry group="3002" element="012d" keyword="ImagingSourceToBeamModifierDefinitionPlaneDistance" vr="FD" vm="1" name="Imaging Source to Beam Modifier Definition Plane Distance"/>
+                <entry group="3002" element="012e" keyword="ScanArcType" vr="CS" vm="1" name="Scan Arc Type"/>
+                <entry group="3002" element="012f" keyword="DetectorPositioningType" vr="CS" vm="1" name="Detector Positioning Type"/>
+                <entry group="3002" element="0130" keyword="AdditionalRTAccessoryDeviceSequence" vr="SQ" vm="1" name="Additional RT Accessory Device Sequence"/>
+                <entry group="3002" element="0131" keyword="DeviceSpecificAcquisitionParameterSequence" vr="SQ" vm="1" name="Device-Specific Acquisition Parameter Sequence"/>
+                <entry group="3002" element="0132" keyword="ReferencedPositionReferenceInstanceSequence" vr="SQ" vm="1" name="Referenced Position Reference Instance Sequence"/>
+                <entry group="3002" element="0133" keyword="EnergyDerivationCodeSequence" vr="SQ" vm="1" name="Energy Derivation Code Sequence"/>
+                <entry group="3002" element="0134" keyword="MaximumCumulativeMetersetExposure" vr="FD" vm="1" name="Maximum Cumulative Meterset Exposure"/>
+                <entry group="3002" element="0135" keyword="AcquisitionInitiationSequence" vr="SQ" vm="1" name="Acquisition Initiation Sequence"/>
                 <entry group="3004" element="0001" keyword="DVHType" vr="CS" vm="1" name="DVH Type"/>
                 <entry group="3004" element="0002" keyword="DoseUnits" vr="CS" vm="1" name="Dose Units"/>
                 <entry group="3004" element="0004" keyword="DoseType" vr="CS" vm="1" name="Dose Type"/>
@@ -3746,8 +3900,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3004" element="000a" keyword="DoseSummationType" vr="CS" vm="1" name="Dose Summation Type"/>
                 <entry group="3004" element="000c" keyword="GridFrameOffsetVector" vr="DS" vm="2-n" name="Grid Frame Offset Vector"/>
                 <entry group="3004" element="000e" keyword="DoseGridScaling" vr="DS" vm="1" name="Dose Grid Scaling"/>
-                <entry group="3004" element="0010" keyword="RTDoseROISequence" vr="SQ" vm="1" name="RT Dose ROI Sequence"/>
-                <entry group="3004" element="0012" keyword="DoseValue" vr="DS" vm="1" name="Dose Value"/>
+                <entry group="3004" element="0010" keyword="RTDoseROISequence" vr="SQ" vm="1" retired="true" name="RT Dose ROI Sequence"/>
+                <entry group="3004" element="0012" keyword="DoseValue" vr="DS" vm="1" retired="true" name="Dose Value"/>
                 <entry group="3004" element="0014" keyword="TissueHeterogeneityCorrection" vr="CS" vm="1-3" name="Tissue Heterogeneity Correction"/>
                 <entry group="3004" element="0040" keyword="DVHNormalizationPoint" vr="DS" vm="3" name="DVH Normalization Point"/>
                 <entry group="3004" element="0042" keyword="DVHNormalizationDoseValue" vr="DS" vm="1" name="DVH Normalization Dose Value"/>
@@ -3796,9 +3950,9 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3006" element="0080" keyword="RTROIObservationsSequence" vr="SQ" vm="1" name="RT ROI Observations Sequence"/>
                 <entry group="3006" element="0082" keyword="ObservationNumber" vr="IS" vm="1" name="Observation Number"/>
                 <entry group="3006" element="0084" keyword="ReferencedROINumber" vr="IS" vm="1" name="Referenced ROI Number"/>
-                <entry group="3006" element="0085" keyword="ROIObservationLabel" vr="SH" vm="1" name="ROI Observation Label"/>
+                <entry group="3006" element="0085" keyword="ROIObservationLabel" vr="SH" vm="1" retired="true" name="ROI Observation Label"/>
                 <entry group="3006" element="0086" keyword="RTROIIdentificationCodeSequence" vr="SQ" vm="1" name="RT ROI Identification Code Sequence"/>
-                <entry group="3006" element="0088" keyword="ROIObservationDescription" vr="ST" vm="1" name="ROI Observation Description"/>
+                <entry group="3006" element="0088" keyword="ROIObservationDescription" vr="ST" vm="1" retired="true" name="ROI Observation Description"/>
                 <entry group="3006" element="00a0" keyword="RelatedRTROIObservationsSequence" vr="SQ" vm="1" name="Related RT ROI Observations Sequence"/>
                 <entry group="3006" element="00a4" keyword="RTROIInterpretedType" vr="CS" vm="1" name="RT ROI Interpreted Type"/>
                 <entry group="3006" element="00a6" keyword="ROIInterpreter" vr="PN" vm="1" name="ROI Interpreter"/>
@@ -3827,7 +3981,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3008" element="0024" keyword="TreatmentControlPointDate" vr="DA" vm="1" name="Treatment Control Point Date"/>
                 <entry group="3008" element="0025" keyword="TreatmentControlPointTime" vr="TM" vm="1" name="Treatment Control Point Time"/>
                 <entry group="3008" element="002a" keyword="TreatmentTerminationStatus" vr="CS" vm="1" name="Treatment Termination Status"/>
-                <entry group="3008" element="002b" keyword="TreatmentTerminationCode" vr="SH" vm="1" name="Treatment Termination Code"/>
+                <entry group="3008" element="002b" keyword="TreatmentTerminationCode" vr="SH" vm="1" retired="true" name="Treatment Termination Code"/>
                 <entry group="3008" element="002c" keyword="TreatmentVerificationStatus" vr="CS" vm="1" name="Treatment Verification Status"/>
                 <entry group="3008" element="0030" keyword="ReferencedTreatmentRecordSequence" vr="SQ" vm="1" name="Referenced Treatment Record Sequence"/>
                 <entry group="3008" element="0032" keyword="SpecifiedPrimaryMeterset" vr="DS" vm="1" name="Specified Primary Meterset"/>
@@ -3870,9 +4024,14 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3008" element="0090" keyword="ReferencedCalculatedDoseReferenceSequence" vr="SQ" vm="1" name="Referenced Calculated Dose Reference Sequence"/>
                 <entry group="3008" element="0092" keyword="ReferencedCalculatedDoseReferenceNumber" vr="IS" vm="1" name="Referenced Calculated Dose Reference Number"/>
                 <entry group="3008" element="00a0" keyword="BeamLimitingDeviceLeafPairsSequence" vr="SQ" vm="1" name="Beam Limiting Device Leaf Pairs Sequence"/>
+                <entry group="3008" element="00a1" keyword="EnhancedRTBeamLimitingDeviceSequence" vr="SQ" vm="1" name="Enhanced RT Beam Limiting Device Sequence"/>
+                <entry group="3008" element="00a2" keyword="EnhancedRTBeamLimitingOpeningSequence" vr="SQ" vm="1" name="Enhanced RT Beam Limiting Opening Sequence"/>
+                <entry group="3008" element="00a3" keyword="EnhancedRTBeamLimitingDeviceDefinitionFlag" vr="CS" vm="1" name="Enhanced RT Beam Limiting Device Definition Flag"/>
+                <entry group="3008" element="00a4" keyword="ParallelRTBeamDelimiterOpeningExtents" vr="FD" vm="2-2n" name="Parallel RT Beam Delimiter Opening Extents"/>
                 <entry group="3008" element="00b0" keyword="RecordedWedgeSequence" vr="SQ" vm="1" name="Recorded Wedge Sequence"/>
                 <entry group="3008" element="00c0" keyword="RecordedCompensatorSequence" vr="SQ" vm="1" name="Recorded Compensator Sequence"/>
                 <entry group="3008" element="00d0" keyword="RecordedBlockSequence" vr="SQ" vm="1" name="Recorded Block Sequence"/>
+                <entry group="3008" element="00d1" keyword="RecordedBlockSlabSequence" vr="SQ" vm="1" name="Recorded Block Slab Sequence"/>
                 <entry group="3008" element="00e0" keyword="TreatmentSummaryMeasuredDoseReferenceSequence" vr="SQ" vm="1" name="Treatment Summary Measured Dose Reference Sequence"/>
                 <entry group="3008" element="00f0" keyword="RecordedSnoutSequence" vr="SQ" vm="1" name="Recorded Snout Sequence"/>
                 <entry group="3008" element="00f2" keyword="RecordedRangeShifterSequence" vr="SQ" vm="1" name="Recorded Range Shifter Sequence"/>
@@ -3919,7 +4078,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="300a" element="0007" keyword="RTPlanTime" vr="TM" vm="1" name="RT Plan Time"/>
                 <entry group="300a" element="0009" keyword="TreatmentProtocols" vr="LO" vm="1-n" name="Treatment Protocols"/>
                 <entry group="300a" element="000a" keyword="PlanIntent" vr="CS" vm="1" name="Plan Intent"/>
-                <entry group="300a" element="000b" keyword="TreatmentSites" vr="LO" vm="1-n" name="Treatment Sites"/>
+                <entry group="300a" element="000b" keyword="TreatmentSites" vr="LO" vm="1-n" retired="true" name="Treatment Sites"/>
                 <entry group="300a" element="000c" keyword="RTPlanGeometry" vr="CS" vm="1" name="RT Plan Geometry"/>
                 <entry group="300a" element="000e" keyword="PrescriptionDescription" vr="ST" vm="1" name="Prescription Description"/>
                 <entry group="300a" element="0010" keyword="DoseReferenceSequence" vr="SQ" vm="1" name="Dose Reference Sequence"/>
@@ -4499,7 +4658,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="300a" element="0785" keyword="ReferencedTreatmentPositionGroupUID" vr="UI" vm="1" name="Referenced Treatment Position Group UID"/>
                 <entry group="300a" element="0786" keyword="RadiationOrderIndex" vr="US" vm="1" name="Radiation Order Index"/>
                 <entry group="300a" element="0787" keyword="OmittedRadiationSequence" vr="SQ" vm="1" name="Omitted Radiation Sequence"/>
-                <entry group="300a" element="0788" keyword="ReasonforOmissionCodeSequence" vr="SQ" vm="1" name="Reason for Omission Code Sequence"/>
+                <entry group="300a" element="0788" keyword="ReasonForOmissionCodeSequence" vr="SQ" vm="1" name="Reason for Omission Code Sequence"/>
                 <entry group="300a" element="0789" keyword="RTDeliveryStartPatientPositionSequence" vr="SQ" vm="1" name="RT Delivery Start Patient Position Sequence"/>
                 <entry group="300a" element="078a" keyword="RTTreatmentPreparationPatientPositionSequence" vr="SQ" vm="1" name="RT Treatment Preparation Patient Position Sequence"/>
                 <entry group="300a" element="078b" keyword="ReferencedRTTreatmentPreparationSequence" vr="SQ" vm="1" name="Referenced RT Treatment Preparation Sequence"/>
@@ -4556,6 +4715,21 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="300c" element="0111" keyword="OmittedBeamTaskSequence" vr="SQ" vm="1" name="Omitted Beam Task Sequence"/>
                 <entry group="300c" element="0112" keyword="ReasonForOmission" vr="CS" vm="1" name="Reason for Omission"/>
                 <entry group="300c" element="0113" keyword="ReasonForOmissionDescription" vr="LO" vm="1" name="Reason for Omission Description"/>
+                <entry group="300c" element="0114" keyword="PrescriptionOverviewSequence" vr="SQ" vm="1" name="Prescription Overview Sequence"/>
+                <entry group="300c" element="0115" keyword="TotalPrescriptionDose" vr="FL" vm="1" name="Total Prescription Dose"/>
+                <entry group="300c" element="0116" keyword="PlanOverviewSequence" vr="SQ" vm="1" name="Plan Overview Sequence"/>
+                <entry group="300c" element="0117" keyword="PlanOverviewIndex" vr="US" vm="1" name="Plan Overview Index"/>
+                <entry group="300c" element="0118" keyword="ReferencedPlanOverviewIndex" vr="US" vm="1" name="Referenced Plan Overview Index"/>
+                <entry group="300c" element="0119" keyword="NumberOfFractionsIncluded" vr="US" vm="1" name="Number of Fractions Included"/>
+                <entry group="300c" element="0120" keyword="DoseCalibrationConditionsSequence" vr="SQ" vm="1" name="Dose Calibration Conditions Sequence"/>
+                <entry group="300c" element="0121" keyword="AbsorbedDoseToMetersetRatio" vr="FD" vm="1" name="Absorbed Dose to Meterset Ratio"/>
+                <entry group="300c" element="0122" keyword="DelineatedRadiationFieldSize" vr="FD" vm="2" name="Delineated Radiation Field Size"/>
+                <entry group="300c" element="0123" keyword="DoseCalibrationConditionsVerifiedFlag" vr="CS" vm="1" name="Dose Calibration Conditions Verified Flag"/>
+                <entry group="300c" element="0124" keyword="CalibrationReferencePointDepth" vr="FD" vm="1" name="Calibration Reference Point Depth"/>
+                <entry group="300c" element="0125" keyword="GatingBeamHoldTransitionSequence" vr="SQ" vm="1" name="Gating Beam Hold Transition Sequence"/>
+                <entry group="300c" element="0126" keyword="BeamHoldTransition" vr="CS" vm="1" name="Beam Hold Transition"/>
+                <entry group="300c" element="0127" keyword="BeamHoldTransitionDateTime" vr="DT" vm="1" name="Beam Hold Transition DateTime"/>
+                <entry group="300c" element="0128" keyword="BeamHoldOriginatingDeviceSequence" vr="SQ" vm="1" name="Beam Hold Originating Device Sequence"/>
                 <entry group="300e" element="0002" keyword="ApprovalStatus" vr="CS" vm="1" name="Approval Status"/>
                 <entry group="300e" element="0004" keyword="ReviewDate" vr="DA" vm="1" name="Review Date"/>
                 <entry group="300e" element="0005" keyword="ReviewTime" vr="TM" vm="1" name="Review Time"/>
@@ -4696,7 +4870,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3010" element="0087" keyword="WeekdayFractionPatternSequence" vr="SQ" vm="1" name="Weekday Fraction Pattern Sequence"/>
                 <entry group="3010" element="0088" keyword="DeliveryTimeStructureCodeSequence" vr="SQ" vm="1" name="Delivery Time Structure Code Sequence"/>
                 <entry group="3010" element="0089" keyword="TreatmentSiteModifierCodeSequence" vr="SQ" vm="1" name="Treatment Site Modifier Code Sequence"/>
-                <entry group="3010" element="0090" keyword="RoboticBaseLocationIndicator" vr="CS" vm="1" name="Robotic Base Location Indicator"/>
+                <entry group="3010" element="0090" keyword="RoboticBaseLocationIndicator" vr="CS" vm="1" retired="true" name="Robotic Base Location Indicator"/>
                 <entry group="3010" element="0091" keyword="RoboticPathNodeSetCodeSequence" vr="SQ" vm="1" name="Robotic Path Node Set Code Sequence"/>
                 <entry group="3010" element="0092" keyword="RoboticNodeIdentifier" vr="UL" vm="1" name="Robotic Node Identifier"/>
                 <entry group="3010" element="0093" keyword="RTTreatmentSourceCoordinates" vr="FD" vm="3" name="RT Treatment Source Coordinates"/>
@@ -4707,6 +4881,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3010" element="0098" keyword="TomotherapeuticControlPointSequence" vr="SQ" vm="1" name="Tomotherapeutic Control Point Sequence"/>
                 <entry group="3010" element="0099" keyword="TomotherapeuticLeafOpenDurations" vr="FD" vm="1-n" name="Tomotherapeutic Leaf Open Durations"/>
                 <entry group="3010" element="009a" keyword="TomotherapeuticLeafInitialClosedDurations" vr="FD" vm="1-n" name="Tomotherapeutic Leaf Initial Closed Durations"/>
+                <entry group="3010" element="00a0" keyword="ConceptualVolumeIdentificationSequence" vr="SQ" vm="1" name="Conceptual Volume Identification Sequence"/>
                 <entry group="4000" element="0010" keyword="Arbitrary" vr="LT" vm="1" retired="true" name="Arbitrary"/>
                 <entry group="4000" element="4000" keyword="TextComments" vr="LT" vm="1" retired="true" name="Text Comments"/>
                 <entry group="4008" element="0040" keyword="ResultsID" vr="SH" vm="1" retired="true" name="Results ID"/>
@@ -4903,6 +5078,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="60xx" element="4000" keyword="OverlayComments" vr="LT" vm="1" retired="true" name="Overlay Comments"/>
                 <entry group="7fe0" element="0001" keyword="ExtendedOffsetTable" vr="OV" vm="1" name="Extended Offset Table"/>
                 <entry group="7fe0" element="0002" keyword="ExtendedOffsetTableLengths" vr="OV" vm="1" name="Extended Offset Table Lengths"/>
+                <entry group="7fe0" element="0003" keyword="EncapsulatedPixelDataValueTotalLength" vr="UV" vm="1" name="Encapsulated Pixel Data Value Total Length"/>
                 <entry group="7fe0" element="0008" keyword="FloatPixelData" vr="OF" vm="1" name="Float Pixel Data"/>
                 <entry group="7fe0" element="0009" keyword="DoubleFloatPixelData" vr="OD" vm="1" name="Double Float Pixel Data"/>
                 <entry group="7fe0" element="0010" keyword="PixelData" vr="OB_OW" vm="1" name="Pixel Data"/>
@@ -5004,15 +5180,22 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.1.2.4.93" name="JPEG 2000 Part 2 Multi-component Image Compression" type="JPEG​2000MC" part="Transfer Syntax" retired="false"/>
                 <uid value="1.2.840.10008.1.2.4.94" name="JPIP Referenced" type="JPIP​Referenced" part="Transfer Syntax" retired="false"/>
                 <uid value="1.2.840.10008.1.2.4.95" name="JPIP Referenced Deflate" type="JPIP​Referenced​Deflate" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.100" name="MPEG2 Main Profile / Main Level" type="MPEG2​MPML" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.101" name="MPEG2 Main Profile / High Level" type="MPEG2​MPHL" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.102" name="MPEG-4 AVC/H.264 High Profile / Level 4.1" type="MPEG4​HP41" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.103" name="MPEG-4 AVC/H.264 BD-compatible High Profile / Level 4.1" type="MPEG4​HP41BD" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.104" name="MPEG-4 AVC/H.264 High Profile / Level 4.2 For 2D Video" type="MPEG4​HP422D" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.105" name="MPEG-4 AVC/H.264 High Profile / Level 4.2 For 3D Video" type="MPEG4​HP423D" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.106" name="MPEG-4 AVC/H.264 Stereo High Profile / Level 4.2" type="MPEG4​HP42STEREO" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.107" name="HEVC/H.265 Main Profile / Level 5.1" type="HEVC​MP51" part="Transfer Syntax" retired="false"/>
-                <uid value="1.2.840.10008.1.2.4.108" name="HEVC/H.265 Main 10 Profile / Level 5.1" type="HEVC​M10P51" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.100" name="MPEG2 Main Profile / Main Level" type="MPEG2​MPML" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.100.1" name="Fragmentable MPEG2 Main Profile / Main Level" type="MPEG2​MPMLF" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.101" name="MPEG2 Main Profile / High Level" type="MPEG2​MPHL" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.101.1" name="Fragmentable MPEG2 Main Profile / High Level" type="MPEG2​MPHLF" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.102" name="MPEG-4 AVC/H.264 High Profile / Level 4.1" type="MPEG4​HP41" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.102.1" name="Fragmentable MPEG-4 AVC/H.264 High Profile / Level 4.1" type="MPEG4​HP41F" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.103" name="MPEG-4 AVC/H.264 BD-compatible High Profile / Level 4.1" type="MPEG4​HP41BD" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.103.1" name="Fragmentable MPEG-4 AVC/H.264 BD-compatible High Profile / Level 4.1" type="MPEG4​HP41BDF" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.104" name="MPEG-4 AVC/H.264 High Profile / Level 4.2 For 2D Video" type="MPEG4​HP422D" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.104.1" name="Fragmentable MPEG-4 AVC/H.264 High Profile / Level 4.2 For 2D Video" type="MPEG4​HP422DF" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.105" name="MPEG-4 AVC/H.264 High Profile / Level 4.2 For 3D Video" type="MPEG4​HP423D" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.105.1" name="Fragmentable MPEG-4 AVC/H.264 High Profile / Level 4.2 For 3D Video" type="MPEG4​HP423DF" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.106" name="MPEG-4 AVC/H.264 Stereo High Profile / Level 4.2" type="MPEG4​HP42STEREO" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.106.1" name="Fragmentable MPEG-4 AVC/H.264 Stereo High Profile / Level 4.2" type="MPEG4​HP42STEREOF" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.107" name="HEVC/H.265 Main Profile / Level 5.1" type="HEVC​MP51" part="Transfer Syntax" retired="false"/>
+                    <uid value="1.2.840.10008.1.2.4.108" name="HEVC/H.265 Main 10 Profile / Level 5.1" type="HEVC​M10P51" part="Transfer Syntax" retired="false"/>
                 <uid value="1.2.840.10008.1.2.5" name="RLE Lossless" type="RLE​Lossless" part="Transfer Syntax" retired="false"/>
                 <uid value="1.2.840.10008.1.2.6.1" name="RFC 2557 MIME encapsulation" type="RFC​2557​MIME​Encapsulation" part="Transfer Syntax" retired="true"/>
                 <uid value="1.2.840.10008.1.2.6.2" name="XML Encoding" type="XML​Encoding" part="Transfer Syntax" retired="true"/>
@@ -5052,12 +5235,14 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.2.16.14" name="Radiomics Ontology" type="RO" part="Coding Scheme" retired="false"/>
                 <uid value="1.2.840.10008.2.16.15" name="RadElement" type="RADELEMENT" part="Coding Scheme" retired="false"/>
                 <uid value="1.2.840.10008.2.16.16" name="ICD-11" type="I11" part="Coding Scheme" retired="false"/>
+                <uid value="1.2.840.10008.2.16.17" name="Unified numbering system (UNS) for metals and alloys" type="UNS" part="Coding Scheme" retired="false"/>
+                <uid value="1.2.840.10008.2.16.18" name="Research Resource Identification" type="RRID" part="Coding Scheme" retired="false"/>
                 <uid value="1.2.840.10008.3.1.1.1" name="DICOM Application Context Name" type="DICOM​Application​Context" part="Application Context Name" retired="false"/>
-                <uid value="1.2.840.10008.3.1.2.1.1" name="Detached Patient Management SOP Class" type="Detached​Patient​Management " part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.3.1.2.1.1" name="Detached Patient Management SOP Class" type="Detached​Patient​Management" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.3.1.2.1.4" name="Detached Patient Management Meta SOP Class" type="Detached​Patient​Management​Meta" part="Meta SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.3.1.2.2.1" name="Detached Visit Management SOP Class" type="Detached​Visit​Management" part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.3.1.2.3.1" name="Detached Study Management SOP Class" type="Detached​Study​Management " part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.3.1.2.3.2" name="Study Component Management SOP Class" type="Study​Component​Management " part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.3.1.2.3.1" name="Detached Study Management SOP Class" type="Detached​Study​Management" part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.3.1.2.3.2" name="Study Component Management SOP Class" type="Study​Component​Management" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.3.1.2.3.3" name="Modality Performed Procedure Step SOP Class" type="Modality​Performed​Procedure​Step" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.3.1.2.3.4" name="Modality Performed Procedure Step Retrieve SOP Class" type="Modality​Performed​Procedure​Step​Retrieve" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.3.1.2.3.5" name="Modality Performed Procedure Step Notification SOP Class" type="Modality​Performed​Procedure​Step​Notification" part="SOP Class" retired="false"/>
@@ -5077,21 +5262,21 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.1.15" name="Basic Annotation Box SOP Class" type="Basic​Annotation​Box" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.16" name="Printer SOP Class" type="Printer" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.16.376" name="Printer Configuration Retrieval SOP Class" type="Printer​Configuration​Retrieval" part="SOP Class" retired="false"/>
-                <uid value="1.2.840.10008.5.1.1.17" name="Printer SOP Instance" type="Printer​Instance" part="Well-known Printer SOP Instance" retired="false"/>
-                <uid value="1.2.840.10008.5.1.1.17.376" name="Printer Configuration Retrieval SOP Instance" type="Printer​Configuration​Retrieval​Instance" part="Well-known Printer SOP Instance" retired="false"/>
+                <uid value="1.2.840.10008.5.1.1.17" name="Printer SOP Instance" type="Printer​Instance" part="Well-known SOP Instance" retired="false"/>
+                <uid value="1.2.840.10008.5.1.1.17.376" name="Printer Configuration Retrieval SOP Instance" type="Printer​Configuration​Retrieval​Instance" part="Well-known SOP Instance" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.18" name="Basic Color Print Management Meta SOP Class" type="Basic​Color​Print​Management​Meta" part="Meta SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.18.1" name="Referenced Color Print Management Meta SOP Class" type="Referenced​Color​Print​Management​Meta" part="Meta SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.1.22" name="VOI LUT Box SOP Class" type="VOI​LUT​Box" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.23" name="Presentation LUT SOP Class" type="Presentation​LUT" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.24" name="Image Overlay Box SOP Class" type="Image​Overlay​Box" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.1.24.1" name="Basic Print Image Overlay Box SOP Class" type="Basic​Print​Image​Overlay​Box" part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.1.25" name="Print Queue SOP Instance" type="Print​Queue " part="Well-known Print Queue SOP Instance" retired="true"/>
-                <uid value="1.2.840.10008.5.1.1.26" name="Print Queue Management SOP Class" type="Print​Queue​Management " part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.1.25" name="Print Queue SOP Instance" type="Print​Queue​Instance" part="Well-known SOP Instance" retired="true"/>
+                <uid value="1.2.840.10008.5.1.1.26" name="Print Queue Management SOP Class" type="Print​Queue​Management" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.1.27" name="Stored Print Storage SOP Class" type="Stored​Print​Storage" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.1.29" name="Hardcopy Grayscale Image Storage SOP Class" type="Hardcopy​Grayscale​Image​Storage" part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.1.30" name="Hardcopy Color Image Storage SOP Class" type="Hardcopy​Color​Image​Storage " part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.1.31" name="Pull Print Request SOP Class" type="Pull​Print​Request " part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.1.32" name="Pull Stored Print Management Meta SOP Class" type="Pull​Stored​Print​Management​Meta " part="Meta SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.1.30" name="Hardcopy Color Image Storage SOP Class" type="Hardcopy​Color​Image​Storage" part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.1.31" name="Pull Print Request SOP Class" type="Pull​Print​Request" part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.1.32" name="Pull Stored Print Management Meta SOP Class" type="Pull​Stored​Print​Management​Meta" part="Meta SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.1.33" name="Media Creation Management SOP Class UID" type="Media​Creation​Management" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.40" name="Display System SOP Class" type="Display​System" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.1.40.1" name="Display System SOP Instance" type="Display​System​Instance" part="Well-known SOP Instance" retired="false"/>
@@ -5116,6 +5301,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.6" name="Ultrasound Image Storage" type="Ultrasound​Image​Storage​Retired" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.6.1" name="Ultrasound Image Storage" type="Ultrasound​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.6.2" name="Enhanced US Volume Storage" type="Enhanced​US​Volume​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.6.3" name="Photoacoustic Image Storage" type="Photoacoustic​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.7" name="Secondary Capture Image Storage" type="Secondary​Capture​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.7.1" name="Multi-frame Single Bit Secondary Capture Image Storage" type="Multi​Frame​Single​Bit​Secondary​Capture​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.7.2" name="Multi-frame Grayscale Byte Secondary Capture Image Storage" type="Multi​Frame​Grayscale​Byte​Secondary​Capture​Image​Storage" part="SOP Class" retired="false"/>
@@ -5127,6 +5313,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.9.1.1" name="12-lead ECG Waveform Storage" type="Twelve​Lead​ECG​Waveform​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.9.1.2" name="General ECG Waveform Storage" type="General​ECG​Waveform​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.9.1.3" name="Ambulatory ECG Waveform Storage" type="Ambulatory​ECG​Waveform​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.9.1.4" name="General 32-bit ECG Waveform Storage" type="General​32bit​ECG​Waveform​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.9.2.1" name="Hemodynamic Waveform Storage" type="Hemodynamic​Waveform​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.9.3.1" name="Cardiac Electrophysiology Waveform Storage" type="Cardiac​Electrophysiology​Waveform​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.9.4.1" name="Basic Voice Audio Waveform Storage" type="Basic​Voice​Audio​Waveform​Storage" part="SOP Class" retired="false"/>
@@ -5152,6 +5339,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.11.9" name="Volume Rendering Volumetric Presentation State Storage" type="Volume​Rendering​Volumetric​Presentation​State​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.11.10" name="Segmented Volume Rendering Volumetric Presentation State Storage" type="Segmented​Volume​Rendering​Volumetric​Presentation​State​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.11.11" name="Multiple Volume Rendering Volumetric Presentation State Storage" type="Multiple​Volume​Rendering​Volumetric​Presentation​State​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.11.12" name="Variable Modality LUT Softcopy Presentation State Storage" type="Variable​Modality​LUT​Softcopy​Presentation​State​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.12.1" name="X-Ray Angiographic Image Storage" type="X​Ray​Angiographic​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.12.1.1" name="Enhanced XA Image Storage" type="Enhanced​XA​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.12.2" name="X-Ray Radiofluoroscopic Image Storage" type="X​Ray​Radiofluoroscopic​Image​Storage" part="SOP Class" retired="false"/>
@@ -5181,7 +5369,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.67" name="Real World Value Mapping Storage" type="Real​World​Value​Mapping​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.68.1" name="Surface Scan Mesh Storage" type="Surface​Scan​Mesh​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.68.2" name="Surface Scan Point Cloud Storage" type="Surface​Scan​Point​Cloud​Storage" part="SOP Class" retired="false"/>
-                <uid value="1.2.840.10008.5.1.4.1.1.77.1" name="VL Image Storage - Trial" type="VL​Image​Storage​Trial " part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.77.1" name="VL Image Storage - Trial" type="VL​Image​Storage​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.77.2" name="VL Multi-frame Image Storage - Trial" type="VL​Multi​Frame​Image​Storage​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.77.1.1" name="VL Endoscopic Image Storage" type="VL​Endoscopic​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.77.1.1.1" name="Video Endoscopic Image Storage" type="Video​Endoscopic​Image​Storage" part="SOP Class" retired="false"/>
@@ -5213,8 +5401,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.81.1" name="Ophthalmic Thickness Map Storage" type="Ophthalmic​Thickness​Map​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.82.1" name="Corneal Topography Map Storage" type="Corneal​Topography​Map​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.88.1" name="Text SR Storage - Trial" type="Text​SR​Storage​Trial" part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.4.1.1.88.2" name="Audio SR Storage - Trial" type="Audio​SR​Storage​Trial " part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.4.1.1.88.3" name="Detail SR Storage - Trial" type="Detail​SR​Storage​Trial " part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.88.2" name="Audio SR Storage - Trial" type="Audio​SR​Storage​Trial" part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.88.3" name="Detail SR Storage - Trial" type="Detail​SR​Storage​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.88.4" name="Comprehensive SR Storage - Trial" type="Comprehensive​SR​Storage​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.88.11" name="Basic Text SR Storage" type="Basic​Text​SR​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.88.22" name="Enhanced SR Storage" type="Enhanced​SR​Storage" part="SOP Class" retired="false"/>
@@ -5255,6 +5443,13 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.200.6" name="Protocol Approval Information Model - GET" type="Protocol​Approval​Information​Model​Get" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.200.7" name="XA Defined Procedure Protocol Storage" type="XA​Defined​Procedure​Protocol​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.200.8" name="XA Performed Procedure Protocol Storage" type="XA​Performed​Procedure​Protocol​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.1" name="Inventory Storage" type="Inventory​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.2" name="Inventory - FIND" type="Inventory​Find" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.3" name="Inventory - MOVE" type="Inventory​Move" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.4" name="Inventory - GET" type="Inventory​Get" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.5" name="Inventory Creation" type="Inventory​Creation" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.6" name="Repository Query" type="Repository​Query" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.201.1.1" name="Storage Management SOP Instance" type="Storage​Management​Instance" part="Well-known SOP Instance" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.481.1" name="RT Image Storage" type="RT​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.481.2" name="RT Dose Storage" type="RT​Dose​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.481.3" name="RT Structure Set Storage" type="RT​Structure​Set​Storage" part="SOP Class" retired="false"/>
@@ -5277,6 +5472,9 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.481.20" name="Robotic Radiation Record Storage" type="Robotic​Radiation​Record​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.481.21" name="RT Radiation Set Delivery Instruction Storage" type="RT​Radiation​Set​Delivery​Instruction​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.481.22" name="RT Treatment Preparation Storage" type="RT​Treatment​Preparation​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.481.23" name="Enhanced RT Image Storage" type="Enhanced​RT​Image​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.481.24" name="Enhanced Continuous RT Image Storage" type="Enhanced​Continuous​RT​Image​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.481.25" name="RT Patient Position Acquisition Instruction Storage" type="RT​Patient​Position​Acquisition​Instruction​Storage" part="SOP Class" retired="false"/>               
                 <uid value="1.2.840.10008.5.1.4.1.1.501.1" name="DICOS CT Image Storage" type="DICOS​CT​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.501.2.1" name="DICOS Digital X-Ray Image Storage - For Presentation" type="DICOS​Digital​X​Ray​Image​​StorageFor​Presentation" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.501.2.2" name="DICOS Digital X-Ray Image Storage - For Processing" type="DICOS​Digital​X​Ray​Image​​StorageFor​Processing" part="SOP Class" retired="false"/>
@@ -5310,8 +5508,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.34.1" name="RT Beams Delivery Instruction Storage - Trial" type="RT​Beams​Delivery​Instruction​Storage​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.34.2" name="RT Conventional Machine Verification - Trial" type="RT​Conventional​Machine​Verification​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.34.3" name="RT Ion Machine Verification - Trial" type="RT​Ion​Machine​Verification​Trial" part="SOP Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.4.34.4" name="Unified Worklist and Procedure Step Service Class - Trial" type="Unified​Worklist​And​Procedure​Step​Trial " part="Service Class" retired="true"/>
-                <uid value="1.2.840.10008.5.1.4.34.4.1" name="Unified Procedure Step - Push SOP Class - Trial" type="Unified​Procedure​Step​Push​Trial " part="SOP Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.4.34.4" name="Unified Worklist and Procedure Step Service Class - Trial" type="Unified​Worklist​And​Procedure​Step​Trial" part="Service Class" retired="true"/>
+                <uid value="1.2.840.10008.5.1.4.34.4.1" name="Unified Procedure Step - Push SOP Class - Trial" type="Unified​Procedure​Step​Push​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.34.4.2" name="Unified Procedure Step - Watch SOP Class - Trial" type="Unified​Procedure​Step​Watch​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.34.4.3" name="Unified Procedure Step - Pull SOP Class - Trial" type="Unified​Procedure​Step​Pull​Trial" part="SOP Class" retired="true"/>
                 <uid value="1.2.840.10008.5.1.4.34.4.4" name="Unified Procedure Step - Event SOP Class - Trial" type="Unified​Procedure​Step​Event​Trial" part="SOP Class" retired="true"/>

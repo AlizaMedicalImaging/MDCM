@@ -3,8 +3,7 @@ Warning, the Readme is WIP, not complete!!
 2021d
 
 Notes:
- * C++ files were post-processed with clang-format 8
- * Message Exchange (Part7a.xml, Part7b.xml) files were not updated (should be no problem at all)
+ * Message Exchange (Part7a.xml, Part7b.xml) files were not updated
 
 
 Attributes
@@ -27,8 +26,8 @@ typedef mdcm::Attribute<0x300a, 0x0782> ;
 
 5. xsltproc DefaultDicts.xsl Part6.xml > mdcmDefaultDicts.cxx
 
-6. manually removed duplicated entries (0x7fe0, 0x0010), (0x7fe0, 0x0020), (0x7fe0, 0x0030), (0x7fe0, 0x0040)
-
+  manually removed duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0, 0x0040)
+  FIXME: 0x0008,0x9007 VM::VM4_5 temp set to VM::VM1_n
 
 UIDs
 ----
@@ -40,4 +39,6 @@ UIDs
 Retired -> Retired0
 Retired -> Retired1
 // 12leadECGWaveformStorage -> ECG12leadWaveformStorage
+
+to update is better to diff (tricky) and add new UIDs
 
