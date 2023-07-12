@@ -1,6 +1,6 @@
 Warning, the Readme is WIP
 
-2023c
+Currently DICOM is 2023c
 
 Note: Message Exchange (Part7a.xml, Part7b.xml) files were not updated (unused in MDCM, TODO)!
 
@@ -54,8 +54,9 @@ Problem with element:(1000,xxx3)
 Problem with element:(1000,xxx4)
 Problem with element:(1000,xxx5)
 
-It is low priority, they are retired and there will be issues, conficts and 1000s useless entries. TODO.
+It is low priority, they are all retired and there will be conficts and they are useless.
 
+(1000,xxx0) - (1000,xxx5) are in the file 1000_xxx5_retired.txt.7z, can be manualy added, but there are ~25000 useless lines.
 
 UIDs
 ----
@@ -63,8 +64,8 @@ UIDs
 xsltproc UIDToTemp.xsl Part6.xml > tmp.cxx
 
 Recommended: diff 'UIDsStrings' array and add new UIDs to mdcmUIDs.h/.cxx, it is easy.
-Otherwise re-create private entries and change
+
+Otherwise don't forget private UIDs (!) and change
 Retired -> Retired0
 Retired -> Retired1
 12leadECGWaveformStorage -> ECG12leadWaveformStorage
-
