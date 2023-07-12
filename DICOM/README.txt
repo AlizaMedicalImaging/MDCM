@@ -9,14 +9,14 @@ Attributes
 ----------
 
 1.
-optionally 1st update version in Part6.xsl, e.g. <dicts edition="2023c">
+Update DICOM version in Part6.xsl, e.g. <dicts edition="2023c">
 
 xsltproc Part6.xsl part06.xml > Part6.xml
 
 2.
 xsltproc TagKeywords.xsl Part6.xml > mdcmTagKeywords.h
 
-removed/comment tags without name:
+remove tags without name:
 typedef mdcm::Attribute<0x0008, 0x0202> ;
 typedef mdcm::Attribute<0x0018, 0x0061> ;
 typedef mdcm::Attribute<0x0018, 0x9445> ;
@@ -33,16 +33,38 @@ xsltproc TagToVR.xsl Part6.xml > mdcmTagToVR.cxx
 5.
 xsltproc DefaultDicts.xsl Part6.xml > mdcmDefaultDicts.cxx
 
-removed duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0, 0x0040)
+removed retired duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0, 0x0040)
+removed { 0x1010,0x0000,VR::US,VM::VM1_n,"Zonal Map","ZonalMap",true }, retired, possible conflict with group length
+
+Some attributes will fail:
+
+Problem with element:(0028,04x0)
+Problem with element:(0028,04x1)
+Problem with element:(0028,04x2)
+Problem with element:(0028,04x3)
+Problem with element:(0028,08x0)
+Problem with element:(0028,08x2)
+Problem with element:(0028,08x3)
+Problem with element:(0028,08x4)
+Problem with element:(0028,08x8)
+Problem with element:(1000,xxx0)
+Problem with element:(1000,xxx1)
+Problem with element:(1000,xxx2)
+Problem with element:(1000,xxx3)
+Problem with element:(1000,xxx4)
+Problem with element:(1000,xxx5)
+
+It is low priority, they are retired and there will be issues, conficts and 1000s useless entries. TODO.
+
 
 UIDs
 ----
 
 xsltproc UIDToTemp.xsl Part6.xml > tmp.cxx
 
+Recommended: diff 'UIDsStrings' array and add new UIDs to mdcmUIDs.h/.cxx, it is easy.
+Otherwise re-create private entries and change
 Retired -> Retired0
 Retired -> Retired1
 12leadECGWaveformStorage -> ECG12leadWaveformStorage
 
-Recommended: diff 'UIDsStrings' and add new UIDs to mdcmUIDs.h/.cxx, it is much easier,
-otherwise caution with private entries.
