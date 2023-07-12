@@ -54,9 +54,14 @@ Problem with element:(1000,xxx3)
 Problem with element:(1000,xxx4)
 Problem with element:(1000,xxx5)
 
-It is low priority, they are all retired and there will be conficts and they are useless.
+They are all retired and there will be conficts and they are useless,
+they can be added manualy (there will be ~25000 useless lines):
 
-(1000,xxx0) - (1000,xxx5) are in the file 1000_xxx5_retired.txt.7z, can be manualy added, but there are ~25000 useless lines.
+(0028,04x0) - (0028,04x3) are in the file 0028_04x3_retired.txt.7z
+(0028,08x0) - (0028,08x8) are in the file 0028_08x8_retired.txt.7z
+(1000,xxx0) - (1000,xxx5) are in the file 1000_xxx5_retired.txt.7z
+
+
 
 UIDs
 ----
