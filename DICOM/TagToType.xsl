@@ -49,7 +49,6 @@
 
 #include "mdcmVR.h"
 #include "mdcmVM.h"
-#include "mdcmStaticAssert.h"
 
 namespace mdcm {
 

@@ -171,8 +171,8 @@ generating group length for arbitrary even group number seems to get my xsltproc
       </xsl:if>
     </xsl:for-each>
     <xsl:text>
-  {0xffff,0xffff,VR::INVALID,VM::VM0,"","",true },
-  {0xffff,0xffff,VR::INVALID,VM::VM0,NULL,NULL,true }
+  { 0xffff,0xffff,VR::INVALID,VM::VM0,"","",true },
+  { 0xffff,0xffff,VR::INVALID,VM::VM0,NULL,NULL,true }
 };
 
 void Dict::LoadDefault()
@@ -231,7 +231,7 @@ void Dict::LoadDefault()
       <xsl:if test="$comment">
         <xsl:text>//</xsl:text>
       </xsl:if>
-      <xsl:text>  {0x</xsl:text>
+      <xsl:text>  { 0x</xsl:text>
       <xsl:value-of select="$group"/>
       <xsl:text>,0x</xsl:text>
       <xsl:value-of select="$element"/>
