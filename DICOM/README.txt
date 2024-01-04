@@ -34,7 +34,7 @@ xsltproc TagToVR.xsl Part6.xml > mdcmTagToVR.cxx
 5.
 xsltproc DefaultDicts.xsl Part6.xml > mdcmDefaultDicts.cxx
 
-removed retired duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0, 0x0040)
+removed retired duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0,0x0040)
 removed { 0x1010,0x0000,VR::US,VM::VM1_n,"Zonal Map","ZonalMap",true }, retired, possible conflict with group length
 
 Some attributes will fail:
@@ -69,9 +69,15 @@ UIDs
 
 xsltproc UIDToTemp.xsl Part6.xml > tmp.cxx
 
-Recommended: diff 'UIDsStrings' array and add new UIDs to mdcmUIDs.h/.cxx, it is easy.
+I add new UIDs manually:
+diff 'UIDsStrings' array and with last_UIDsStrings.txt and add new UIDs to mdcmUIDs.h/.cxx,
+replace last_UIDsStrings.txt for the next time (if lost run above xsltproc with the previous
+Part6.xml).
 
-Otherwise don't forget private UIDs (!) and change
+If recreate completely:
+don't forget private UIDs (!) and change
 Retired -> Retired0
 Retired -> Retired1
 12leadECGWaveformStorage -> ECG12leadWaveformStorage
+
+more post-processing may be required (replace dots, etc.)!

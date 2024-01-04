@@ -172,14 +172,14 @@ generating group length for arbitrary even group number seems to get my xsltproc
     </xsl:for-each>
     <xsl:text>
   { 0xffff,0xffff,VR::INVALID,VM::VM0,"","",true },
-  { 0xffff,0xffff,VR::INVALID,VM::VM0,NULL,NULL,true }
+  { 0xffff,0xffff,VR::INVALID,VM::VM0,nullptr,nullptr,true }
 };
 
 void Dict::LoadDefault()
 {
    unsigned int i = 0;
    DICT_ENTRY n = DICOMV3DataDict[i];
-   while(n.name != NULL)
+   while(n.name != nullptr)
    {
       Tag t(n.group, n.element);
       DictEntry e(n.name, n.keyword, n.vr, n.vm, n.ret);

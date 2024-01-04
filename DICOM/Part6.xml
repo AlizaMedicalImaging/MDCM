@@ -18,7 +18,7 @@ This file was automatically created from a docbook version of PS 3.6
 <!ENTITY part7a SYSTEM "Part7a.xml">
 <!ENTITY part7b SYSTEM "Part7b.xml">
 ]>
-<dicts edition="2023c">
+<dicts edition="2023e">
 &part7a;
 &part7b;
 <dict ref="6" name="Registry of DICOM Data Elements">
@@ -2288,7 +2288,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0034" element="000b" keyword="CameraPositionGroupSequence" vr="SQ" vm="1" name="Camera Position Group Sequence"/>
                 <entry group="0034" element="000c" keyword="IncludesInformation" vr="CS" vm="1" name="Includes Information"/>
                 <entry group="0034" element="000d" keyword="TimeOfFrameGroupSequence" vr="SQ" vm="1" name="Time of Frame Group Sequence"/>
-                <entry group="0038" element="0004" keyword="ReferencedPatientAliasSequence" vr="SQ" vm="1" name="Referenced Patient Alias Sequence"/>
+                <entry group="0038" element="0004" keyword="ReferencedPatientAliasSequence" vr="SQ" vm="1" retired="true" name="Referenced Patient Alias Sequence"/>
                 <entry group="0038" element="0008" keyword="VisitStatusID" vr="CS" vm="1" name="Visit Status ID"/>
                 <entry group="0038" element="0010" keyword="AdmissionID" vr="LO" vm="1" name="Admission ID"/>
                 <entry group="0038" element="0011" keyword="IssuerOfAdmissionID" vr="LO" vm="1" retired="true" name="Issuer of Admission ID"/>
@@ -2852,6 +2852,10 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0048" element="0111" keyword="CondenserLensPower" vr="DS" vm="1" name="Condenser Lens Power"/>
                 <entry group="0048" element="0112" keyword="ObjectiveLensPower" vr="DS" vm="1" name="Objective Lens Power"/>
                 <entry group="0048" element="0113" keyword="ObjectiveLensNumericalAperture" vr="DS" vm="1" name="Objective Lens Numerical Aperture"/>
+                <entry group="0048" element="0114" keyword="ConfocalMode" vr="CS" vm="1" name="Confocal Mode"/>
+                <entry group="0048" element="0115" keyword="TissueLocation" vr="CS" vm="1" name="Tissue Location"/>
+                <entry group="0048" element="0116" keyword="ConfocalMicroscopyImageFrameTypeSequence" vr="SQ" vm="1" name="Confocal Microscopy Image Frame Type Sequence"/>
+                <entry group="0048" element="0117" keyword="ImageAcquisitionDepth" vr="FD" vm="1" name="Image Acquisition Depth"/>
                 <entry group="0048" element="0120" keyword="PaletteColorLookupTableSequence" vr="SQ" vm="1" name="Palette Color Lookup Table Sequence"/>
                 <entry group="0048" element="0200" keyword="ReferencedImageNavigationSequence" vr="SQ" vm="1" retired="true" name="Referenced Image Navigation Sequence"/>
                 <entry group="0048" element="0201" keyword="TopLeftHandCornerOfLocalizerArea" vr="US" vm="2" retired="true" name="Top Left Hand Corner of Localizer Area"/>
@@ -4612,6 +4616,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="300a" element="0688" keyword="RTBeamModifierDefinitionDistance" vr="FD" vm="1" name="RT Beam Modifier Definition Distance"/>
                 <entry group="300a" element="0689" keyword="BeamAreaLimitSequence" vr="SQ" vm="1" name="Beam Area Limit Sequence"/>
                 <entry group="300a" element="068a" keyword="ReferencedRTPrescriptionSequence" vr="SQ" vm="1" name="Referenced RT Prescription Sequence"/>
+                <entry group="300a" element="068b" keyword="DoseValueInterpretation" vr="CS" vm="1" name="Dose Value Interpretation"/>
                 <entry group="300a" element="0700" keyword="TreatmentSessionUID" vr="UI" vm="1" name="Treatment Session UID"/>
                 <entry group="300a" element="0701" keyword="RTRadiationUsage" vr="CS" vm="1" name="RT Radiation Usage"/>
                 <entry group="300a" element="0702" keyword="ReferencedRTRadiationSetSequence" vr="SQ" vm="1" name="Referenced RT Radiation Set Sequence"/>
@@ -4730,6 +4735,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="300c" element="0126" keyword="BeamHoldTransition" vr="CS" vm="1" name="Beam Hold Transition"/>
                 <entry group="300c" element="0127" keyword="BeamHoldTransitionDateTime" vr="DT" vm="1" name="Beam Hold Transition DateTime"/>
                 <entry group="300c" element="0128" keyword="BeamHoldOriginatingDeviceSequence" vr="SQ" vm="1" name="Beam Hold Originating Device Sequence"/>
+                <entry group="300c" element="0129" keyword="BeamHoldTransitionTriggerSource" vr="CS" vm="1" name="Beam Hold Transition Trigger Source"/>
                 <entry group="300e" element="0002" keyword="ApprovalStatus" vr="CS" vm="1" name="Approval Status"/>
                 <entry group="300e" element="0004" keyword="ReviewDate" vr="DA" vm="1" name="Review Date"/>
                 <entry group="300e" element="0005" keyword="ReviewTime" vr="TM" vm="1" name="Review Time"/>
@@ -5026,7 +5032,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="50xx" element="2610" keyword="CurveReferencedOverlayGroup" vr="US" vm="1" retired="true" name="Curve Referenced Overlay Group"/>
                 <entry group="50xx" element="3000" keyword="CurveData" vr="OB_OW" vm="1" retired="true" name="Curve Data"/>
                 <entry group="5200" element="9229" keyword="SharedFunctionalGroupsSequence" vr="SQ" vm="1" name="Shared Functional Groups Sequence"/>
-                <entry group="5200" element="9230" keyword="PerFrameFunctionalGroupsSequence" vr="SQ" vm="1" name="Per-frame Functional Groups Sequence"/>
+                <entry group="5200" element="9230" keyword="PerFrameFunctionalGroupsSequence" vr="SQ" vm="1" name="Per-Frame Functional Groups Sequence"/>
                 <entry group="5400" element="0100" keyword="WaveformSequence" vr="SQ" vm="1" name="Waveform Sequence"/>
                 <entry group="5400" element="0110" keyword="ChannelMinimumValue" vr="OB_OW" vm="1" name="Channel Minimum Value"/>
                 <entry group="5400" element="0112" keyword="ChannelMaximumValue" vr="OB_OW" vm="1" name="Channel Maximum Value"/>
@@ -5196,6 +5202,11 @@ This file was automatically created from a docbook version of PS 3.6
                     <uid value="1.2.840.10008.1.2.4.106.1" name="Fragmentable MPEG-4 AVC/H.264 Stereo High Profile / Level 4.2" type="MPEG4​HP42STEREOF" part="Transfer Syntax" retired="false"/>
                     <uid value="1.2.840.10008.1.2.4.107" name="HEVC/H.265 Main Profile / Level 5.1" type="HEVC​MP51" part="Transfer Syntax" retired="false"/>
                     <uid value="1.2.840.10008.1.2.4.108" name="HEVC/H.265 Main 10 Profile / Level 5.1" type="HEVC​M10P51" part="Transfer Syntax" retired="false"/>
+                <uid value="1.2.840.10008.1.2.4.201" name="High-Throughput JPEG 2000 Image Compression (Lossless Only)" type="HTJ2K​Lossless" part="Transfer Syntax" retired="false"/>
+                <uid value="1.2.840.10008.1.2.4.202" name="High-Throughput JPEG 2000 with RPCL Options Image Compression (Lossless Only)" type="HTJ2K​Lossless​RPCL" part="Transfer Syntax" retired="false"/>
+                <uid value="1.2.840.10008.1.2.4.203" name="High-Throughput JPEG 2000 Image Compression" type="HTJ2K" part="Transfer Syntax" retired="false"/>
+                <uid value="1.2.840.10008.1.2.4.204" name="JPIP HTJ2K Referenced" type="JPIP​HTJ2K​Referenced" part="Transfer Syntax" retired="false"/>
+                <uid value="1.2.840.10008.1.2.4.205" name="JPIP HTJ2K Referenced Deflate" type="JPIP​HTJ2K​Referenced​Deflate" part="Transfer Syntax" retired="false"/>                
                 <uid value="1.2.840.10008.1.2.5" name="RLE Lossless" type="RLE​Lossless" part="Transfer Syntax" retired="false"/>
                 <uid value="1.2.840.10008.1.2.6.1" name="RFC 2557 MIME encapsulation" type="RFC​2557​MIME​Encapsulation" part="Transfer Syntax" retired="true"/>
                 <uid value="1.2.840.10008.1.2.6.2" name="XML Encoding" type="XML​Encoding" part="Transfer Syntax" retired="true"/>
@@ -5388,6 +5399,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <uid value="1.2.840.10008.5.1.4.1.1.77.1.5.8" name="Ophthalmic Optical Coherence Tomography B-scan Volume Analysis Storage" type="Ophthalmic​Optical​Coherence​Tomography​B​scan​Volume​Analysis​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.77.1.6" name="VL Whole Slide Microscopy Image Storage" type="VL​Whole​Slide​Microscopy​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.77.1.7" name="Dermoscopic Photography Image Storage" type="Dermoscopic​Photography​Image​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.77.1.8" name="Confocal Microscopy Image Storage" type="Confocal​Microscopy​Image​Storage" part="SOP Class" retired="false"/>
+                <uid value="1.2.840.10008.5.1.4.1.1.77.1.9" name="Confocal Microscopy Tiled Pyramidal Image Storage" type="Confocal​Microscopy​Tiled​Pyramidal​Image​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.78.1" name="Lensometry Measurements Storage" type="Lensometry​Measurements​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.78.2" name="Autorefraction Measurements Storage" type="Autorefraction​Measurements​Storage" part="SOP Class" retired="false"/>
                 <uid value="1.2.840.10008.5.1.4.1.1.78.3" name="Keratometry Measurements Storage" type="Keratometry​Measurements​Storage" part="SOP Class" retired="false"/>
