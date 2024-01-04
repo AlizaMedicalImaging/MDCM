@@ -732,8 +732,14 @@ JPEG2000Codec::~JPEG2000Codec()
 bool
 JPEG2000Codec::CanDecode(TransferSyntax const & ts) const
 {
-  return (ts == TransferSyntax::JPEG2000Lossless || ts == TransferSyntax::JPEG2000 ||
-          ts == TransferSyntax::JPEG2000Part2Lossless || ts == TransferSyntax::JPEG2000Part2);
+  return (ts == TransferSyntax::JPEG2000Lossless ||
+          ts == TransferSyntax::JPEG2000 ||
+          //ts == TransferSyntax::HTJPEG2000Lossless ||
+          //ts == TransferSyntax::HTJPEG2000RPCLLossless ||
+          //ts == TransferSyntax::HTJPEG2000 ||
+          ts == TransferSyntax::JPEG2000Part2Lossless ||
+          ts == TransferSyntax::JPEG2000Part2);
+  // HT TODO
   // Part 2 is not tested, TODO
 }
 
