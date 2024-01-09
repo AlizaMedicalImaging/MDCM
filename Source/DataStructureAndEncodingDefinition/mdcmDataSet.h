@@ -186,13 +186,6 @@ public:
   MediaStorage
   GetMediaStorage() const;
 
-  DataSet &
-  operator=(DataSet const & val)
-  {
-    DES = val.DES;
-    return *this;
-  }
-
   const DataElement & operator[](const Tag & t) const { return GetDataElement(t); }
 
   const DataElement &
