@@ -62,6 +62,7 @@ class PrivateTag;
 class MDCM_EXPORT DataSet
 {
   friend class CSAHeader;
+  friend std::ostream & operator<<(std::ostream &, const DataSet &);
 
 public:
 #if 0
@@ -194,6 +195,11 @@ public:
     return GetDataElement(Tag(group, element));
   }
 
+  bool operator==(const DataSet & other) const
+  {
+    return (DES == other.DES);
+  }
+
   template <typename TDE, typename TSwap>
   std::istream &
   ReadNested(std::istream &);
@@ -234,7 +240,6 @@ protected:
   void
   InsertDataElement(const DataElement &);
 
-protected:
   // Internal function, that will compute the actual Tag (if found) of
   // a requested Private Tag (XXXX,YY,"PRIVATE")
   Tag
@@ -242,8 +247,6 @@ protected:
 
 private:
   DataElementSet DES;
-  friend std::ostream &
-  operator<<(std::ostream &, const DataSet &);
 };
 
 inline std::ostream &
@@ -252,44 +255,6 @@ operator<<(std::ostream & os, const DataSet & val)
   val.Print(os);
   return os;
 }
-
-#if defined(SWIGPYTHON) || defined(SWIGCSHARP) || defined(SWIGJAVA) || defined(SWIGPHP)
-/*
- * Need this temp class to be able to manipulate a std::set from python.
- */
-class SWIGDataSet
-{
-public:
-  SWIGDataSet(DataSet & des)
-    : Internal(des)
-    , it(des.Begin())
-  {}
-  const DataElement &
-  GetCurrent() const
-  {
-    return *it;
-  }
-  void
-  Start()
-  {
-    it = Internal.Begin();
-  }
-  bool
-  IsAtEnd() const
-  {
-    return it == Internal.End();
-  }
-  void
-  Next()
-  {
-    ++it;
-  }
-
-private:
-  DataSet &              Internal;
-  DataSet::ConstIterator it;
-};
-#endif
 
 } // end namespace mdcm
 
