@@ -124,9 +124,8 @@ ByteSwapFilter::ByteSwap()
       const Tag & tag = de.GetTag();
       de.SetTag(Tag(SwapperDoOp::Swap(tag.GetGroup()), SwapperDoOp::Swap(tag.GetElement())));
       copy.Insert(de);
-      DS.Remove(de.GetTag());
     }
-    DS = copy;
+    DS = std::move(copy);
   }
   return true;
 }
