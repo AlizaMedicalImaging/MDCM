@@ -107,11 +107,6 @@ macro(CHECK_INCLUDE_FILE_CONCAT FILE VARIABLE)
   endif()
 endmacro()
 
-CHECK_INCLUDE_FILE("stdint.h" MDCM_HAVE_STDINT_H)
-if(UNIX)
-  CHECK_INCLUDE_FILE("inttypes.h" MDCM_HAVE_INTTYPES_H)
-endif()
-
 string(TOLOWER ${PROJECT_NAME} projname)
 
 ###################################################
