@@ -220,10 +220,6 @@ if(MDCM_USE_SYSTEM_OPENSSL)
   message(STATUS "OpenSSL libraries: " ${OPENSSL_LIBRARIES})
 endif()
 
-#if(MDCM_USE_SYSTEM_PAPYRUS3)
-#  find_package(PAPYRUS3 REQUIRED)
-#endif()
-
 set(MDCM_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR})
 
 # Debug postfix eg. 'd'
