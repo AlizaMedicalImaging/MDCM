@@ -199,18 +199,6 @@ else()
   set(MDCM_OPENJPEG_LIBRARIES mdcmopenjp2)
 endif()
 
-# JPEG library released by the Standford PVRG group,
-# build (or use system) binary to convert to raw tmp file
-option(MDCM_USE_PVRG "Use PVRG, advanced" OFF)
-mark_as_advanced(MDCM_USE_PVRG)
-if(MDCM_USE_PVRG)
-  option(MDCM_USE_SYSTEM_PVRG "Use system PVRG" OFF)
-  mark_as_advanced(MDCM_USE_SYSTEM_PVRG)
-  if(MDCM_USE_SYSTEM_PVRG)
-    find_package(PVRGJPEG REQUIRED)
-  endif()
-endif()
-
 if(MDCM_USE_SYSTEM_ZLIB)
   find_package(ZLIB REQUIRED)
   include_directories(${ZLIB_INCLUDE_DIR})
@@ -237,13 +225,6 @@ endif()
 #endif()
 
 set(MDCM_LIBRARY_DIR ${LIBRARY_OUTPUT_PATH}/${CMAKE_CFG_INTDIR})
-
-if(APPLE)
-  option(MDCM_USE_COREFOUNDATION_LIBRARY "Use CoreFoundation library?" ON)
-  if(MDCM_USE_COREFOUNDATION_LIBRARY)
-    find_library(COREFOUNDATION_LIBRARY CoreFoundation )
-  endif()
-endif()
 
 # Debug postfix eg. 'd'
 if(WIN32)

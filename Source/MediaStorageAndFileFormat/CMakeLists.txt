@@ -34,7 +34,6 @@ set(MSFF_SRCS
   mdcmJPEGLSCodec.cxx
   mdcmJPEG8Codec.cxx
   mdcmJPEGCodec.cxx
-  mdcmPVRGCodec.cxx
   mdcmRAWCodec.cxx
   mdcmEncapsulatedRAWCodec.cxx
   mdcmLookupTable.cxx
@@ -114,12 +113,6 @@ else()
 endif()
 
 add_library(mdcmmsff ${MSFF_SRCS})
-# PVRG codec calls mdcmpvrg executable
-if(MDCM_USE_PVRG)
-  if(NOT MDCM_USE_SYSTEM_PVRG)
-    add_dependencies(mdcmmsff mdcmpvrg)
-  endif()
-endif()
 
 target_link_libraries(mdcmmsff LINK_PUBLIC mdcmdsed mdcmdict)
 target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})

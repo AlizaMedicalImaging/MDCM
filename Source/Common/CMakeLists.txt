@@ -69,12 +69,6 @@ endif()
 
 add_library(mdcmcommon ${Common_SRCS})
 
-if(APPLE)
-  if(MDCM_USE_COREFOUNDATION_LIBRARY)
-    target_link_libraries(mdcmcommon LINK_PRIVATE ${COREFOUNDATION_LIBRARY})
-  endif()
-endif()
-
 if(UNIX)
   target_link_libraries(mdcmcommon LINK_PRIVATE ${CMAKE_DL_LIBS})
 endif()
