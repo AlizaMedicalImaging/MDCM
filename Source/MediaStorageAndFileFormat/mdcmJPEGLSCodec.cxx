@@ -30,13 +30,6 @@
 
 #define MDCM_JPEGLS_USE_RDBUF
 
-/*
-#if defined(__GNUC__) && defined(GCC_VERSION) && GCC_VERSION < 50101
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#endif
-*/
-
 namespace mdcm
 {
 
@@ -563,8 +556,4 @@ JPEGLSCodec::CodeFrameIntoBuffer(char * outdata, size_t outlen, size_t & complen
 }
 
 } // end namespace mdcm
-
-#if defined(__GNUC__) && defined(GCC_VERSION) && GCC_VERSION < 50101
-#  pragma GCC diagnostic pop
-#endif
 
