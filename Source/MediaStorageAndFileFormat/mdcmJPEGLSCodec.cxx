@@ -329,15 +329,15 @@ JPEGLSCodec::GetHeaderInfo(std::istream & is)
   {
     return false;
   }
-#if 1
+#if 0
       {
-      std::cout
-        << "\nwidth = " << metadata.width
-        << "\nheight = " << metadata.height
-        << "\nbitsPerSample = " << metadata.bitsPerSample
-        << "\nstride = " << metadata.stride
-        << "\ncomponents = " << metadata.components
-        << "\nallowedLossyError = " << metadata.allowedLossyError << std::endl;
+        std::cout
+          << "\nwidth = " << metadata.width
+          << "\nheight = " << metadata.height
+          << "\nbitsPerSample = " << metadata.bitsPerSample
+          << "\nstride = " << metadata.stride
+          << "\ncomponents = " << metadata.components
+          << "\nallowedLossyError = " << metadata.allowedLossyError << std::endl;
       }
 #endif
   delete[] dummy_buffer;
