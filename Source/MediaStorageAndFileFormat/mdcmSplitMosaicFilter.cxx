@@ -392,7 +392,6 @@ SplitMosaicFilter::Split()
     return false;
   }
   double origin[3]{};
-  bool   hasOriginCSA{};
   ComputeMOSAICImagePositionPatient(origin,
                                     inputimage.GetOrigin(),
                                     inputimage.GetDirectionCosines(),
