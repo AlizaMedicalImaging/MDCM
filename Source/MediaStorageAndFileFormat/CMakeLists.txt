@@ -29,6 +29,7 @@ set(MSFF_SRCS
   mdcmImage.cxx
   mdcmImageCodec.cxx
   mdcmJPEG12Codec.cxx
+  mdcmRLE.cxx
   mdcmRLECodec.cxx
   mdcmJPEG16Codec.cxx
   mdcmJPEGLSCodec.cxx
@@ -51,10 +52,7 @@ set(MSFF_SRCS
   mdcmSurfaceReader.cxx
   mdcmSurfaceHelper.cxx
   mdcmSegmentHelper.cxx
-  mdcmJPEG2000Codec.cxx
-  mdcmrle/rle.cxx
-  mdcmrle/info.cxx
-  mdcmrle/io.cxx)
+  mdcmJPEG2000Codec.cxx)
 
 if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   if(NOT BUILD_SHARED_LIBS)
