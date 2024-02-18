@@ -484,7 +484,7 @@ JPEGLSCodec::DecodeByStreamsCommon(const char * buffer, size_t totalLen, std::ve
     JpegLsDecode(rgbyteOut.data(), rgbyteOut.size(), pbyteCompressed, cbyteCompressed, &params, nullptr);
   if (result != ApiResult::OK)
   {
-    mdcmErrorMacro("Could not decode JPEG-LS stream");
+    mdcmAlwaysWarnMacro("Could not decode JPEG-LS stream");
     return false;
   }
   return true;
@@ -523,7 +523,7 @@ JPEGLSCodec::DecodeByStreamsCommon2(const char * buffer, size_t totalLen, char *
                                   nullptr);
   if (result != ApiResult::OK)
   {
-    mdcmErrorMacro("Could not decode JPEG-LS stream");
+    mdcmAlwaysWarnMacro("Could not decode JPEG-LS stream");
     return false;
   }
   return true;
