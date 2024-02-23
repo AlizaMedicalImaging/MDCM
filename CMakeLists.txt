@@ -190,6 +190,7 @@ if(MDCM_USE_SYSTEM_CHARLS)
 else()
   set(MDCM_CHARLS_LIBRARIES mdcmcharls)
 endif()
+add_definitions(-DCHARLS_NO_DEPRECATED_WARNING)
 
 if(MDCM_USE_SYSTEM_OPENJPEG)
   find_package(OpenJPEG 2.0.0 REQUIRED)
