@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.8.0)
 project(MDCM)
 
 # https://cmake.org/cmake/help/v3.0/policy/CMP0022.html
@@ -44,12 +44,11 @@ set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}"
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# TMP
-# set "ON" to build with GCC 4.8
-option(MDCM_FORCE_CXX11 "Set standard to C++11" OFF)
-mark_as_advanced(MDCM_FORCE_CXX11)
-if(MDCM_FORCE_CXX11)
-  set(CMAKE_CXX_STANDARD 11)
+# Currently min. req. is C++14
+option(MDCM_FORCE_CXX14 "Set standard to C++14" OFF)
+mark_as_advanced(MDCM_FORCE_CXX14)
+if(MDCM_FORCE_CXX14)
+  set(CMAKE_CXX_STANDARD 14)
 endif()
 #
 

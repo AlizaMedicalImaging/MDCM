@@ -1,57 +1,48 @@
-if(NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION)
-  cmake_minimum_required(VERSION 3.0.0)
-endif()
+set(CHARLS_MAJOR_VERSION 2)
+set(CHARLS_MINOR_VERSION 4)
+set(CHARLS_BUILD_VERSION 2)
+set(CHARLS_VERSION "${CHARLS_MAJOR_VERSION}.${CHARLS_MINOR_VERSION}.${CHARLS_BUILD_VERSION}")
 
-if(NOT CHARLS_NAMESPACE)
-  set(CHARLS_NAMESPACE "CHARLS")
-  set(CHARLS_STANDALONE 1)
-endif()
+project(CHARLS_NAMESPACE VERSION ${CHARLS_VERSION} LANGUAGES C CXX)
 
 string(TOLOWER ${CHARLS_NAMESPACE} CHARLS_LIBRARY_NAME)
 
-project(${CHARLS_NAMESPACE} CXX)
-
-foreach(p
-    CMP0042
-    CMP0063)
-  if(POLICY ${p})
-    cmake_policy(SET ${p} NEW)
-  endif()
-endforeach()
-
-# CHARLS version number
-set(CHARLS_MAJOR_VERSION 2)
-set(CHARLS_MINOR_VERSION 0)
-set(CHARLS_BUILD_VERSION 0)
-set(CHARLS_VERSION
-      "${CHARLS_MAJOR_VERSION}.${CHARLS_MINOR_VERSION}.${CHARLS_BUILD_VERSION}")
-
-if(NOT CHARLS_INSTALL_BIN_DIR)
-  set(CHARLS_INSTALL_BIN_DIR "bin")
-endif()
-if(NOT CHARLS_INSTALL_LIB_DIR)
-  set(CHARLS_INSTALL_LIB_DIR "lib")
-endif()
-if(NOT CHARLS_INSTALL_INCLUDE_DIR)
-  set(CHARLS_INSTALL_INCLUDE_DIR "include")
-endif()
-
-if(WIN32)
-  if(BUILD_SHARED_LIBS)
-    add_definitions(-DCHARLS_DLL_BUILD)
-  else()
-    add_definitions(-DCHARLS_STATIC)
-  endif()
-endif()
-
 add_library(${CHARLS_LIBRARY_NAME}
-  interface.cpp  jpegls.cpp  jpegmarkersegment.cpp  jpegstreamreader.cpp  jpegstreamwriter.cpp)
+  "${CMAKE_CURRENT_LIST_DIR}/charls_jpegls_decoder.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/charls_jpegls_encoder.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/jpegls_error.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/jpegls.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/jpeg_stream_reader.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/jpeg_stream_writer.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/validate_spiff_header.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/version.cpp")
 
-target_compile_features(${CHARLS_LIBRARY_NAME} PRIVATE cxx_nullptr)
-set_target_properties(${CHARLS_LIBRARY_NAME} PROPERTIES
-                    VERSION ${CHARLS_MAJOR_VERSION}.${CHARLS_MINOR_VERSION}
-                    SOVERSION ${CHARLS_MAJOR_VERSION}
-                    ${CHARLS_LIBRARY_PROPERTIES})
+set(CHARLS_PUB_HEADER_FILES
+  "${CMAKE_CURRENT_LIST_DIR}/annotations.h"
+  "${CMAKE_CURRENT_LIST_DIR}/api_abi.h"
+  "${CMAKE_CURRENT_LIST_DIR}/charls.h"
+  "${CMAKE_CURRENT_LIST_DIR}/charls_jpegls_decoder.h"
+  "${CMAKE_CURRENT_LIST_DIR}/charls_jpegls_encoder.h"
+  "${CMAKE_CURRENT_LIST_DIR}/jpegls_error.h"
+  "${CMAKE_CURRENT_LIST_DIR}/public_types.h"
+  "${CMAKE_CURRENT_LIST_DIR}/validate_spiff_header.h"
+  "${CMAKE_CURRENT_LIST_DIR}/version.h")
+
+if(NOT BUILD_SHARED_LIBS)
+  target_compile_definitions(${CHARLS_LIBRARY_NAME} PUBLIC CHARLS_STATIC)
+endif()
+
+set_target_properties(${CHARLS_LIBRARY_NAME} PROPERTIES VERSION ${CHARLS_VERSION} SOVERSION ${CHARLS_MAJOR_VERSION})
+target_compile_definitions(${CHARLS_LIBRARY_NAME} PRIVATE CHARLS_LIBRARY_BUILD)
+target_compile_features(${CHARLS_LIBRARY_NAME} PUBLIC cxx_std_14)
+set_target_properties(${CHARLS_LIBRARY_NAME} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+set_target_properties(${CHARLS_LIBRARY_NAME} PROPERTIES VISIBILITY_INLINES_HIDDEN 1)
+
+if(WIN32 AND BUILD_SHARED_LIBS)
+  if(MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 4)
+    target_sources(${CHARLS_LIBRARY_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/charls.def")
+  endif()
+endif()
 
 if(NOT CHARLS_INSTALL_NO_LIBRARIES)
   install(TARGETS ${CHARLS_LIBRARY_NAME}
@@ -67,7 +58,5 @@ if(NOT CHARLS_INSTALL_NO_LIBRARIES)
 endif()
 
 if(NOT CHARLS_INSTALL_NO_DEVELOPMENT)
-  file(GLOB header_files "*.h")
-  install(FILES ${header_files}
-    DESTINATION ${CHARLS_INSTALL_INCLUDE_DIR} COMPONENT Headers)
+  install(FILES ${CHARLS_PUB_HEADER_FILES} DESTINATION ${CHARLS_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 endif()
