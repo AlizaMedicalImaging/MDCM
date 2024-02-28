@@ -41,8 +41,6 @@ endif()
 
 set(Common_SRCS
   mdcmVersion.cxx
-  mdcmRegion.cxx
-  mdcmBoxRegion.cxx
   mdcmEvent.cxx
   mdcmMD5.cxx
   mdcmBase64.cxx

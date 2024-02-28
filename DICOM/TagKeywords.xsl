@@ -44,9 +44,10 @@
 
 #include "mdcmAttribute.h"
 
-namespace mdcm {
-namespace Keywords {
-
+namespace mdcm
+{
+namespace Keywords
+{
 </xsl:text>
 <xsl:apply-templates select="dicts/dict/entry" mode="attribute" />
 <xsl:text>
@@ -58,9 +59,8 @@ namespace Keywords {
 
   </xsl:template>
 
-
   <xsl:template match="entry[description = 'SHALL NOT BE USED']" mode="attribute">
-    <xsl:text>    // 0x</xsl:text>
+    <xsl:text>  // 0x</xsl:text>
     <xsl:value-of select="@group" />
     <xsl:text>, 0x</xsl:text>
     <xsl:value-of select="@element" />
@@ -69,7 +69,7 @@ namespace Keywords {
   </xsl:template>
 
   <xsl:template match="entry" mode="attribute">
-    <xsl:text>    typedef mdcm::Attribute&lt;0x</xsl:text>
+    <xsl:text>  typedef mdcm::Attribute&lt;0x</xsl:text>
     <xsl:value-of select="translate(@group, 'x', '0')" />
     <xsl:text>, 0x</xsl:text>
     <xsl:value-of select="translate(@element, 'x', '0')" />
