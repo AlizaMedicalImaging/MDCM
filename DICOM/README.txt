@@ -29,7 +29,7 @@ typedef mdcm::Attribute<0x300a, 0x0782> ;
 xsltproc TagToType.xsl Part6.xml > mdcmTagToType.h
 
 4.
-xsltproc TagToVR.xsl Part6.xml > mdcmTagToVR.cxx
+xsltproc TagToVR.xsl Part6.xml > mdcmTagToVR.h
 
 5.
 xsltproc DefaultDicts.xsl Part6.xml > mdcmDefaultDicts.cxx

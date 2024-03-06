@@ -18,9 +18,8 @@
   <xsl:include href="VM.xsl"/>
 <!-- The main template that loop over all dict/entry -->
   <xsl:template match="/">
-    <xsl:text>
-// GENERATED FILE DO NOT EDIT
-// $ xsltproc TagToVR.xsl Part6.xml &gt; mdcmTagToVR.cxx
+    <xsl:text>// GENERATED FILE DO NOT EDIT
+// $ xsltproc TagToVR.xsl Part6.xml &gt; mdcmTagToVR.h
 
 /*********************************************************
  *
@@ -43,14 +42,19 @@
      PURPOSE.  See the above copyright notice for more information.
 
 =========================================================================*/
+#include "mdcmTag.h"
 #include "mdcmVR.h"
-#include "mdcmVM.h"
+#include &lt;cstdint&gt;
 
-namespace mdcm {
-VR::VRType GetVRFromTag( Tag const &amp; t ) {
-if( t.IsGroupLength() ) return VR::UL;
-uint32_t tag = t.GetElementTag();
-switch( tag ) {
+namespace mdcm
+{
+
+VR::VRType GetVRFromTag(const Tag &amp; t)
+{
+  if (t.IsGroupLength()) return VR::UL;
+  const uint32_t tag = t.GetElementTag();
+  switch (tag)
+  {
 </xsl:text>
     <xsl:for-each select="dicts/dict/entry">
       <xsl:sort select="@group" data-type="text" order="ascending"/>
@@ -59,10 +63,10 @@ switch( tag ) {
       <xsl:variable name="element" select="translate(@element,'x','0')"/>
       <xsl:if test="contains(@element,'x') = true and contains(@element,'xx') = false and @vr != '' and @vr != 'US_SS_OW' and @vr != 'OB_OW'">
 <xsl:variable name="classname">
-        <xsl:text>case 0x</xsl:text>
+        <xsl:text>    case 0x</xsl:text>
         <xsl:value-of select="$group"/>
         <xsl:value-of select="$element"/>
-        <xsl:text>:</xsl:text>
+        <xsl:text>: </xsl:text>
 </xsl:variable>
         <xsl:value-of select="$classname"/>
         <xsl:text>return VR::</xsl:text>
@@ -71,10 +75,8 @@ switch( tag ) {
         <xsl:text>
 </xsl:text>
       </xsl:if>
-    </xsl:for-each>
-default:
-return VR::INVALID;
-}
+    </xsl:for-each>    default: return VR::INVALID;
+  }
 }
     <xsl:text>
 } // end namespace mdcm

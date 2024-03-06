@@ -18,8 +18,7 @@
   <xsl:include href="VM.xsl"/>
 <!-- The main template that loop over all dict/entry -->
   <xsl:template match="/">
-    <xsl:text>
-// GENERATED FILE DO NOT EDIT
+    <xsl:text>// GENERATED FILE DO NOT EDIT
 // $ xsltproc TagToType.xsl Part6.xml &gt; mdcmTagToType.h
 
 /*********************************************************
@@ -49,22 +48,28 @@
 
 #include "mdcmVR.h"
 #include "mdcmVM.h"
+#include &lt;cstdint&gt;
 
-namespace mdcm {
+namespace mdcm
+{
 
-// default template: the compiler should only pick it up when the element is private
-template &lt;uint16_t group,uint16_t element&gt; struct TagToType {
-enum:long long { VRType = VR::VRALL };
-enum { VMType = VM::VM1_n };
+// A compiler should only pick this one if the element is private
+template &lt;uint16_t group, uint16_t element&gt; struct TagToType
+{
+  enum:long long { VRType = VR::VRALL };
+  enum { VMType = VM::VM1_n };
 };
-// template for group length
-template &lt;uint16_t group&gt; struct TagToType&lt;group,0x0000&gt; {
-static const char * GetVRString() { return "UL"; }
-typedef VRToType&lt;VR::UL&gt;::Type Type;
-enum:long long { VRType = VR::UL };
-enum { VMType = VM::VM1 };
-static const char * GetVMString() { return "1"; }
+
+// For the group length
+template &lt;uint16_t group&gt; struct TagToType&lt;group,0x0000&gt;
+{
+  typedef VRToType&lt;VR::UL&gt;::Type Type;
+  enum:long long { VRType = VR::UL };
+  enum { VMType = VM::VM1 };
+  static const char * GetVRString() { return "UL"; }
+  static const char * GetVMString() { return "1"; }
 };
+
 </xsl:text>
     <xsl:for-each select="dicts/dict/entry">
       <xsl:sort select="@group" data-type="text" order="ascending"/>
@@ -81,34 +86,36 @@ static const char * GetVMString() { return "1"; }
 </xsl:variable>
         <xsl:text>template &lt;&gt; struct </xsl:text>
         <xsl:value-of select="$classname"/>
-        <xsl:text> {
+        <xsl:text>
+{
 </xsl:text>
-        <xsl:text>static const char * GetVRString() { return "</xsl:text>
-        <xsl:value-of select="@vr"/>
-        <xsl:text>"; }
-</xsl:text>
-        <xsl:text>typedef VRToType&lt;VR::</xsl:text>
+        <xsl:text>  typedef VRToType&lt;VR::</xsl:text>
         <xsl:value-of select="@vr"/>
         <xsl:text>&gt;::Type Type;</xsl:text>
         <xsl:text>
 </xsl:text>
-        <xsl:text>enum:long long { VRType = VR::</xsl:text>
+        <xsl:text>  enum:long long { VRType = VR::</xsl:text>
         <xsl:value-of select="@vr"/>
         <xsl:text> };</xsl:text>
         <xsl:text>
 </xsl:text>
-        <xsl:text>enum { VMType = VM::</xsl:text>
+        <xsl:text>  enum { VMType = VM::</xsl:text>
         <xsl:call-template name="VMStringToVMType">
           <xsl:with-param name="vmstring" select="@vm"/>
         </xsl:call-template>
         <xsl:text> };</xsl:text>
         <xsl:text>
 </xsl:text>
-        <xsl:text>static const char * GetVMString() { return "</xsl:text>
+        <xsl:text>  static const char * GetVRString() { return "</xsl:text>
+        <xsl:value-of select="@vr"/>
+        <xsl:text>"; }
+</xsl:text>
+        <xsl:text>  static const char * GetVMString() { return "</xsl:text>
         <xsl:value-of select="@vm"/>
         <xsl:text>"; }
 </xsl:text>
-        <xsl:text>};</xsl:text>
+        <xsl:text>};
+</xsl:text>
         <xsl:text>
 </xsl:text>
         <!--xsl:text>const char </xsl:text><xsl:value-of select="$classname"/><xsl:text>::VRString[] = "</xsl:text>
