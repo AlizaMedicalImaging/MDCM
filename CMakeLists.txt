@@ -42,15 +42,30 @@ set(MDCM_VERSION "${MDCM_MAJOR_VERSION}.${MDCM_MINOR_VERSION}.${MDCM_BUILD_VERSI
 set(MDCM_API_VERSION "${MDCM_MAJOR_VERSION}.${MDCM_MINOR_VERSION}")
 set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}" SOVERSION "${MDCM_API_VERSION}")
 
+########################################################################
+#
+# C++ standard
+#
+
+# Should be not required.
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Currently min. req. is C++14
-option(MDCM_FORCE_CXX14 "Set standard to C++14" OFF)
-mark_as_advanced(MDCM_FORCE_CXX14)
+# Currently minimum required is C++14.
+if(APPLE)
+  # Apple's Clang seems to set default C++ to early 98.
+  option(MDCM_FORCE_CXX14 "Set standard to C++14" ON)
+else()
+  # Linux GCC and VS seem to set default to latest supported.
+  option(MDCM_FORCE_CXX14 "Set standard to C++14" OFF)
+endif()
 if(MDCM_FORCE_CXX14)
   set(CMAKE_CXX_STANDARD 14)
 endif()
+
 #
+#
+#
+########################################################################
 
 if(WIN32)
   option(MDCM_USE_WIN32_UNC "Unicode, long file path (Windows)" ON)
