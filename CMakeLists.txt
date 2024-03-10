@@ -1,4 +1,9 @@
 cmake_minimum_required(VERSION 3.8.0)
+# Note:
+# For C++20 version 3.12 is required.
+# For C++23 version 3.20 is required.
+# For C++26 version 3.25 is required.
+
 project(MDCM)
 
 # https://cmake.org/cmake/help/v3.0/policy/CMP0022.html
@@ -44,24 +49,31 @@ set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}"
 
 ########################################################################
 #
-# C++ standard
+# C++ standard, currently minimum required is C++14.
 #
-
-# Should be not required.
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# Currently minimum required is C++14.
-if(APPLE)
-  # Apple's Clang seems to set default C++ to early 98.
-  option(MDCM_FORCE_CXX14 "Set standard to C++14" ON)
+#
+set(MDCM_CXX_STANDARD "14" CACHE STRING "Select C++ standard")
+set_property(CACHE MDCM_CXX_STANDARD PROPERTY STRINGS "14" "17" "20" "23" "26" "Not set")
+if(MDCM_CXX_STANDARD STREQUAL "Not set")
 else()
-  # Linux GCC and VS seem to set default to latest supported.
-  option(MDCM_FORCE_CXX14 "Set standard to C++14" OFF)
+  if(MDCM_CXX_STANDARD STREQUAL "14")
+    set(CMAKE_CXX_STANDARD 14)
+    message(STATUS "Tried to set C++14")
+  elseif(MDCM_CXX_STANDARD STREQUAL "17")
+    set(CMAKE_CXX_STANDARD 17)
+    message(STATUS "Tried to set C++17")
+  elseif(MDCM_CXX_STANDARD STREQUAL "20")
+    set(CMAKE_CXX_STANDARD 20)
+    message(STATUS "Tried to set C++20")
+  elseif(MDCM_CXX_STANDARD STREQUAL "23")
+    set(CMAKE_CXX_STANDARD 23)
+    message(STATUS "Tried to set C++23")
+  elseif(MDCM_CXX_STANDARD STREQUAL "26")
+    set(CMAKE_CXX_STANDARD 26)
+    message(STATUS "Tried to set C++26")
+  endif()
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
-if(MDCM_FORCE_CXX14)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
-
 #
 #
 #
