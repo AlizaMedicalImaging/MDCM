@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8.0)
-# Note:
+# Note, for CMAKE_CXX_STANDARD:
 # For C++20 version 3.12 is required.
 # For C++23 version 3.20 is required.
 # For C++26 version 3.25 is required.
