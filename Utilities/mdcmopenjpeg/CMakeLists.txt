@@ -1,12 +1,9 @@
 if(NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION)
-  cmake_minimum_required(VERSION 3.0.0)
+  cmake_minimum_required(VERSION 3.5)
 endif()
 
 if(COMMAND CMAKE_POLICY)
   cmake_policy(SET CMP0003 NEW)
-  if (NOT (${CMAKE_VERSION} VERSION_LESS 3.0))
-    cmake_policy(SET CMP0042 NEW)
-  endif()
 endif()
 
 if(NOT OPENJPEG_NAMESPACE)
@@ -23,7 +20,7 @@ include_regular_expression("^.*$")
 # OPENJPEG version number
 set(OPENJPEG_VERSION_MAJOR 2)
 set(OPENJPEG_VERSION_MINOR 5)
-set(OPENJPEG_VERSION_BUILD 0)
+set(OPENJPEG_VERSION_BUILD 2)
 set(OPENJPEG_VERSION
   "${OPENJPEG_VERSION_MAJOR}.${OPENJPEG_VERSION_MINOR}.${OPENJPEG_VERSION_BUILD}")
 set(PACKAGE_VERSION
@@ -118,10 +115,10 @@ include(${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
 TEST_BIG_ENDIAN(OPJ_BIG_ENDIAN)
 
 # Setup file for setting custom ctest vars
-configure_file(
-  ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/CTestCustom.cmake.in
-  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/CTestCustom.cmake
-  @ONLY)
+#configure_file(
+#  ${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/CTestCustom.cmake.in
+#  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/CTestCustom.cmake
+#  @ONLY)
 
 # OpenJPEG build configuration options
 #option(BUILD_SHARED_LIBS "Build OpenJPEG shared library and link executables against it." ON)
@@ -134,19 +131,18 @@ mark_as_advanced(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 # Check if some include files are provided by the system
 include(EnsureFileInclude)
 # These files are mandatory
-ensure_file_include("string.h" HAVE_STRING_H YES)
-ensure_file_include("memory.h" HAVE_MEMORY_H YES)
-ensure_file_include("stdlib.h" HAVE_STDLIB_H YES)
-ensure_file_include("stdio.h"  HAVE_STDIO_H  YES)
-ensure_file_include("math.h"   HAVE_MATH_H   YES)
-ensure_file_include("float.h"  HAVE_FLOAT_H  YES)
-ensure_file_include("time.h"   HAVE_TIME_H   YES)
-ensure_file_include("stdarg.h" HAVE_STDARG_H YES)
-ensure_file_include("ctype.h"  HAVE_CTYPE_H  YES)
-ensure_file_include("assert.h" HAVE_ASSERT_H YES)
-# Not mandatory
-ensure_file_include("stdint.h"   OPJ_HAVE_STDINT_H   NO)
-ensure_file_include("inttypes.h" OPJ_HAVE_INTTYPES_H NO)
+ensure_file_include("string.h"   HAVE_STRING_H YES)
+ensure_file_include("memory.h"   HAVE_MEMORY_H YES)
+ensure_file_include("stdlib.h"   HAVE_STDLIB_H YES)
+ensure_file_include("stdio.h"    HAVE_STDIO_H  YES)
+ensure_file_include("math.h"     HAVE_MATH_H   YES)
+ensure_file_include("float.h"    HAVE_FLOAT_H  YES)
+ensure_file_include("time.h"     HAVE_TIME_H   YES)
+ensure_file_include("stdarg.h"   HAVE_STDARG_H YES)
+ensure_file_include("ctype.h"    HAVE_CTYPE_H  YES)
+ensure_file_include("assert.h"   HAVE_ASSERT_H YES)
+ensure_file_include("stdint.h"   HAVE_STDINT_H   YES)
+ensure_file_include("inttypes.h" HAVE_INTTYPES_H YES)
 
 # For openjpip?
 include (${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
@@ -210,12 +206,12 @@ configure_file(
 # install all targets referenced as OPENJPEGTargets
 #install(EXPORT OpenJPEGTargets DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
 
-configure_file(${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/OpenJPEGConfig.cmake.in
-  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
-  @ONLY)
-
-install(FILES ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
-  DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
+#configure_file(${${OPENJPEG_NAMESPACE}_SOURCE_DIR}/cmake/OpenJPEGConfig.cmake.in
+#  ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
+#  @ONLY)
+#
+#install(FILES ${${OPENJPEG_NAMESPACE}_BINARY_DIR}/OpenJPEGConfig.cmake
+#  DESTINATION ${OPENJPEG_INSTALL_PACKAGE_DIR})
 
 ## install CHANGES and LICENSE
 #if(BUILD_DOC)

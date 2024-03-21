@@ -51,7 +51,6 @@ set(OPENJPEG_SRCS
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_intmath.h
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_malloc.c
   ${CMAKE_CURRENT_SOURCE_DIR}/opj_malloc.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/opj_stdint.h
   ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.c
   ${CMAKE_CURRENT_SOURCE_DIR}/sparse_array.h
 )
@@ -110,7 +109,7 @@ install(TARGETS ${OPENJPEG_LIBRARY_NAME}
   ARCHIVE DESTINATION ${OPENJPEG_INSTALL_LIB_DIR} COMPONENT Libraries)
 
 # Install includes files
-install(FILES openjpeg.h opj_stdint.h
+install(FILES openjpeg.h "${${OPENJPEG_NAMESPACE}_BINARY_DIR}/openjpeg_mangle.h"
   DESTINATION ${OPENJPEG_INSTALL_INCLUDE_DIR} COMPONENT Headers)
 
 #if(BUILD_DOC)
