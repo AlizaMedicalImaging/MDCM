@@ -15,6 +15,14 @@ PURPOSE.  See the above copyright notice for more information.
 
 <xsl:template match="/">
 <xsl:comment>
+/*********************************************************
+ *
+ * MDCM
+ *
+ * Modifications github.com/issakomi
+ *
+ *********************************************************/
+
 Program: GDCM (Grassroots DICOM). A DICOM library
 
 Copyright (c) 2006-2011 Mathieu Malaterre
@@ -37,7 +45,7 @@ This file was automatically created from a docbook version of PS 3.6
 &lt;!ENTITY part7b SYSTEM "Part7b.xml"&gt;
 ]&gt;
 </xsl:text>
-<dicts edition="2023c">
+<dicts edition="2024a">
 <xsl:text disable-output-escaping="yes">
 &amp;part7a;
 &amp;part7b;

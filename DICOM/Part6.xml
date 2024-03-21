@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+/*********************************************************
+ *
+ * MDCM
+ *
+ * Modifications github.com/issakomi
+ *
+ *********************************************************/
+
 Program: GDCM (Grassroots DICOM). A DICOM library
 
 Copyright (c) 2006-2011 Mathieu Malaterre
@@ -18,7 +26,7 @@ This file was automatically created from a docbook version of PS 3.6
 <!ENTITY part7a SYSTEM "Part7a.xml">
 <!ENTITY part7b SYSTEM "Part7b.xml">
 ]>
-<dicts edition="2023e">
+<dicts edition="2024a">
 &part7a;
 &part7b;
 <dict ref="6" name="Registry of DICOM Data Elements">
@@ -195,7 +203,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="1100" keyword="ReferencedResultsSequence" vr="SQ" vm="1" retired="true" name="Referenced Results Sequence"/>
                 <entry group="0008" element="1110" keyword="ReferencedStudySequence" vr="SQ" vm="1" name="Referenced Study Sequence"/>
                 <entry group="0008" element="1111" keyword="ReferencedPerformedProcedureStepSequence" vr="SQ" vm="1" name="Referenced Performed Procedure Step Sequence"/>
-                <entry group="0008" element="1115" keyword="ReferencedSeriesSequence" vr="SQ" vm="1" name="Referenced Series Sequence"/>
+                <entry group="0008" element="1112" keyword="ReferencedInstancesBySOPClassSequence" vr="SQ" vm="1" name="Referenced Instances by SOP Class Sequence"/>
+                 <entry group="0008" element="1115" keyword="ReferencedSeriesSequence" vr="SQ" vm="1" name="Referenced Series Sequence"/>
                 <entry group="0008" element="1120" keyword="ReferencedPatientSequence" vr="SQ" vm="1" name="Referenced Patient Sequence"/>
                 <entry group="0008" element="1125" keyword="ReferencedVisitSequence" vr="SQ" vm="1" name="Referenced Visit Sequence"/>
                 <entry group="0008" element="1130" keyword="ReferencedOverlaySequence" vr="SQ" vm="1" retired="true" name="Referenced Overlay Sequence"/>
@@ -222,6 +231,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="1198" keyword="FailedSOPSequence" vr="SQ" vm="1" name="Failed SOP Sequence"/>
                 <entry group="0008" element="1199" keyword="ReferencedSOPSequence" vr="SQ" vm="1" name="Referenced SOP Sequence"/>
                 <entry group="0008" element="119a" keyword="OtherFailuresSequence" vr="SQ" vm="1" name="Other Failures Sequence"/>
+                <entry group="0008" element="119b" keyword="FailedStudySequence" vr="SQ" vm="1" name="Failed Study Sequence"/>
                 <entry group="0008" element="1200" keyword="StudiesContainingOtherReferencedInstancesSequence" vr="SQ" vm="1" name="Studies Containing Other Referenced Instances Sequence"/>
                 <entry group="0008" element="1250" keyword="RelatedSeriesSequence" vr="SQ" vm="1" name="Related Series Sequence"/>
                 <entry group="0008" element="2110" keyword="LossyImageCompressionRetired" vr="CS" vm="1" retired="true" name="Lossy Image Compression (Retired)"/>
@@ -3936,6 +3946,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3006" element="0028" keyword="ROIDescription" vr="ST" vm="1" name="ROI Description"/>
                 <entry group="3006" element="002a" keyword="ROIDisplayColor" vr="IS" vm="3" name="ROI Display Color"/>
                 <entry group="3006" element="002c" keyword="ROIVolume" vr="DS" vm="1" name="ROI Volume"/>
+                <entry group="3006" element="002d" keyword="ROIDateTime" vr="DT" vm="1" name="ROI DateTime"/>
+                <entry group="3006" element="002e" keyword="ROIObservationDateTime" vr="DT" vm="1" name="ROI Observation DateTime"/>
                 <entry group="3006" element="0030" keyword="RTRelatedROISequence" vr="SQ" vm="1" name="RT Related ROI Sequence"/>
                 <entry group="3006" element="0033" keyword="RTROIRelationship" vr="CS" vm="1" name="RT ROI Relationship"/>
                 <entry group="3006" element="0036" keyword="ROIGenerationAlgorithm" vr="CS" vm="1" name="ROI Generation Algorithm"/>
@@ -3950,6 +3962,11 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="3006" element="0048" keyword="ContourNumber" vr="IS" vm="1" name="Contour Number"/>
                 <entry group="3006" element="0049" keyword="AttachedContours" vr="IS" vm="1-n" retired="true" name="Attached Contours"/>
                 <entry group="3006" element="004a" keyword="SourcePixelPlanesCharacteristicsSequence" vr="SQ" vm="1" name="Source Pixel Planes Characteristics Sequence"/>
+                <entry group="3006" element="004b" keyword="SourceSeriesSequence" vr="SQ" vm="1" name="Source Series Sequence"/>
+                <entry group="3006" element="004c" keyword="SourceSeriesInformationSequence" vr="SQ" vm="1" name="Source Series Information Sequence"/>
+                <entry group="3006" element="004d" keyword="ROICreatorSequence" vr="SQ" vm="1" name="ROI Creator Sequence"/>
+                <entry group="3006" element="004e" keyword="ROIInterpreterSequence" vr="SQ" vm="1" name="ROI Interpreter Sequence"/>
+                <entry group="3006" element="004f" keyword="ROIObservationContextCodeSequence" vr="SQ" vm="1" name="ROI Observation Context Code Sequence"/>
                 <entry group="3006" element="0050" keyword="ContourData" vr="DS" vm="3-3n" name="Contour Data"/>
                 <entry group="3006" element="0080" keyword="RTROIObservationsSequence" vr="SQ" vm="1" name="RT ROI Observations Sequence"/>
                 <entry group="3006" element="0082" keyword="ObservationNumber" vr="IS" vm="1" name="Observation Number"/>
