@@ -1,6 +1,5 @@
 include_regular_expression("^mdcm.*$")
 
-CHECK_INCLUDE_FILE_CONCAT("sys/time.h" MDCM_HAVE_SYS_TIME_H)
 CHECK_INCLUDE_FILE_CONCAT("byteswap.h" MDCM_HAVE_BYTESWAP_FILE_H)
 # s. GDCM bug #324
 if(MDCM_HAVE_BYTESWAP_FILE_H)
@@ -9,9 +8,6 @@ if(MDCM_HAVE_BYTESWAP_FILE_H)
     MDCM_HAVE_BYTESWAP_H)
 endif()
 CHECK_INCLUDE_FILE("rpc.h" MDCM_HAVE_RPC_H)
-
-include(CheckFunctionExists)
-CHECK_FUNCTION_EXISTS(gettimeofday MDCM_HAVE_GETTIMEOFDAY)
 
 include(CheckCXXSourceCompiles)
 CHECK_CXX_SOURCE_COMPILES("int main(){const char *f =__FUNCTION__;return 0;}"
