@@ -88,7 +88,7 @@ ByteSwap<T>::SwapFromSwapCodeIntoSystem(T & a, SwapCode const & swapcode)
       break;
     default:
       mdcmErrorMacro("Impossible");
-	  break;
+      break;
   }
 }
 
