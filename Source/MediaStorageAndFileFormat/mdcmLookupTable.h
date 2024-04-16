@@ -34,7 +34,6 @@ namespace mdcm
 class LookupTableInternal
 {
 public:
-  LookupTableInternal() = default;
   unsigned int               Length[3]{};
   unsigned short             Subscript[3]{};
   unsigned short             BitSize[3]{};
@@ -59,8 +58,8 @@ public:
     UNKNOWN
   } LookupTableType;
 
-  LookupTable();
-  ~LookupTable();
+  LookupTable() = default;
+  virtual ~LookupTable() = default;
   bool
   Initialized() const;
   void
@@ -105,9 +104,9 @@ public:
   Print(std::ostream &) const override;
 
 protected:
-  LookupTableInternal * Internal;
-  unsigned short        BitSample{};
-  bool                  IncompleteLUT{};
+  LookupTableInternal Internal{};
+  unsigned short      BitSample{};
+  bool                IncompleteLUT{};
 };
 
 } // end namespace mdcm
