@@ -38,25 +38,25 @@ ImageCodec::ImageCodec() : LUT(new LookupTable)
 }
 
 bool
-ImageCodec::CanDecode(TransferSyntax const &) const
+ImageCodec::CanDecode(const TransferSyntax &) const
 {
   return false;
 }
 
 bool
-ImageCodec::Decode(DataElement const &, DataElement &)
+ImageCodec::Decode(const DataElement &, DataElement &)
 {
   return false;
 }
 
 bool
-ImageCodec::CanCode(TransferSyntax const &) const
+ImageCodec::CanCode(const TransferSyntax &) const
 {
   return false;
 }
 
 bool
-ImageCodec::Code(DataElement const &, DataElement &)
+ImageCodec::Code(const DataElement &, DataElement &)
 {
   return false;
 }
@@ -112,7 +112,7 @@ ImageCodec::GetPixelFormat() const
 }
 
 void
-ImageCodec::SetPixelFormat(PixelFormat const & pf)
+ImageCodec::SetPixelFormat(const PixelFormat & pf)
 {
   PF = pf;
 }
@@ -124,7 +124,7 @@ ImageCodec::GetPhotometricInterpretation() const
 }
 
 void
-ImageCodec::SetPhotometricInterpretation(PhotometricInterpretation const & pi)
+ImageCodec::SetPhotometricInterpretation(const PhotometricInterpretation & pi)
 {
   PI = pi;
 }
@@ -148,7 +148,7 @@ ImageCodec::SetNeedOverlayCleanup(bool b)
 }
 
 void
-ImageCodec::SetLUT(LookupTable const & lut)
+ImageCodec::SetLUT(const LookupTable & lut)
 {
   LUT = SmartPointer<LookupTable>(const_cast<LookupTable *>(&lut));
 }
@@ -281,7 +281,7 @@ ImageCodec::CleanupUnusedBits(char * data8, size_t datalen)
 }
 
 bool
-ImageCodec::IsValid(PhotometricInterpretation const &)
+ImageCodec::IsValid(const PhotometricInterpretation &)
 {
   return false;
 }

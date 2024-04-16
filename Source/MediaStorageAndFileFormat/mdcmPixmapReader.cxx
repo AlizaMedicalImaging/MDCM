@@ -360,7 +360,7 @@ DoCurves(const DataSet & ds, Pixmap & pixeldata)
 }
 
 static unsigned int
-GetNumberOfOverlaysInternal(DataSet const & ds, std::vector<uint16_t> & overlaylist)
+GetNumberOfOverlaysInternal(const DataSet & ds, std::vector<uint16_t> & overlaylist)
 {
   Tag          overlay(0x6000, 0x0000);
   bool         finished = false;

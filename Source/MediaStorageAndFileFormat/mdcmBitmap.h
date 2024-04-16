@@ -74,7 +74,7 @@ public:
   const PhotometricInterpretation &
   GetPhotometricInterpretation() const;
   void
-  SetPhotometricInterpretation(PhotometricInterpretation const &);
+  SetPhotometricInterpretation(const PhotometricInterpretation &);
   bool
   IsLossy() const;
   void
@@ -92,19 +92,19 @@ public:
   void
   SetNeedByteSwap(bool);
   void
-  SetTransferSyntax(TransferSyntax const &);
+  SetTransferSyntax(const TransferSyntax &);
   const TransferSyntax &
   GetTransferSyntax() const;
   bool
-  IsTransferSyntaxCompatible(TransferSyntax const &) const;
+  IsTransferSyntaxCompatible(const TransferSyntax &) const;
   void
-  SetDataElement(DataElement const &);
+  SetDataElement(const DataElement &);
   const DataElement &
   GetDataElement() const;
   DataElement &
   GetDataElement();
   void
-  SetLUT(LookupTable const &);
+  SetLUT(const LookupTable &);
   const LookupTable &
   GetLUT() const;
   LookupTable &
@@ -122,7 +122,7 @@ public:
   PixelFormat &
   GetPixelFormat();
   void
-  SetPixelFormat(PixelFormat const &);
+  SetPixelFormat(const PixelFormat &);
   void
   Print(std::ostream &) const;
 

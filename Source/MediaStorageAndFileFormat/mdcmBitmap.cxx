@@ -166,7 +166,7 @@ Bitmap::GetPhotometricInterpretation() const
 }
 
 void
-Bitmap::SetPhotometricInterpretation(PhotometricInterpretation const & pi)
+Bitmap::SetPhotometricInterpretation(const PhotometricInterpretation & pi)
 {
   PI = pi;
 }
@@ -309,7 +309,7 @@ Bitmap::SetNeedByteSwap(bool b)
 }
 
 void
-Bitmap::SetTransferSyntax(TransferSyntax const & ts)
+Bitmap::SetTransferSyntax(const TransferSyntax & ts)
 {
   TS = ts;
 }
@@ -321,7 +321,7 @@ Bitmap::GetTransferSyntax() const
 }
 
 bool
-Bitmap::IsTransferSyntaxCompatible(TransferSyntax const & ts) const
+Bitmap::IsTransferSyntaxCompatible(const TransferSyntax & ts) const
 {
   if (GetTransferSyntax() == ts)
     return true;
@@ -337,7 +337,7 @@ Bitmap::IsTransferSyntaxCompatible(TransferSyntax const & ts) const
 }
 
 void
-Bitmap::SetDataElement(DataElement const & de)
+Bitmap::SetDataElement(const DataElement & de)
 {
   PixelData = de;
 }
@@ -355,7 +355,7 @@ Bitmap::GetDataElement()
 }
 
 void
-Bitmap::SetLUT(LookupTable const & lut)
+Bitmap::SetLUT(const LookupTable & lut)
 {
   LUT = SmartPointer<LookupTable>(const_cast<LookupTable *>(&lut));
 }
@@ -409,7 +409,7 @@ Bitmap::GetPixelFormat()
 }
 
 void
-Bitmap::SetPixelFormat(PixelFormat const & pf)
+Bitmap::SetPixelFormat(const PixelFormat & pf)
 {
   PF = pf;
   PF.Validate();

@@ -41,13 +41,13 @@ public:
   ImageCodec();
   virtual ~ImageCodec() = default;
   virtual bool
-  CanDecode(TransferSyntax const &) const;
+  CanDecode(const TransferSyntax &) const;
   virtual bool
-  Decode(DataElement const &, DataElement &);
+  Decode(const DataElement &, DataElement &);
   virtual bool
-  CanCode(TransferSyntax const &) const;
+  CanCode(const TransferSyntax &) const;
   virtual bool
-  Code(DataElement const &, DataElement &);
+  Code(const DataElement &, DataElement &);
   bool
   IsLossy() const;
   void
@@ -65,11 +65,11 @@ public:
   const PixelFormat &
   GetPixelFormat() const;
   virtual void
-  SetPixelFormat(PixelFormat const &);
+  SetPixelFormat(const PixelFormat &);
   const PhotometricInterpretation &
   GetPhotometricInterpretation() const;
   void
-  SetPhotometricInterpretation(PhotometricInterpretation const &);
+  SetPhotometricInterpretation(const PhotometricInterpretation &);
   bool
   GetNeedByteSwap() const;
   void
@@ -77,7 +77,7 @@ public:
   void
   SetNeedOverlayCleanup(bool);
   void
-  SetLUT(LookupTable const &);
+  SetLUT(const LookupTable &);
   const LookupTable &
   GetLUT() const;
   void
@@ -95,7 +95,7 @@ public:
 
 protected:
   virtual bool
-  IsValid(PhotometricInterpretation const &);
+  IsValid(const PhotometricInterpretation &);
   virtual bool
   IsRowEncoder();
   virtual bool
