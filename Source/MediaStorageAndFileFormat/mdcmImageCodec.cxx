@@ -33,10 +33,6 @@
 namespace mdcm
 {
 
-ImageCodec::ImageCodec() : LUT(new LookupTable)
-{
-}
-
 bool
 ImageCodec::CanDecode(const TransferSyntax &) const
 {
@@ -150,13 +146,13 @@ ImageCodec::SetNeedOverlayCleanup(bool b)
 void
 ImageCodec::SetLUT(const LookupTable & lut)
 {
-  LUT = SmartPointer<LookupTable>(const_cast<LookupTable *>(&lut));
+  LUT = lut;
 }
 
 const LookupTable &
 ImageCodec::GetLUT() const
 {
-  return *LUT;
+  return LUT;
 }
 
 void

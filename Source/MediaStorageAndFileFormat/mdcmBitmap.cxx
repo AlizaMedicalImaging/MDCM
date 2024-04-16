@@ -37,9 +37,6 @@
 namespace mdcm
 {
 
-Bitmap::Bitmap() : LUT(new LookupTable)
-{}
-
 unsigned int
 Bitmap::GetNumberOfDimensions() const
 {
@@ -357,19 +354,19 @@ Bitmap::GetDataElement()
 void
 Bitmap::SetLUT(const LookupTable & lut)
 {
-  LUT = SmartPointer<LookupTable>(const_cast<LookupTable *>(&lut));
+  LUT = lut;
 }
 
 const LookupTable &
 Bitmap::GetLUT() const
 {
-  return *LUT;
+  return LUT;
 }
 
 LookupTable &
 Bitmap::GetLUT()
 {
-  return *LUT;
+  return LUT;
 }
 
 void

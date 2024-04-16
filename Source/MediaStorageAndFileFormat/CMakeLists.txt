@@ -42,7 +42,6 @@ set(MSFF_SRCS
   mdcmCurve.cxx
   mdcmPhotometricInterpretation.cxx
   mdcmPixelFormat.cxx
-  mdcmSegmentedPaletteColorLookupTable.cxx
   mdcmSegment.cxx
   mdcmSurface.cxx
   mdcmMeshPrimitive.cxx

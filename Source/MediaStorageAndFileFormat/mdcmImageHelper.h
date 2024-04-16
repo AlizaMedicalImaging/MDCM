@@ -119,7 +119,7 @@ public:
   GetPhotometricInterpretationValue(const File &);
   static unsigned int
   GetPlanarConfigurationValue(const File &);
-  static SmartPointer<LookupTable>
+  LookupTable
   GetLUT(const File &);
   static const ByteValue *
   GetPointerFromElement(const Tag &, const File &);

@@ -23,7 +23,6 @@
 #define MDCMIMAGECODEC_H
 
 #include "mdcmTypes.h"
-#include "mdcmSmartPointer.h"
 #include "mdcmDataElement.h"
 #include "mdcmPhotometricInterpretation.h"
 #include "mdcmLookupTable.h"
@@ -38,7 +37,7 @@ namespace mdcm
 class MDCM_EXPORT ImageCodec
 {
 public:
-  ImageCodec();
+  ImageCodec() = default;
   virtual ~ImageCodec() = default;
   virtual bool
   CanDecode(const TransferSyntax &) const;
@@ -124,17 +123,17 @@ protected:
   DoInvertMonochrome(std::istream &, std::ostream &);
   bool
   DoOverlayCleanup(std::istream &, std::ostream &);
-  bool                              RequestPlanarConfiguration{};
-  bool                              RequestPaddedCompositePixelCode{};
-  unsigned int                      PlanarConfiguration{};
-  PhotometricInterpretation         PI{};
-  PixelFormat                       PF{};
-  bool                              NeedByteSwap{};
-  bool                              NeedOverlayCleanup{};
-  SmartPointer<LookupTable>         LUT;
-  unsigned int                      Dimensions[3]{};
-  unsigned int                      NumberOfDimensions{};
-  bool                              LossyFlag{};
+  bool                      RequestPlanarConfiguration{};
+  bool                      RequestPaddedCompositePixelCode{};
+  unsigned int              PlanarConfiguration{};
+  PhotometricInterpretation PI{};
+  PixelFormat               PF{};
+  bool                      NeedByteSwap{};
+  bool                      NeedOverlayCleanup{};
+  LookupTable               LUT{};
+  unsigned int              Dimensions[3]{};
+  unsigned int              NumberOfDimensions{};
+  bool                      LossyFlag{};
 };
 
 } // end namespace mdcm

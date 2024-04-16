@@ -37,7 +37,6 @@
 #include "mdcmAttribute.h"
 #include "mdcmImage.h"
 #include "mdcmDirectionCosines.h"
-#include "mdcmSegmentedPaletteColorLookupTable.h"
 #include "mdcmByteValue.h"
 #include "mdcmUIDGenerator.h"
 #include "mdcmVR.h"
@@ -2788,8 +2787,7 @@ ImageHelper::GetPlanarConfigurationValue(const File & f)
   return pc;
 }
 
-// returns the lookup table of an image file
-SmartPointer<LookupTable>
+LookupTable
 ImageHelper::GetLUT(const File & f)
 {
   const DataSet &           ds = f.GetDataSet();
@@ -2845,13 +2843,8 @@ ImageHelper::GetLUT(const File & f)
       mdcmDebugMacro("Pixel Padding Value (0028,0120) is not handled. Image will not be displayed properly");
     }
   }
-  SmartPointer<LookupTable> lut = new LookupTable;
-  const Tag                 testseglut(0x0028, (0x1221 + 0));
-  if (ds.FindDataElement(testseglut))
-  {
-    lut = new SegmentedPaletteColorLookupTable;
-  }
-  lut->Allocate(pf.GetBitsAllocated());
+  LookupTable lut;
+  lut.Allocate(pf.GetBitsAllocated());
   // for each red, green, blue:
   for (int i = 0; i < 3; ++i)
   {
@@ -2863,7 +2856,7 @@ ImageHelper::GetLUT(const File & f)
     Element<VR::US, VM::VM3> el_us3 = { { 0, 0, 0 } };
     // Now pass the byte array to a DICOMizer:
     el_us3.SetFromDataElement(ds[tdescriptor]); //.GetValue());
-    lut->InitializeLUT(LookupTable::LookupTableType(i), el_us3[0], el_us3[1], el_us3[2]);
+    lut.InitializeLUT(LookupTable::LookupTableType(i), el_us3[0], el_us3[1], el_us3[2]);
     // (0028,1201) OW
     // (0028,1202) OW
     // (0028,1203) OW
@@ -2880,17 +2873,19 @@ ImageHelper::GetLUT(const File & f)
       if (lut_raw)
       {
         // LookupTableType::RED == 0
-        lut->SetLUT(
-          LookupTable::LookupTableType(i), reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()), lut_raw->GetLength());
+        lut.SetLUT(
+          LookupTable::LookupTableType(i),
+		  reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()),
+		  lut_raw->GetLength());
       }
       else
       {
-        lut->Clear();
+        lut.Clear();
       }
       const size_t tmp1 = el_us3.GetValue(0);
       const size_t tmp2 = el_us3.GetValue(2);
       const size_t tmp3 = (tmp1 ? tmp1 : 65536) * tmp2 / 8;
-      assert(!lut->Initialized() || tmp3 == lut_raw->GetLength());
+      assert(!lut.Initialized() || tmp3 == lut_raw->GetLength());
       (void)tmp3;
     }
     else if (ds.FindDataElement(seglut))
@@ -2898,12 +2893,14 @@ ImageHelper::GetLUT(const File & f)
       const ByteValue * lut_raw = ds.GetDataElement(seglut).GetByteValue();
       if (lut_raw)
       {
-        lut->SetLUT(
-          LookupTable::LookupTableType(i), reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()), lut_raw->GetLength());
+        lut.SetSegmentedLUT(
+          LookupTable::LookupTableType(i),
+		  reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()),
+		  lut_raw->GetLength());
       }
       else
       {
-        lut->Clear();
+        lut.Clear();
       }
     }
     else
@@ -2911,7 +2908,7 @@ ImageHelper::GetLUT(const File & f)
       assert(0);
     }
   }
-  if (!lut->Initialized())
+  if (!lut.Initialized())
   {
     mdcmDebugMacro("LUT was uninitialized!");
   }

@@ -29,7 +29,6 @@
 #include "mdcmOverlay.h"
 #include "mdcmPhotometricInterpretation.h"
 #include "mdcmPixelFormat.h"
-#include "mdcmSmartPointer.h"
 #include "mdcmTransferSyntax.h"
 #include <vector>
 
@@ -49,7 +48,7 @@ class MDCM_EXPORT Bitmap : public Object
   friend class ImageChangeTransferSyntax;
 
 public:
-  Bitmap();
+  Bitmap() = default;
   virtual ~Bitmap() = default;
   unsigned int
   GetNumberOfDimensions() const;
@@ -141,16 +140,16 @@ protected:
   TryJPEG2000Codec(char *, bool &) const;
   bool
   TryRLECodec(char *, bool &) const;
-  unsigned int                      PlanarConfiguration{};
-  unsigned int                      NumberOfDimensions{2};
-  TransferSyntax                    TS{};
-  PixelFormat                       PF{};
-  PhotometricInterpretation         PI{};
-  std::vector<unsigned int>         Dimensions{0, 0, 1};
-  DataElement                       PixelData{};
-  SmartPointer<LookupTable>         LUT;
-  bool                              NeedByteSwap{};
-  bool                              LossyFlag{};
+  unsigned int              PlanarConfiguration{};
+  unsigned int              NumberOfDimensions{2};
+  TransferSyntax            TS{};
+  PixelFormat               PF{};
+  PhotometricInterpretation PI{};
+  std::vector<unsigned int> Dimensions{0, 0, 1};
+  DataElement               PixelData{};
+  LookupTable               LUT{};
+  bool                      NeedByteSwap{};
+  bool                      LossyFlag{};
 
 private:
   bool
