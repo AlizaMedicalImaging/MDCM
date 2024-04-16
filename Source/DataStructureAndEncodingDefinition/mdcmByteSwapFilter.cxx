@@ -26,6 +26,7 @@
 #include "mdcmSequenceOfFragments.h"
 #include "mdcmSequenceOfItems.h"
 #include "mdcmSwapper.h"
+#include <utility>
 
 namespace mdcm
 {
