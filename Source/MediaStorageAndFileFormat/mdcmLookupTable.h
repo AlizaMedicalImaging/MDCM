@@ -100,7 +100,7 @@ public:
   unsigned short
   GetBitSample() const;
 
-protected:
+private:
   LookupTableInternal Internal{};
   unsigned short      BitSample{};
   bool                IncompleteLUT{};
