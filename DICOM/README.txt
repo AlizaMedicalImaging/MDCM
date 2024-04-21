@@ -10,7 +10,8 @@ Attributes
 ----------
 
 1.
-Update DICOM version in Part6.xsl, e.g. <dicts edition="2023c">
+Recommended to update DICOM version in Part6.xsl, e.g. <dicts edition="2024b">
+and
 
 xsltproc Part6.xsl part06.xml > Part6.xml
 
@@ -69,7 +70,7 @@ UIDs
 
 xsltproc UIDToTemp.xsl Part6.xml > tmp.cxx
 
-I add new UIDs manually:
+I add new UIDs manually sequentially:
 diff 'UIDsStrings' array and with last_UIDsStrings.txt and add new UIDs to mdcmUIDs.h/.cxx,
 replace last_UIDsStrings.txt for the next time (if lost run above xsltproc with the previous
 Part6.xml).
@@ -79,5 +80,4 @@ don't forget private UIDs (!) and change
 Retired -> Retired0
 Retired -> Retired1
 12leadECGWaveformStorage -> ECG12leadWaveformStorage
-
 more post-processing may be required (replace dots, etc.)!
