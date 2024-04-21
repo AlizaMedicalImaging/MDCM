@@ -26,7 +26,7 @@ This file was automatically created from a docbook version of PS 3.6
 <!ENTITY part7a SYSTEM "Part7a.xml">
 <!ENTITY part7b SYSTEM "Part7b.xml">
 ]>
-<dicts edition="2024a">
+<dicts edition="2024b">
 &part7a;
 &part7b;
 <dict ref="6" name="Registry of DICOM Data Elements">
@@ -47,6 +47,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0008" element="0019" keyword="PyramidUID" vr="UI" vm="1" name="Pyramid UID"/>
                 <entry group="0008" element="001a" keyword="RelatedGeneralSOPClassUID" vr="UI" vm="1-n" name="Related General SOP Class UID"/>
                 <entry group="0008" element="001b" keyword="OriginalSpecializedSOPClassUID" vr="UI" vm="1" name="Original Specialized SOP Class UID"/>
+                <entry group="0008" element="001c" keyword="SyntheticData" vr="CS" vm="1" name="Synthetic Data"/>
                 <entry group="0008" element="0020" keyword="StudyDate" vr="DA" vm="1" name="Study Date"/>
                 <entry group="0008" element="0021" keyword="SeriesDate" vr="DA" vm="1" name="Series Date"/>
                 <entry group="0008" element="0022" keyword="AcquisitionDate" vr="DA" vm="1" name="Acquisition Date"/>
@@ -375,21 +376,28 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0012" element="0010" keyword="ClinicalTrialSponsorName" vr="LO" vm="1" name="Clinical Trial Sponsor Name"/>
                 <entry group="0012" element="0020" keyword="ClinicalTrialProtocolID" vr="LO" vm="1" name="Clinical Trial Protocol ID"/>
                 <entry group="0012" element="0021" keyword="ClinicalTrialProtocolName" vr="LO" vm="1" name="Clinical Trial Protocol Name"/>
+                <entry group="0012" element="0022" keyword="IssuerOfClinicalTrialProtocolID" vr="LO" vm="1" name="Issuer of Clinical Trial Protocol ID"/>
+                <entry group="0012" element="0023" keyword="OtherClinicalTrialProtocolIDsSequence" vr="SQ" vm="1" name="Other Clinical Trial Protocol IDs Sequence"/>
                 <entry group="0012" element="0030" keyword="ClinicalTrialSiteID" vr="LO" vm="1" name="Clinical Trial Site ID"/>
                 <entry group="0012" element="0031" keyword="ClinicalTrialSiteName" vr="LO" vm="1" name="Clinical Trial Site Name"/>
+                <entry group="0012" element="0032" keyword="IssuerOfClinicalTrialSiteID" vr="LO" vm="1" name="Issuer of Clinical Trial Site ID"/>
                 <entry group="0012" element="0040" keyword="ClinicalTrialSubjectID" vr="LO" vm="1" name="Clinical Trial Subject ID"/>
+                <entry group="0012" element="0041" keyword="IssuerOfClinicalTrialSubjectID" vr="LO" vm="1" name="Issuer of Clinical Trial Subject ID"/>
                 <entry group="0012" element="0042" keyword="ClinicalTrialSubjectReadingID" vr="LO" vm="1" name="Clinical Trial Subject Reading ID"/>
+                <entry group="0012" element="0043" keyword="IssuerOfClinicalTrialSubjectReadingID" vr="LO" vm="1" name="Issuer of Clinical Trial Subject Reading ID"/>
                 <entry group="0012" element="0050" keyword="ClinicalTrialTimePointID" vr="LO" vm="1" name="Clinical Trial Time Point ID"/>
                 <entry group="0012" element="0051" keyword="ClinicalTrialTimePointDescription" vr="ST" vm="1" name="Clinical Trial Time Point Description"/>
                 <entry group="0012" element="0052" keyword="LongitudinalTemporalOffsetFromEvent" vr="FD" vm="1" name="Longitudinal Temporal Offset from Event"/>
                 <entry group="0012" element="0053" keyword="LongitudinalTemporalEventType" vr="CS" vm="1" name="Longitudinal Temporal Event Type"/>
                 <entry group="0012" element="0054" keyword="ClinicalTrialTimePointTypeCodeSequence" vr="SQ" vm="1" name="Clinical Trial Time Point Type Code Sequence"/>
+                <entry group="0012" element="0055" keyword="IssuerOfClinicalTrialTimePointID" vr="LO" vm="1" name="Issuer of Clinical Trial Time Point ID"/>
                 <entry group="0012" element="0060" keyword="ClinicalTrialCoordinatingCenterName" vr="LO" vm="1" name="Clinical Trial Coordinating Center Name"/>
                 <entry group="0012" element="0062" keyword="PatientIdentityRemoved" vr="CS" vm="1" name="Patient Identity Removed"/>
                 <entry group="0012" element="0063" keyword="DeidentificationMethod" vr="LO" vm="1-n" name="De-identification Method"/>
                 <entry group="0012" element="0064" keyword="DeidentificationMethodCodeSequence" vr="SQ" vm="1" name="De-identification Method Code Sequence"/>
                 <entry group="0012" element="0071" keyword="ClinicalTrialSeriesID" vr="LO" vm="1" name="Clinical Trial Series ID"/>
                 <entry group="0012" element="0072" keyword="ClinicalTrialSeriesDescription" vr="LO" vm="1" name="Clinical Trial Series Description"/>
+                <entry group="0012" element="0073" keyword="IssuerOfClinicalTrialSeriesID" vr="LO" vm="1" name="Issuer of Clinical Trial Series ID"/>
                 <entry group="0012" element="0081" keyword="ClinicalTrialProtocolEthicsCommitteeName" vr="LO" vm="1" name="Clinical Trial Protocol Ethics Committee Name"/>
                 <entry group="0012" element="0082" keyword="ClinicalTrialProtocolEthicsCommitteeApprovalNumber" vr="LO" vm="1" name="Clinical Trial Protocol Ethics Committee Approval Number"/>
                 <entry group="0012" element="0083" keyword="ConsentForClinicalTrialUseSequence" vr="SQ" vm="1" name="Consent for Clinical Trial Use Sequence"/>
@@ -1745,6 +1753,7 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0022" element="000c" keyword="HorizontalFieldOfView" vr="FL" vm="1" name="Horizontal Field of View"/>
                 <entry group="0022" element="000d" keyword="PupilDilated" vr="CS" vm="1" name="Pupil Dilated"/>
                 <entry group="0022" element="000e" keyword="DegreeOfDilation" vr="FL" vm="1" name="Degree of Dilation"/>
+                <entry group="0022" element="000f" keyword="VertexDistance" vr="FD" vm="1" name="Vertex Distance"/>
                 <entry group="0022" element="0010" keyword="StereoBaselineAngle" vr="FL" vm="1" name="Stereo Baseline Angle"/>
                 <entry group="0022" element="0011" keyword="StereoBaselineDisplacement" vr="FL" vm="1" name="Stereo Baseline Displacement"/>
                 <entry group="0022" element="0012" keyword="StereoHorizontalPixelOffset" vr="FL" vm="1" name="Stereo Horizontal Pixel Offset"/>
@@ -3359,8 +3368,8 @@ This file was automatically created from a docbook version of PS 3.6
                 <entry group="0070" element="1804" keyword="VolumetricPresentationInputIndex" vr="US" vm="1" name="Volumetric Presentation Input Index"/>
                 <entry group="0070" element="1805" keyword="PresentationStateCompositorComponentSequence" vr="SQ" vm="1" name="Presentation State Compositor Component Sequence"/>
                 <entry group="0070" element="1806" keyword="WeightingTransferFunctionSequence" vr="SQ" vm="1" name="Weighting Transfer Function Sequence"/>
-                <entry group="0070" element="1807" keyword="WeightingLookupTableDescriptor" vr="US" vm="3" name="Weighting Lookup Table Descriptor"/>
-                <entry group="0070" element="1808" keyword="WeightingLookupTableData" vr="OB" vm="1" name="Weighting Lookup Table Data"/>
+                <entry group="0070" element="1807" keyword="WeightingLookupTableDescriptor" vr="US" vm="3" retired="true" name="Weighting Lookup Table Descriptor"/>
+                <entry group="0070" element="1808" keyword="WeightingLookupTableData" vr="OB" vm="1" retired="true" name="Weighting Lookup Table Data"/>
                 <entry group="0070" element="1901" keyword="VolumetricAnnotationSequence" vr="SQ" vm="1" name="Volumetric Annotation Sequence"/>
                 <entry group="0070" element="1903" keyword="ReferencedStructuredContextSequence" vr="SQ" vm="1" name="Referenced Structured Context Sequence"/>
                 <entry group="0070" element="1904" keyword="ReferencedContentItem" vr="UI" vm="1" name="Referenced Content Item"/>
