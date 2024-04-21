@@ -1,6 +1,6 @@
 Warning, the Readme is WIP
 
-Currently DICOM is 2023c
+Currently DICOM is 2024b
 
 Note: Message Exchange (Part7a.xml, Part7b.xml) files were not updated, the attributes
 seem to be valid and they are not really used in MDCM (TODO check how to update).
