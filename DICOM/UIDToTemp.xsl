@@ -20,7 +20,8 @@ and manually edit/update mdcmUIDs (tmp)
 -->
 <xsl:template match="/dicts">
 <xsl:text>
-typedef enum {
+enum UIDType
+{
 </xsl:text>
     <xsl:for-each select="table/uid">
         <xsl:choose>
@@ -43,9 +44,10 @@ typedef enum {
 </xsl:text>
     </xsl:for-each>
 <xsl:text>
-} UIDType;
+};
 
-typedef enum {
+enum UIDName
+{
 </xsl:text>
   <xsl:for-each select="table/uid">
     <xsl:if test="starts-with(@name,'1')">
@@ -62,10 +64,10 @@ typedef enum {
 <xsl:text>
 </xsl:text>
     </xsl:for-each>
-<xsl:text>} UIDName;
+<xsl:text>};
 
 const char * const UIDsStrings[][2] = {
-{NULL, NULL},
+{nullptr, nullptr},
 </xsl:text>
   <xsl:for-each select="table/uid">
   <xsl:text>{"</xsl:text>
@@ -75,7 +77,7 @@ const char * const UIDsStrings[][2] = {
 <xsl:text>"},
 </xsl:text>
   </xsl:for-each>
-    <xsl:text>{NULL, NULL}
+    <xsl:text>{nullptr, nullptr}
 };
 </xsl:text>
 </xsl:template>
