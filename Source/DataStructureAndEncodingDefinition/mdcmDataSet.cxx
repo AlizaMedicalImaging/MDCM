@@ -181,10 +181,7 @@ DataSet::GetPrivateCreator(const Tag & t) const
 bool
 DataSet::FindDataElement(const Tag & t) const
 {
-  const DataElement r(t);
-  if (DES.find(r) != DES.cend())
-    return true;
-  return false;
+  return (GetDataElement(t) != GetDEEnd());
 }
 
 bool
