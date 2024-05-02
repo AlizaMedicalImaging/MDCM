@@ -93,9 +93,8 @@ SequenceOfItems::SetLengthToUndefined()
 bool
 SequenceOfItems::FindDataElement(const Tag & t) const
 {
-  ConstIterator it = Begin();
-  bool          found = false;
-  for (; it != End() && !found; ++it)
+  bool found = false;
+  for (ConstIterator it = Begin(); it != End() && !found; ++it)
   {
     const Item & item = *it;
     found = item.FindDataElement(t);

@@ -82,7 +82,7 @@ VR16ExplicitDataElement::ReadPreValue(std::istream & is)
 #endif
   // FIXME
   // Special hack for KONICA_VROX.dcm where in fact the VR=OX, in Pixel Data element
-  // in which case we need to assume a 32bits VR...for now this is a big phat hack !
+  // in which case we need to assume a 32bits VR ... for now this is a big phat hack !
   bool OX_hack = false;
   try
   {
@@ -95,7 +95,7 @@ VR16ExplicitDataElement::ReadPreValue(std::istream & is)
   catch (const std::logic_error &)
   {
     VRField = VR::INVALID;
-    // mdcm-MR-PHILIPS-16-Multi-Seq.dcm
+    // gdcm-MR-PHILIPS-16-Multi-Seq.dcm
     if (TagField == Tag(0xfffe, 0xe000))
     {
       mdcmAlwaysWarnMacro("Found item delimitor in item");
@@ -216,7 +216,7 @@ VR16ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
     {
       if (TagField != Tag(0x7fe0, 0x0010))
       {
-        // mdcmSampleData/ForSeriesTesting/Perfusion/DICOMDIR
+        // gdcmSampleData/ForSeriesTesting/Perfusion/DICOMDIR
         ParseException pe;
         pe.SetLastElement(*this);
         throw pe;
