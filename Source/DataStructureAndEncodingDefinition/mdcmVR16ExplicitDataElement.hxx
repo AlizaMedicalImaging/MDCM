@@ -80,7 +80,7 @@ VR16ExplicitDataElement::ReadPreValue(std::istream & is)
     assert(0 && "Should not happen");
   }
 #endif
-  // FIXME
+  // MM: FIXME
   // Special hack for KONICA_VROX.dcm where in fact the VR=OX, in Pixel Data element
   // in which case we need to assume a 32bits VR ... for now this is a big phat hack !
   bool OX_hack = false;
@@ -103,7 +103,7 @@ VR16ExplicitDataElement::ReadPreValue(std::istream & is)
       pe.SetLastElement(*this);
       throw pe;
     }
-    // -> For some reason VR is written as {44,0} well I guess this is a VR...
+    // MM: -> For some reason VR is written as {44,0} well I guess this is a VR ...
     // Technically there is a second bug, dcmtk assume other things when reading this tag,
     // so I need to change this tag too, if I ever want dcmtk to read this file. oh well
     // 0019004_Baseline_IMG1.dcm
@@ -153,7 +153,7 @@ VR16ExplicitDataElement::ReadPreValue(std::istream & is)
     }
 #endif
   }
-  // I don't like the following 3 lines, what if 0000,0000 was indeed -wrongly- sent, we should be able to continue
+  // MM: I don't like the following 3 lines, what if 0000,0000 was indeed -wrongly- sent, we should be able to continue
   // chances is that 99% of times there is now way we can reach here, so safely throw an exception
   if (TagField == Tag(0x0000, 0x0000) && ValueLengthField == 0 && VRField == VR::INVALID)
   {
@@ -186,7 +186,7 @@ VR16ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
   {
     if (VRField == VR::UN)
     {
-      // Support cp246 conforming file:
+      // MM: Support cp246 conforming file:
       // Enhanced_MR_Image_Storage_PixelSpacingNotIn_0028_0030.dcm (illegal)
       // vs
       // undefined_length_un_vr.dcm
@@ -203,7 +203,7 @@ VR16ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
       }
       catch (const std::exception &)
       {
-        // Must be one of those non-cp246 file...
+        // MM: Must be one of those non-cp246 file...
         // but for some reason seekg back to previous offset + Read
         // as Explicit does not work
         ParseException pe;
