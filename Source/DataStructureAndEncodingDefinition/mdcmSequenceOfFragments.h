@@ -103,7 +103,7 @@ public:
   SizeType
   GetNumberOfFragments() const;
 
-  const Fragment GetFragment(SizeType) const;
+  const Fragment & GetFragment(SizeType) const;
 
   bool
   WriteBuffer(std::ostream &) const;
