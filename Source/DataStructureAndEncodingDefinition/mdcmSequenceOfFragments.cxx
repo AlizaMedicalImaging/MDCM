@@ -23,6 +23,11 @@
 #include "mdcmImplicitDataElement.h"
 #include "mdcmByteValue.h"
 
+namespace
+{
+	static const mdcm::Fragment empty{};
+}
+
 namespace mdcm
 {
 
@@ -75,32 +80,41 @@ SequenceOfFragments::ComputeByteLength() const
   return r;
 }
 
+#if 0
 bool
 SequenceOfFragments::GetFragBuffer(unsigned int fragNb, char * buffer, unsigned long long & length) const
 {
-  FragmentVector::const_iterator it = Fragments.cbegin();
+  if (fragNb < Fragments.size())
   {
-    const Fragment &  frag = *(it + fragNb);
+    const Fragment &  frag = Fragments.at(fragNb);
     const ByteValue & bv = dynamic_cast<const ByteValue &>(frag.GetValue());
     const VL          len = frag.GetVL();
-    bv.GetBuffer(buffer, len);
+    const bool ok = bv.GetBuffer(buffer, len);
     length = len;
+    if (!ok)
+    {
+      buffer = nullptr;
+      length = 0;
+      mdcmAlwaysWarnMacro("SequenceOfFragments::GetFragBuffer error");
+      return false;
+    }
+    return true;
   }
-  return true;
+  buffer = nullptr;
+  length = 0;
+  return false;
 }
+#endif
 
-const Fragment
+const Fragment &
 SequenceOfFragments::GetFragment(SizeType num) const
 {
   if (num < Fragments.size())
   {
-    FragmentVector::const_iterator it = Fragments.cbegin();
-    const Fragment                 frag = *(it + num);
-    return frag;
+    return Fragments.at(num);
   }
   assert(0);
-  const Fragment f;
-  return f;
+  return empty;
 }
 
 bool

@@ -51,6 +51,8 @@ int StrCaseCmp(const char * s1, const char * s2)
   return -1;
 }
 
+static const mdcm::DataElement empty = mdcm::DataElement(mdcm::Tag(0xffff, 0xffff));
+
 }
 
 namespace mdcm
@@ -139,7 +141,7 @@ DataSet::GetDataElement(const Tag & t) const
   ConstIterator     it = DES.find(r);
   if (it != DES.cend())
     return *it;
-  return GetDEEnd();
+  return empty;
 }
 
 const DataElement &
@@ -181,7 +183,7 @@ DataSet::GetPrivateCreator(const Tag & t) const
 bool
 DataSet::FindDataElement(const Tag & t) const
 {
-  return (GetDataElement(t) != GetDEEnd());
+  return (GetDataElement(t) != empty);
 }
 
 bool
@@ -197,7 +199,7 @@ DataSet::FindNextDataElement(const Tag & t) const
   ConstIterator     it = DES.lower_bound(r);
   if (it != DES.cend())
     return *it;
-  return GetDEEnd();
+  return empty;
 }
 
 bool
@@ -247,13 +249,6 @@ DataSet::GetMediaStorage() const
     mdcmWarningMacro("Media Storage Class UID: " << ts << " is unknown");
   }
   return ms;
-}
-
-static const DataElement DEEnd = DataElement(Tag(0xffff, 0xffff));
-const DataElement &
-DataSet::GetDEEnd() const
-{
-  return DEEnd;
 }
 
 void
