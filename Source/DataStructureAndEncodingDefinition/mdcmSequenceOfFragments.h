@@ -97,8 +97,10 @@ public:
   bool
   GetBuffer(char *, unsigned long long) const;
 
+#if 0
   bool
   GetFragBuffer(unsigned int, char *, unsigned long long &) const;
+#endif
 
   SizeType
   GetNumberOfFragments() const;

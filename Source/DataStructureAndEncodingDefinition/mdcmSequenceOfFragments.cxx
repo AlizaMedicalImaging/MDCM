@@ -80,6 +80,7 @@ SequenceOfFragments::ComputeByteLength() const
   return r;
 }
 
+#if 0
 bool
 SequenceOfFragments::GetFragBuffer(unsigned int fragNb, char * buffer, unsigned long long & length) const
 {
@@ -103,6 +104,7 @@ SequenceOfFragments::GetFragBuffer(unsigned int fragNb, char * buffer, unsigned 
   length = 0;
   return false;
 }
+#endif
 
 const Fragment &
 SequenceOfFragments::GetFragment(SizeType num) const
