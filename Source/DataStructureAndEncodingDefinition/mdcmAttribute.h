@@ -282,7 +282,7 @@ public:
   SetFromDataSet(const DataSet & ds)
   {
     const DataElement & de = ds.GetDataElement(GetTag());
-    if (de != DataElement(Tag(0xffff,0xffff)) && !de.IsEmpty())
+    if (!de.IsEmpty())
     {
       SetFromDataElement(de);
     }
@@ -478,7 +478,7 @@ public:
   SetFromDataSet(const DataSet & ds)
   {
     const DataElement & de = ds.GetDataElement(GetTag());
-    if (de != DataElement(Tag(0xffff,0xffff)) && !de.IsEmpty())
+    if (!de.IsEmpty())
     {
       SetFromDataElement(de);
     }
@@ -702,7 +702,7 @@ public:
   SetFromDataSet(const DataSet & ds)
   {
     const DataElement & de = ds.GetDataElement(GetTag());
-    if (de != DataElement(Tag(0xffff,0xffff)) && !de.IsEmpty())
+    if (!de.IsEmpty())
     {
       SetFromDataElement(de);
     }

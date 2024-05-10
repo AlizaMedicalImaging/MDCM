@@ -66,7 +66,7 @@ Scanner::GetString(const DataElement & de, const DataSet & ds, const bool implic
   if (t.IsIllegal() || t.IsPrivate() || t.IsPrivateCreator())
     return r;
   const DataElement & de2 = ds.GetDataElement(t);
-  if (de2 == DataElement(Tag(0xffff, 0xffff)))
+  if (de2.IsEmpty())
     return r;
   VR                vr;
   const DictEntry & e = dict.GetDictEntry(t);
@@ -367,7 +367,7 @@ Scanner::ProcessPublicTag(const char * filename, const File & file, const Dict &
       const DataElement & de = header.GetDataElement(*tag);
       if (de != DataElement(Tag(0xffff, 0xffff)))
       {
-        std::string         s(GetString(de, header, implicit, dict));
+        std::string s(GetString(de, header, implicit, dict));
         Values.insert(s);
         if (Values.find(s) != Values.end())
         {
@@ -380,7 +380,7 @@ Scanner::ProcessPublicTag(const char * filename, const File & file, const Dict &
       const DataElement & de = ds.GetDataElement(*tag);
       if (de != DataElement(Tag(0xffff, 0xffff)))
       {
-        std::string         s(GetString(de, ds, implicit, dict));
+        std::string s(GetString(de, ds, implicit, dict));
         Values.insert(s);
         if (Values.find(s) != Values.end())
         {

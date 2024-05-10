@@ -443,8 +443,6 @@ bool
 CSAHeader::GetMrProtocol(const DataSet & ds, MrProtocol & mrProtocol)
 {
   const DataElement & de = ds.GetDataElement(mdcm::PrivateTag(0x0029, 0x0020, "SIEMENS CSA HEADER"));
-  if (de == DataElement(Tag(0xffff, 0xffff))
-    return false;
   if (!LoadFromDataElement(de))
     return false;
 
