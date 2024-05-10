@@ -69,26 +69,26 @@ SetNDigits(double x, int n)
 static bool
 GetOriginValueFromSequence(const DataSet & ds, const Tag & tfgs, std::vector<double> & ori)
 {
-  if (!ds.FindDataElement(tfgs))
+  const DataElement & ds1 = ds.GetDataElement(tfgs);
+  if (ds1.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(tfgs).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi = ds1.GetValueAsSQ();
   if (!(sqi && sqi->GetNumberOfItems() > 0))
     return false;
   const Item &    item = sqi->GetItem(1);
   const DataSet & subds = item.GetNestedDataSet();
   // Plane position Sequence
-  const Tag tpms(0x0020, 0x9113);
-  if (!subds.FindDataElement(tpms))
+  const DataElement & de2 = subds.GetDataElement(Tag(0x0020, 0x9113));
+  if (de2.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi2 = subds.GetDataElement(tpms).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi2 = de2.GetValueAsSQ();
   if (sqi2 && !sqi2->IsEmpty())
   {
-    const Item &    item2 = sqi2->GetItem(1);
-    const DataSet & subds2 = item2.GetNestedDataSet();
-    const Tag       tps(0x0020, 0x0032);
-    if (!subds2.FindDataElement(tps))
+    const Item &        item2 = sqi2->GetItem(1);
+    const DataSet &     subds2 = item2.GetNestedDataSet();
+    const DataElement & de = subds2.GetDataElement(Tag(0x0020, 0x0032));
+    if (de.IsEmpty())
       return false;
-    const DataElement &       de = subds2.GetDataElement(tps);
     Attribute<0x0020, 0x0032> at;
     at.SetFromDataElement(de);
     ori.push_back(at.GetValue(0));
@@ -102,26 +102,26 @@ GetOriginValueFromSequence(const DataSet & ds, const Tag & tfgs, std::vector<dou
 static bool
 GetDirectionCosinesValueFromSequence(const DataSet & ds, const Tag & tfgs, std::vector<double> & dircos)
 {
-  if (!ds.FindDataElement(tfgs))
+  const DataElement & de1 = ds.GetDataElement(tfgs);
+  if (de1.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(tfgs).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi = de1.GetValueAsSQ();
   if (!(sqi && sqi->GetNumberOfItems() > 0))
     return false;
   const Item &    item = sqi->GetItem(1);
   const DataSet & subds = item.GetNestedDataSet();
   // Plane position Sequence
-  const Tag tpms(0x0020, 0x9116);
-  if (!subds.FindDataElement(tpms))
+  const DataElement & de2 = subds.GetDataElement(Tag(0x0020, 0x9116));
+  if (de2.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi2 = subds.GetDataElement(tpms).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi2 = de2.GetValueAsSQ();
   if (!(sqi2 && sqi2->GetNumberOfItems() > 0))
     return false;
-  const Item &    item2 = sqi2->GetItem(1);
-  const DataSet & subds2 = item2.GetNestedDataSet();
-  const Tag       tps(0x0020, 0x0037);
-  if (!subds2.FindDataElement(tps))
+  const Item &        item2 = sqi2->GetItem(1);
+  const DataSet &     subds2 = item2.GetNestedDataSet();
+  const DataElement & de = subds2.GetDataElement(Tag(0x0020, 0x0037));
+  if (de.IsEmpty())
     return false;
-  const DataElement &       de = subds2.GetDataElement(tps);
   Attribute<0x0020, 0x0037> at;
   at.SetFromDataElement(de);
   dircos.push_back(at.GetValue(0));
@@ -136,35 +136,34 @@ GetDirectionCosinesValueFromSequence(const DataSet & ds, const Tag & tfgs, std::
 static bool
 GetInterceptSlopeValueFromSequence(const DataSet & ds, const Tag & tfgs, std::vector<double> & intslope)
 {
-  if (!ds.FindDataElement(tfgs))
+  const DataElement & de1 = ds.GetDataElement(tfgs);
+  if (de1.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(tfgs).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi = de1.GetValueAsSQ();
   if (!(sqi && sqi->GetNumberOfItems() > 0))
     return false;
-  const Item &    item = sqi->GetItem(1);
-  const DataSet & subds = item.GetNestedDataSet();
-  const Tag       tpms(0x0028, 0x9145);
-  if (!subds.FindDataElement(tpms))
+  const Item &        item = sqi->GetItem(1);
+  const DataSet &     subds = item.GetNestedDataSet();
+  const DataElement & de2 = subds.GetDataElement(Tag(0x0028, 0x9145));
+  if (de2.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi2 = subds.GetDataElement(tpms).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi2 = de2.GetValueAsSQ();
   if (!(sqi2 && sqi2->GetNumberOfItems() > 0))
     return false;
   const Item &    item2 = sqi2->GetItem(1);
   const DataSet & subds2 = item2.GetNestedDataSet();
   {
-    const Tag tps(0x0028, 0x1052);
-    if (!subds2.FindDataElement(tps))
+    const DataElement & de = subds2.GetDataElement(Tag(0x0028, 0x1052));
+    if (de.IsEmpty())
       return false;
-    const DataElement &       de = subds2.GetDataElement(tps);
     Attribute<0x0028, 0x1052> at;
     at.SetFromDataElement(de);
     intslope.push_back(at.GetValue());
   }
   {
-    const Tag tps(0x0028, 0x1053);
-    if (!subds2.FindDataElement(tps))
+    const DataElement & de = subds2.GetDataElement(Tag(0x0028, 0x1053));
+    if (de.IsEmpty())
       return false;
-    const DataElement &       de = subds2.GetDataElement(tps);
     Attribute<0x0028, 0x1053> at;
     at.SetFromDataElement(de);
     intslope.push_back(at.GetValue());
@@ -200,10 +199,10 @@ ComputeZSpacingFromIPP(const DataSet & ds, double & zspacing)
       cosines[5] = 0;
     }
   }
-  const Tag tfgs(0x5200, 0x9230);
-  if (!ds.FindDataElement(tfgs))
+  const DataElement & de1 = ds.GetDataElement(Tag(0x5200, 0x9230));
+  if (de1.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(tfgs).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi = de1.GetValueAsSQ();
   if (!(sqi && sqi->GetNumberOfItems() > 0))
     return false;
   double           normal[3];
@@ -218,10 +217,10 @@ ComputeZSpacingFromIPP(const DataSet & ds, double & zspacing)
   {
     const Item &    item = sqi->GetItem(i0);
     const DataSet & subds = item.GetNestedDataSet();
-    const Tag       tpms(0x0020, 0x9113);
-    if (!subds.FindDataElement(tpms))
+    const DataElement & de2 = subds.GetDataElement(Tag(0x0020, 0x9113));
+    if (de2.IsEmpty())
       return false;
-    SmartPointer<SequenceOfItems> sqi2 = subds.GetDataElement(tpms).GetValueAsSQ();
+    SmartPointer<SequenceOfItems> sqi2 = de2.GetValueAsSQ();
     if (!(sqi2 && sqi2->GetNumberOfItems() > 0))
       return false;
     const Item &    item2 = sqi2->GetItem(1);
@@ -230,10 +229,9 @@ ComputeZSpacingFromIPP(const DataSet & ds, double & zspacing)
     {
       assert(dircos_subds2 == cosines);
     }
-    const Tag tps(0x0020, 0x0032);
-    if (!subds2.FindDataElement(tps))
+    const DataElement & de = subds2.GetDataElement(Tag(0x0020, 0x0032));
+    if (de.IsEmpty())
       return false;
-    const DataElement &       de = subds2.GetDataElement(tps);
     Attribute<0x0020, 0x0032> ipp;
     ipp.SetFromDataElement(de);
     double dist = 0;
@@ -285,25 +283,25 @@ ComputeZSpacingFromIPP(const DataSet & ds, double & zspacing)
 static bool
 GetSpacingValueFromSequence(const DataSet & ds, const Tag & tfgs, std::vector<double> & sp)
 {
-  if (!ds.FindDataElement(tfgs))
+  const DataElement & de1 = ds.GetDataElement(tfgs);
+  if (de1.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(tfgs).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi = de1.GetValueAsSQ();
   if (!(sqi && sqi->GetNumberOfItems() > 0))
     return false;
-  const Item &    item = sqi->GetItem(1);
-  const DataSet & subds = item.GetNestedDataSet();
-  const Tag       tpms(0x0028, 0x9110);
-  if (!subds.FindDataElement(tpms))
+  const Item &        item = sqi->GetItem(1);
+  const DataSet &     subds = item.GetNestedDataSet();
+  const DataElement & de2 = subds.GetDataElement(Tag(0x0028, 0x9110));
+  if (de2.IsEmpty())
     return false;
-  SmartPointer<SequenceOfItems> sqi2 = subds.GetDataElement(tpms).GetValueAsSQ();
+  SmartPointer<SequenceOfItems> sqi2 = de2.GetValueAsSQ();
   if (!(sqi2 && sqi2->GetNumberOfItems() > 0))
     return false;
-  const Item &    item2 = sqi2->GetItem(1);
-  const DataSet & subds2 = item2.GetNestedDataSet();
-  const Tag       tps(0x0028, 0x0030);
-  if (!subds2.FindDataElement(tps))
+  const Item &        item2 = sqi2->GetItem(1);
+  const DataSet &     subds2 = item2.GetNestedDataSet();
+  const DataElement & de = subds2.GetDataElement(Tag(0x0028, 0x0030));
+  if (de.IsEmpty())
     return false;
-  const DataElement &       de = subds2.GetDataElement(tps);
   Attribute<0x0028, 0x0030> at;
   at.SetFromDataElement(de);
   sp.push_back(at.GetValue(1));
@@ -342,9 +340,8 @@ ImageHelper::GetOriginValue(const File & f)
       ms == MediaStorage::LegacyConvertedEnhancedCTImageStorage ||
       ms == MediaStorage::LegacyConvertedEnhancedPETImageStorage)
   {
-    const Tag t1(0x5200, 0x9229);
-    const Tag t2(0x5200, 0x9230);
-    if (GetOriginValueFromSequence(ds, t1, ori) || GetOriginValueFromSequence(ds, t2, ori))
+    if (GetOriginValueFromSequence(ds, Tag(0x5200, 0x9229), ori) ||
+        GetOriginValueFromSequence(ds, Tag(0x5200, 0x9230), ori))
     {
       assert(ori.size() == 3);
       return ori;
@@ -355,10 +352,10 @@ ImageHelper::GetOriginValue(const File & f)
   }
   if (ms == MediaStorage::NuclearMedicineImageStorage)
   {
-    const Tag t1(0x0054, 0x0022);
-    if (ds.FindDataElement(t1))
+    const DataElement & de = ds.GetDataElement(Tag(0x0054, 0x0022));
+    if (!de.IsEmpty())
     {
-      SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(t1).GetValueAsSQ();
+      SmartPointer<SequenceOfItems> sqi = de.GetValueAsSQ();
       if (sqi && sqi->GetNumberOfItems() > 0)
       {
         const Item &    item = sqi->GetItem(1);
@@ -461,9 +458,8 @@ ImageHelper::GetDirectionCosinesValue(const File & f)
       ms == MediaStorage::LegacyConvertedEnhancedCTImageStorage ||
       ms == MediaStorage::LegacyConvertedEnhancedPETImageStorage)
   {
-    const Tag t1(0x5200, 0x9229);
-    const Tag t2(0x5200, 0x9230);
-    if (GetDirectionCosinesValueFromSequence(ds, t1, dircos) || GetDirectionCosinesValueFromSequence(ds, t2, dircos))
+    if (GetDirectionCosinesValueFromSequence(ds, Tag(0x5200, 0x9229), dircos) ||
+        GetDirectionCosinesValueFromSequence(ds, Tag(0x5200, 0x9230), dircos))
     {
       assert(dircos.size() == 6);
       return dircos;
@@ -471,7 +467,7 @@ ImageHelper::GetDirectionCosinesValue(const File & f)
     else
     {
       dircos.resize(6);
-      bool b2 = ImageHelper::GetDirectionCosinesFromDataSet(ds, dircos);
+      const bool b2 = ImageHelper::GetDirectionCosinesFromDataSet(ds, dircos);
       if (b2)
       {
         mdcmWarningMacro("Image Orientation (Patient) cannot be stored here!. Continuing");
@@ -491,10 +487,10 @@ ImageHelper::GetDirectionCosinesValue(const File & f)
   }
   if (ms == MediaStorage::NuclearMedicineImageStorage)
   {
-    const Tag t1(0x0054, 0x0022);
-    if (ds.FindDataElement(t1))
+    const DataElement & de = ds.GetDataElement(Tag(0x0054, 0x0022));
+    if (!de.IsEmpty())
     {
-      SmartPointer<SequenceOfItems> sqi = ds.GetDataElement(t1).GetValueAsSQ();
+      SmartPointer<SequenceOfItems> sqi = de.GetValueAsSQ();
       if (sqi && sqi->GetNumberOfItems() > 0)
       {
         const Item &    item = sqi->GetItem(1);
@@ -2440,12 +2436,9 @@ ImageHelper::SetRescaleInterceptSlopeValue(File & f, const Image & img)
     }
     // Cleanup root (famous MR -> EMR case)
     {
-      const Tag t1(0x0028, 0x1052);
-      ds.Remove(t1);
-      const Tag t2(0x0028, 0x1053);
-      ds.Remove(t2);
-      const Tag t3(0x0028, 0x1053);
-      ds.Remove(t3);
+      ds.Remove(Tag(0x0028, 0x1052));
+      ds.Remove(Tag(0x0028, 0x1053));
+      ds.Remove(Tag(0x0028, 0x1053));
     }
     return;
   }
@@ -2875,8 +2868,8 @@ ImageHelper::GetLUT(const File & f)
         // LookupTableType::RED == 0
         lut.SetLUT(
           LookupTable::LookupTableType(i),
-		  reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()),
-		  lut_raw->GetLength());
+          reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()),
+          lut_raw->GetLength());
       }
       else
       {
@@ -2895,8 +2888,8 @@ ImageHelper::GetLUT(const File & f)
       {
         lut.SetSegmentedLUT(
           LookupTable::LookupTableType(i),
-		  reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()),
-		  lut_raw->GetLength());
+          reinterpret_cast<const unsigned char *>(lut_raw->GetPointer()),
+          lut_raw->GetLength());
       }
       else
       {
