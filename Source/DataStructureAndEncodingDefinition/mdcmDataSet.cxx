@@ -212,12 +212,12 @@ MediaStorage
 DataSet::GetMediaStorage() const
 {
   const Tag tsopclassuid(0x0008, 0x0016);
-  if (!FindDataElement(tsopclassuid))
+  const DataElement & de = GetDataElement(tsopclassuid);
+  if (de == empty)
   {
     mdcmDebugMacro("No SOP Class UID");
     return MediaStorage::MS_END;
   }
-  const DataElement & de = GetDataElement(tsopclassuid);
   if (de.IsEmpty())
   {
     mdcmDebugMacro("Empty SOP Class UID");
