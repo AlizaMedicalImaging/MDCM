@@ -161,23 +161,21 @@ FileMetaInformation::FillFromDataSet(const DataSet & ds)
     }
   }
   {
-    const DataElement & de = ds.GetDataElement(Tag(0x0002, 0x0002));
-    const DataElement & msclass = ds.GetDataElement(Tag(0x0008, 0x0016));
-    if (de.IsEmpty())
+    const DataElement & de_2_2 = GetDataElement(Tag(0x0002, 0x0002));
+    const DataElement & de_8_16 = ds.GetDataElement(Tag(0x0008, 0x0016));
+    if (de_2_2.IsEmpty())
     {
-      if (msclass.IsEmpty())
+      if (de_8_16.IsEmpty())
       {
         MediaStorage ms;
         ms.SetFromModality(ds);
-        const char * msstr = ms.GetString();
-        if (msstr)
+        const char * s = ms.GetString();
+        if (s)
         {
-          VL::Type strlenMsstr = static_cast<VL::Type>(strlen(msstr));
-          xde.SetByteValue(msstr, strlenMsstr);
+          VL::Type l = static_cast<VL::Type>(strlen(s));
+          xde.SetByteValue(s, l);
           xde.SetTag(Tag(0x0002, 0x0002));
-          {
-            xde.SetVR(VR::UI);
-          }
+          xde.SetVR(VR::UI);
           Insert(xde);
         }
         else
@@ -187,29 +185,26 @@ FileMetaInformation::FillFromDataSet(const DataSet & ds)
       }
       else
       {
-        xde = msclass;
+        xde = de_8_16;
         xde.SetTag(Tag(0x0002, 0x0002));
-        if (msclass.GetVR() == VR::INVALID || msclass.GetVR() == VR::UN)
-        {
-          xde.SetVR(VR::UI);
-        }
+        xde.SetVR(VR::UI);
         Insert(xde);
       }
     }
-    else // There is a value in (0002,0002), see if it match (0008,0016)
+    else // There is a value in (0002,0002), must match (0008,0016)
     {
-      if (msclass.IsEmpty())
+      if (de_8_16.IsEmpty())
       {
         mdcmWarningMacro("Missing SOPClassUID in DataSet but found in FileMeta");
       }
       else
       {
-        DataElement       mssopclass = de;
-        const ByteValue * bv = msclass.GetByteValue();
+        DataElement       de = de_2_2;
+        const ByteValue * bv = de_8_16.GetByteValue();
         if (bv)
         {
-          mssopclass.SetByteValue(bv->GetPointer(), bv->GetLength());
-          Replace(mssopclass);
+          de.SetByteValue(bv->GetPointer(), bv->GetLength());
+          Replace(de);
         }
         else
         {
