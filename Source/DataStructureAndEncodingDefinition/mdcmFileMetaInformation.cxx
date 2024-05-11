@@ -32,7 +32,7 @@
 namespace mdcm
 {
 
-const char  FileMetaInformation::MDCM_FILE_META_INFORMATION_VERSION[2]{0x0,0x2};
+const char  FileMetaInformation::MDCM_FILE_META_INFORMATION_VERSION[2]{0x0,0x1};
 const char  FileMetaInformation::MDCM_IMPLEMENTATION_CLASS_UID[] = "1.2.826.0.1.3680043.10.135.1." MDCM_VERSION;
 const char  FileMetaInformation::MDCM_IMPLEMENTATION_VERSION_NAME[] = "MDCM " MDCM_VERSION;
 const char  FileMetaInformation::MDCM_SOURCE_APPLICATION_ENTITY_TITLE[] = "MDCM";
