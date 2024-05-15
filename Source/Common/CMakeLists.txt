@@ -47,7 +47,8 @@ set(Common_SRCS
   mdcmFilename.cxx
   mdcmFilenameGenerator.cxx
   mdcmSwapCode.cxx
-  mdcmSystem.cxx)
+  mdcmSystem.cxx
+  mdcmUnpacker12Bits.cxx)
 
 if(WIN32)
   set(Common_SRCS ${Common_SRCS} mdcmCAPICryptographicMessageSyntax.cxx mdcmCAPICryptoFactory.cxx)
