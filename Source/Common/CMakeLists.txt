@@ -38,7 +38,6 @@ endif()
 set(Common_SRCS
   mdcmVersion.cxx
   mdcmEvent.cxx
-  mdcmMD5.cxx
   mdcmBase64.cxx
   mdcmSHA1.cxx
   mdcmCryptoFactory.cxx
