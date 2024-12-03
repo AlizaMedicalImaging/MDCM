@@ -1,8 +1,6 @@
 # JPEG 16 bits project
 
-include_directories(BEFORE
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${ITKJPEG_SOURCE_DIR})
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 add_library(${JPEG_LIBRARY_NAME}16 ${JPEG_SOURCES})
 set_target_properties(${JPEG_LIBRARY_NAME}16 PROPERTIES ${JPEG_LIBRARY_PROPERTIES})
 
