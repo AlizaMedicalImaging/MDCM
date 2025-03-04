@@ -1,6 +1,6 @@
 Warning, the Readme is WIP
 
-Currently DICOM is 2024b
+Currently DICOM is 2025a
 
 Note: Message Exchange (Part7a.xml, Part7b.xml) files were not updated, the attributes
 seem to be valid and they are not really used in MDCM (TODO check how to update).
@@ -10,7 +10,7 @@ Attributes
 ----------
 
 1.
-Recommended to update DICOM version in Part6.xsl, e.g. <dicts edition="2024b">
+Recommended to update DICOM version in Part6.xsl, e.g. <dicts edition="2025a">
 and
 
 xsltproc Part6.xsl part06.xml > Part6.xml
@@ -34,9 +34,6 @@ xsltproc TagToVR.xsl Part6.xml > mdcmTagToVR.h
 
 5.
 xsltproc DefaultDicts.xsl Part6.xml > mdcmDefaultDicts.cxx
-
-removed retired duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0,0x0040)
-removed { 0x1010,0x0000,VR::US,VM::VM1_n,"Zonal Map","ZonalMap",true }, retired, possible conflict with group length
 
 Some attributes will fail:
 
@@ -64,6 +61,11 @@ they can be added manualy (there will be ~25000 useless lines):
 (1000,xxx0) - (1000,xxx5) are in the file 1000_xxx5_retired.txt.7z
 
 
+Remove retired duplicated entries (0x7fe0,0x0010), (0x7fe0,0x0020), (0x7fe0,0x0030), (0x7fe0,0x0040)
+Remove { 0x1010,0x0000,VR::US,VM::VM1_n,"Zonal Map","ZonalMap",true }, retired, possible conflict with group length
+
+
+
 
 UIDs
 ----
@@ -75,7 +77,7 @@ diff 'UIDsStrings' array and with last_UIDsStrings.txt and add new UIDs to mdcmU
 replace last_UIDsStrings.txt for the next time (if lost run above xsltproc with the previous
 Part6.xml).
 
-If recreate completely:
+If recreate completely (not recommended):
 don't forget private UIDs (!) and change
 Retired -> Retired0
 Retired -> Retired1
