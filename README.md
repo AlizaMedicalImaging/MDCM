@@ -1,7 +1,7 @@
 MDCM
 ====
 
-_DICOM_ media storage C++ library, based on GDCM (Grassroots DICOM) minimal subset with modifications.
+_DICOM_ media storage C++ library, a fork from the minimal subset of GDCM (Grassroots DICOM). Note that the library is not GDCM.
 
 Dictionary 2025a
 
