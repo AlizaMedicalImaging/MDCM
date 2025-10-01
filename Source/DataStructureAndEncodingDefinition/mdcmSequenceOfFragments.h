@@ -201,11 +201,14 @@ public:
         {
           assert(Fragments.size() == 1);
           const ByteValue * bv = Fragments[0].GetByteValue();
-          assert(static_cast<unsigned char>(bv->GetPointer()[bv->GetLength() - 1]) == 0xfe);
-          // MM: Yes this is an extra copy, this is a bug anyway.
-          Fragments[0].SetByteValue(bv->GetPointer(), bv->GetLength() - 1);
-          mdcmDebugMacro("Fragment length was declared with an extra byte at the end, stripped");
-          is.clear();
+          if (bv && bv->GetLength() >= 1)
+          {
+            assert(static_cast<unsigned char>(bv->GetPointer()[bv->GetLength() - 1]) == 0xfe);
+            // MM: Yes this is an extra copy, this is a bug anyway.
+            Fragments[0].SetByteValue(bv->GetPointer(), bv->GetLength() - 1);
+            mdcmDebugMacro("Fragment length was declared with an extra byte at the end, stripped");
+            is.clear();
+          }
         }
       }
       // LEICA/WSI
@@ -222,18 +225,21 @@ public:
           mdcmDebugMacro("Fragment: fixed (1)");
           const size_t      lastf = f_size - 1;
           const ByteValue * bv = Fragments[lastf].GetByteValue();
-          const char *      a = bv->GetPointer();
-          assert(static_cast<unsigned char>(a[bv->GetLength() - 1]) == 0xfe);
-          (void)a;
-          Fragments[lastf].SetByteValue(bv->GetPointer(), bv->GetLength() - 1);
-          is.seekg(-9, std::ios::cur);
-          assert(is.good());
-          while (frag.ReadBacktrack<TSwap>(is) && frag.GetTag() != seqDelItem)
+          if (bv && bv->GetLength() >= 1)
           {
-            mdcmDebugMacro("Fragment: " << frag);
-            Fragments.push_back(frag);
+            const char *  a = bv->GetPointer();
+            assert(static_cast<unsigned char>(a[bv->GetLength() - 1]) == 0xfe);
+            (void)a;
+            Fragments[lastf].SetByteValue(bv->GetPointer(), bv->GetLength() - 1);
+            is.seekg(-9, std::ios::cur);
+            assert(is.good());
+            while (frag.ReadBacktrack<TSwap>(is) && frag.GetTag() != seqDelItem)
+            {
+              mdcmDebugMacro("Fragment: " << frag);
+              Fragments.push_back(frag);
+            }
+            assert(frag.GetTag() == seqDelItem && frag.GetVL() == 0);
           }
-          assert(frag.GetTag() == seqDelItem && frag.GetVL() == 0);
         }
         else
         {
@@ -254,18 +260,21 @@ public:
           mdcmDebugMacro("Fragment: fixed (2)");
           const size_t      lastf = f_size - 1;
           const ByteValue * bv = Fragments[lastf].GetByteValue();
-          const char *      a = bv->GetPointer();
-          assert(static_cast<unsigned char>(a[bv->GetLength() - 2]) == 0xfe);
-          (void)a;
-          Fragments[lastf].SetByteValue(bv->GetPointer(), bv->GetLength() - 2);
-          is.seekg(-10, std::ios::cur);
-          assert(is.good());
-          while (frag.ReadBacktrack<TSwap>(is) && frag.GetTag() != seqDelItem)
+          if (bv && bv->GetLength() >= 2)
           {
-            mdcmDebugMacro("Fragment: " << frag);
-            Fragments.push_back(frag);
+            const char * a = bv->GetPointer();
+            assert(static_cast<unsigned char>(a[bv->GetLength() - 2]) == 0xfe);
+            (void)a;
+            Fragments[lastf].SetByteValue(bv->GetPointer(), bv->GetLength() - 2);
+            is.seekg(-10, std::ios::cur);
+            assert(is.good());
+            while (frag.ReadBacktrack<TSwap>(is) && frag.GetTag() != seqDelItem)
+            {
+              mdcmDebugMacro("Fragment: " << frag);
+              Fragments.push_back(frag);
+            }
+            assert(frag.GetTag() == seqDelItem && frag.GetVL() == 0);
           }
-          assert(frag.GetTag() == seqDelItem && frag.GetVL() == 0);
         }
         else
         {
@@ -287,18 +296,21 @@ public:
           mdcmDebugMacro("Fragment: fixed (3)");
           const size_t      lastf = f_size - 1;
           const ByteValue * bv = Fragments[lastf].GetByteValue();
-          const char *      a = bv->GetPointer();
-          assert(static_cast<unsigned char>(a[bv->GetLength() - 3]) == 0xfe);
-          (void)a;
-          Fragments[lastf].SetByteValue(bv->GetPointer(), bv->GetLength() - 3);
-          is.seekg(-11, std::ios::cur);
-          assert(is.good());
-          while (frag.ReadBacktrack<TSwap>(is) && frag.GetTag() != seqDelItem)
+          if (bv && bv->GetLength() >= 3)
           {
-            mdcmDebugMacro("Fragment: " << frag);
-            Fragments.push_back(frag);
+            const char * a = bv->GetPointer();
+            assert(static_cast<unsigned char>(a[bv->GetLength() - 3]) == 0xfe);
+            (void)a;
+            Fragments[lastf].SetByteValue(bv->GetPointer(), bv->GetLength() - 3);
+            is.seekg(-11, std::ios::cur);
+            assert(is.good());
+            while (frag.ReadBacktrack<TSwap>(is) && frag.GetTag() != seqDelItem)
+            {
+              mdcmDebugMacro("Fragment: " << frag);
+              Fragments.push_back(frag);
+            }
+            assert(frag.GetTag() == seqDelItem && frag.GetVL() == 0);
           }
-          assert(frag.GetTag() == seqDelItem && frag.GetVL() == 0);
         }
         else
         {
