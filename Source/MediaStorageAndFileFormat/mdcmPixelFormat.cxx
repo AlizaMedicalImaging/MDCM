@@ -166,7 +166,9 @@ PixelFormat::SetHighBit(unsigned short hb)
     default:
       break;
   }
-  if (hb < BitsStored)
+  if (BitsStored > 1 && hb == 0)
+    HighBit = BitsStored - 1;
+  else if (hb < BitsStored)
     HighBit = hb;
 }
 
