@@ -316,7 +316,7 @@ DoOverlays(const mdcm::DataSet & ds, mdcm::Pixmap & pixeldata)
         ov.IsInPixelData(true);
         if (ov.GetBitsAllocated() != pixeldata.GetPixelFormat().GetBitsAllocated())
         {
-          mdcmWarningMacro("Bits Allocated are wrong, correcting");
+          mdcmWarningMacro("Bits Allocated is wrong, correcting");
           ov.SetBitsAllocated(pixeldata.GetPixelFormat().GetBitsAllocated());
         }
 #if 1
@@ -339,7 +339,7 @@ DoOverlays(const mdcm::DataSet & ds, mdcm::Pixmap & pixeldata)
           }
           const long long ov_origin_0 = ov.GetOrigin()[0];
           const long long ov_origin_1 = ov.GetOrigin()[1];
-          const long long start_pixel = (ov_origin_1 - 1) + (ov_origin_0 - 1) * pixeldata.GetDimension(0);
+          const long long start_pixel = (ov_origin_1 - 1LL) + (ov_origin_0 - 1LL) * pixeldata.GetDimension(0);
           if (start_pixel < 0 || static_cast<unsigned long long>(start_pixel) >= dims)
           {
             mdcmWarningMacro(
