@@ -76,6 +76,7 @@ I add new UIDs manually sequentially:
 diff 'UIDsStrings' array and with last_UIDsStrings.txt and add new UIDs to mdcmUIDs.h/.cxx,
 replace last_UIDsStrings.txt for the next time (if lost run above xsltproc with the previous
 Part6.xml).
+Edit mdcmUIDs.h/.cxx. It is tricky, caution with enums, increment.
 
 If recreate completely (not recommended):
 don't forget private UIDs (!) and change
