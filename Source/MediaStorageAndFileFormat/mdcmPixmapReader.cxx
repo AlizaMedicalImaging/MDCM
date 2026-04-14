@@ -367,7 +367,10 @@ DoOverlays(const mdcm::DataSet & ds, mdcm::Pixmap & pixeldata)
         {
           mdcmWarningMacro("Could not extract overlay from pixel data (2)");
         }
-        updateoverlayinfo[idxoverlays] = true;
+        else
+        {
+          updateoverlayinfo[idxoverlays] = true;
+        }
       }
       else
       {
@@ -394,6 +397,12 @@ DoOverlays(const mdcm::DataSet & ds, mdcm::Pixmap & pixeldata)
         pixeldata.RemoveOverlay(ov);
         updateoverlayinfo.erase(updateoverlayinfo.begin() + ov);
         mdcmWarningMacro("Invalid: " << obp << " > GetBitsAllocated()");
+      }
+      if (!updateoverlayinfo[ov])
+      {
+	    pixeldata.RemoveOverlay(ov);
+	    updateoverlayinfo.erase(updateoverlayinfo.begin() + ov);
+	    mdcmWarningMacro("Removed overlay " << ov);
       }
     }
   }
