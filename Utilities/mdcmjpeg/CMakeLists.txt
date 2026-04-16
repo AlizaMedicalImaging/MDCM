@@ -31,8 +31,8 @@ if(NOT DEFINED JPEG_API_VERSION)
 endif()
 set(JPEG_LIBRARY_PROPERTIES ${JPEG_LIBRARY_PROPERTIES}
   VERSION "${MDCM_VERSION}"
-  SOVERSION "${JPEG_API_VERSION}"
-)
+  SOVERSION "${JPEG_API_VERSION}")
+#message(STATUS "JPEG_API_VERSION: " ${JPEG_API_VERSION})
 
 
 # memmgr back ends: compile only one of these into a working library
