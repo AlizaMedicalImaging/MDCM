@@ -16,7 +16,6 @@ set(DSED_SRCS
   mdcmTag.cxx
   mdcmCodeString.cxx
   mdcmByteSwapFilter.cxx
-  mdcmUNExplicitImplicitDataElement.cxx
   mdcmWriter.cxx
   mdcmCSAHeader.cxx
   mdcmMrProtocol.cxx
