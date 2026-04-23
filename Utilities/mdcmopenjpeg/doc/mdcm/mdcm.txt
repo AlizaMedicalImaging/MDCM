@@ -1,0 +1,5 @@
+v2.5.4 + cherry-picks (2026.04.24)
+
+ - Only include requied files from "cmake" and required files from "src/lib/openjp2" + top-level CMakeLists.txt)
+ - Note: top-level CMakeLists.txt is heavily modified, caution.
+ - Add #include "openjpeg_mangle.h" to openjpeg.h.
