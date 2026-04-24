@@ -1,0 +1,82 @@
+From 48a4cfb23c939b36f69083f1c86c942169d441ab Mon Sep 17 00:00:00 2001
+From: Eric Doenges <eric.doenges@mvtec.com>
+Date: Mon, 24 Nov 2025 09:56:25 +0100
+Subject: [PATCH] Use OPJ_INT8 instead of OPJ_CHAR when a signed type is
+ required.
+
+Some platforms (most noteably 32 bit Arm) define 'char' to be unsigned
+instead of signed. Use OPJ_INT8 instead of OPJ_CHAR where this matters
+to handle this correctly without having to define OPJ_CHAR differently
+for those platforms.
+---
+ src/lib/openjp2/j2k.c | 6 +++---
+ src/lib/openjp2/tcd.c | 8 ++++----
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/lib/openjp2/j2k.c b/src/lib/openjp2/j2k.c
+index a2014c89..62b0eba2 100644
+--- a/src/lib/openjp2/j2k.c
++++ b/src/lib/openjp2/j2k.c
+@@ -12905,11 +12905,11 @@ static void opj_j2k_get_tile_data(opj_tcd_t * p_tcd, OPJ_BYTE * p_data)
+ 
+         switch (l_size_comp) {
+         case 1: {
+-            OPJ_CHAR * l_dest_ptr = (OPJ_CHAR*) p_data;
++            OPJ_INT8 * l_dest_ptr = (OPJ_INT8*) p_data;
+             if (l_img_comp->sgnd) {
+                 for (j = 0; j < l_height; ++j) {
+                     for (k = 0; k < l_width; ++k) {
+-                        *(l_dest_ptr) = (OPJ_CHAR)(*l_src_ptr);
++                        *(l_dest_ptr) = (OPJ_INT8)(*l_src_ptr);
+                         ++l_dest_ptr;
+                         ++l_src_ptr;
+                     }
+@@ -12918,7 +12918,7 @@ static void opj_j2k_get_tile_data(opj_tcd_t * p_tcd, OPJ_BYTE * p_data)
+             } else {
+                 for (j = 0; j < l_height; ++j) {
+                     for (k = 0; k < l_width; ++k) {
+-                        *(l_dest_ptr) = (OPJ_CHAR)((*l_src_ptr) & 0xff);
++                        *(l_dest_ptr) = (OPJ_INT8)((*l_src_ptr) & 0xff);
+                         ++l_dest_ptr;
+                         ++l_src_ptr;
+                     }
+diff --git a/src/lib/openjp2/tcd.c b/src/lib/openjp2/tcd.c
+index 8ca259b7..fea081b5 100644
+--- a/src/lib/openjp2/tcd.c
++++ b/src/lib/openjp2/tcd.c
+@@ -1845,20 +1845,20 @@ OPJ_BOOL opj_tcd_update_tile_data(opj_tcd_t *p_tcd,
+ 
+         switch (l_size_comp) {
+         case 1: {
+-            OPJ_CHAR * l_dest_ptr = (OPJ_CHAR *) p_dest;
++            OPJ_INT8 * l_dest_ptr = (OPJ_INT8 *) p_dest;
+             const OPJ_INT32 * l_src_ptr = l_src_data;
+ 
+             if (l_img_comp->sgnd) {
+                 for (j = 0; j < l_height; ++j) {
+                     for (k = 0; k < l_width; ++k) {
+-                        *(l_dest_ptr++) = (OPJ_CHAR)(*(l_src_ptr++));
++                        *(l_dest_ptr++) = (OPJ_INT8)(*(l_src_ptr++));
+                     }
+                     l_src_ptr += l_stride;
+                 }
+             } else {
+                 for (j = 0; j < l_height; ++j) {
+                     for (k = 0; k < l_width; ++k) {
+-                        *(l_dest_ptr++) = (OPJ_CHAR)((*(l_src_ptr++)) & 0xff);
++                        *(l_dest_ptr++) = (OPJ_INT8)((*(l_src_ptr++)) & 0xff);
+                     }
+                     l_src_ptr += l_stride;
+                 }
+@@ -2722,7 +2722,7 @@ OPJ_BOOL opj_tcd_copy_tile_data(opj_tcd_t *p_tcd,
+ 
+         switch (l_size_comp) {
+         case 1: {
+-            OPJ_CHAR * l_src_ptr = (OPJ_CHAR *) p_src;
++            OPJ_INT8 * l_src_ptr = (OPJ_INT8 *) p_src;
+             OPJ_INT32 * l_dest_ptr = l_tilec->data;
+ 
+             if (l_img_comp->sgnd) {
+-- 
+2.34.1
+
