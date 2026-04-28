@@ -122,14 +122,18 @@ METHODDEF(boolean) fill_input_buffer(j_decompress_ptr cinfo)
 {
   my_src_ptr src = (my_src_ptr)cinfo->src;
   size_t     nbytes = 0;
+  //
+  //
+  // FIXME ?
   std::streampos pos = src->infile->tellg();
   std::streampos end = src->infile->seekg(0, std::ios::end).tellg();
   src->infile->seekg(pos, std::ios::beg);
   //
+  //
+  //
   if (end == pos)
   {
-    /* Start the I/O suspension simply by returning false here */
-    // FIXME return value seems to be not used below
+    /* Start the I/O suspension by returning false here */
     return FALSE;
   }
   if ((end - pos) < INPUT_BUF_SIZE)
@@ -606,7 +610,6 @@ JPEGBITSCodec::GetHeaderInfoAndTS(std::istream & is, TransferSyntax & ts)
         mdcmAlwaysWarnMacro("JPROC_LOSSLESS and JCS_YCbCr");
       }
       this->PF.SetSamplesPerPixel(3);
-      this->PlanarConfiguration = 1;
     }
     else if (cinfo.jpeg_color_space == JCS_CMYK || cinfo.jpeg_color_space == JCS_YCCK)
     {
@@ -1128,10 +1131,8 @@ JPEGBITSCodec::InternalCode(const char * input, size_t len, std::ostream & os)
   }
   else
   {
-    /*
-     * warning: Need to read C.7.6.3.1.3 Planar Configuration (see note about Planar Configuration dummy value)
-     */
-    JSAMPLE * tempbuffer = static_cast<JSAMPLE *>(malloc(row_stride * sizeof(JSAMPLE)));
+    JSAMPLE * tempbuffer =
+      (JSAMPLE *)(*cinfo.mem->alloc_small)((j_common_ptr)&cinfo, JPOOL_IMAGE, row_stride * sizeof(JSAMPLE));
     row_pointer[0] = tempbuffer;
     volatile int offset = image_height * image_width;
     while (cinfo.next_scanline < cinfo.image_height)
@@ -1149,7 +1150,6 @@ JPEGBITSCodec::InternalCode(const char * input, size_t len, std::ostream & os)
       }
       (void)jpeg_write_scanlines(&cinfo, row_pointer, 1);
     }
-    free(tempbuffer);
   }
   /* Step 6: Finish compression */
   jpeg_finish_compress(&cinfo);
