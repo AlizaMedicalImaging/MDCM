@@ -64,16 +64,16 @@ endif()
 add_library(mdcmcommon ${Common_SRCS})
 
 if(UNIX)
-  target_link_libraries(mdcmcommon LINK_PRIVATE ${CMAKE_DL_LIBS})
+  target_link_libraries(mdcmcommon PRIVATE ${CMAKE_DL_LIBS})
 endif()
 
 if(WIN32)
-  target_link_libraries(mdcmcommon LINK_PRIVATE crypt32)
+  target_link_libraries(mdcmcommon PRIVATE crypt32)
 endif()
 
 if(MDCM_USE_SYSTEM_OPENSSL)
   include_directories(${OPENSSL_INCLUDE_DIR})
-  target_link_libraries(mdcmcommon LINK_PRIVATE ${OPENSSL_LIBRARIES})
+  target_link_libraries(mdcmcommon PRIVATE ${OPENSSL_LIBRARIES})
 endif()
 
 set_target_properties(mdcmcommon PROPERTIES ${MDCM_LIBRARY_PROPERTIES})

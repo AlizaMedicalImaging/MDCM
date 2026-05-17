@@ -13,7 +13,7 @@ set(DICT_SRCS
   mdcmCSAHeaderDefaultDicts.cxx)
 
 add_library(mdcmdict ${DICT_SRCS})
-target_link_libraries(mdcmdict LINK_PRIVATE mdcmdsed)
+target_link_libraries(mdcmdict PRIVATE mdcmdsed)
 set_target_properties(mdcmdict PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
 install_library(mdcmdict)

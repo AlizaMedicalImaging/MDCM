@@ -41,9 +41,9 @@ if(NOT MDCM_USE_SYSTEM_ZLIB)
 endif()
 
 add_library(mdcmdsed ${DSED_SRCS})
-target_link_libraries(mdcmdsed LINK_PUBLIC mdcmcommon)
+target_link_libraries(mdcmdsed PUBLIC mdcmcommon)
 # zlib stuff are actually included (template) so we need to link them here.
-target_link_libraries(mdcmdsed LINK_PRIVATE ${MDCM_ZLIB_LIBRARIES})
+target_link_libraries(mdcmdsed PRIVATE ${MDCM_ZLIB_LIBRARIES})
 set_target_properties(mdcmdsed PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
 install_library(mdcmdsed)

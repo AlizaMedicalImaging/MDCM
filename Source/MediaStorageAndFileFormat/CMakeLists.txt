@@ -111,9 +111,9 @@ endif()
 
 add_library(mdcmmsff ${MSFF_SRCS})
 
-target_link_libraries(mdcmmsff LINK_PUBLIC mdcmdsed mdcmdict)
-target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})
-target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCM_CHARLS_LIBRARIES})
+target_link_libraries(mdcmmsff PUBLIC mdcmdsed mdcmdict)
+target_link_libraries(mdcmmsff PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})
+target_link_libraries(mdcmmsff PRIVATE ${MDCM_CHARLS_LIBRARIES})
 
 if(CMAKE_COMPILER_IS_GNUCXX AND MINGW)
   # not tested
@@ -123,9 +123,9 @@ endif()
 if(WIN32)
   # For UuidCreate
   # http://msdn.microsoft.com/en-us/library/aa379205(VS.85).aspx
-  target_link_libraries(mdcmmsff LINK_PRIVATE rpcrt4)
+  target_link_libraries(mdcmmsff PRIVATE rpcrt4)
 else()
-  target_link_libraries(mdcmmsff LINK_PRIVATE ${MDCMUUID})
+  target_link_libraries(mdcmmsff PRIVATE ${MDCMUUID})
 endif()
 
 set_target_properties(mdcmmsff PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
