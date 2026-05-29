@@ -115,6 +115,11 @@ if(BUILD_SHARED_LIBS)
   set(NAMELINK_SKIP NAMELINK_SKIP)
 endif()
 
+option(MDCM_NO_MESSAGES "Disable all notifications" OFF)
+if(MDCM_NO_MESSAGES)
+  add_definitions(-DMDCM_NO_MESSAGES)
+endif()
+
 if(NOT EXECUTABLE_OUTPUT_PATH)
   set(EXECUTABLE_OUTPUT_PATH ${MDCM_BINARY_DIR}/bin CACHE PATH "Output directory for executables")
   mark_as_advanced(EXECUTABLE_OUTPUT_PATH)
