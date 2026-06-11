@@ -82,9 +82,16 @@ else()
     add_library(openjp2_static STATIC ${OPENJPEG_SRCS})
     set_target_properties(openjp2_static PROPERTIES OUTPUT_NAME ${OPENJPEG_LIBRARY_NAME})
     target_compile_definitions(openjp2_static PRIVATE OPJ_STATIC)
+    target_compile_definitions(
+      ${OPENJPEG_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+    target_compile_definitions(
+      openjp2_static PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
     set(INSTALL_LIBS ${OPENJPEG_LIBRARY_NAME} openjp2_static)
   else()
     add_library(${OPENJPEG_LIBRARY_NAME} ${OPENJPEG_SRCS})
+    # Safely add NDEBUG
+    target_compile_definitions(
+      ${OPENJPEG_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
     set(INSTALL_LIBS ${OPENJPEG_LIBRARY_NAME})
   endif()
 endif()

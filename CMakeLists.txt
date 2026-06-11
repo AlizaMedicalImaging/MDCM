@@ -89,15 +89,6 @@ endif()
 include(${CMAKE_ROOT}/Modules/TestBigEndian.cmake)
 TEST_BIG_ENDIAN(MDCM_WORDS_BIGENDIAN)
 
-set(tmp0_build_type "None")
-if(CMAKE_BUILD_TYPE)
-  set(tmp0_build_type "${CMAKE_BUILD_TYPE}")
-endif()
-string(TOUPPER ${tmp0_build_type} tmp1_build_type)
-if(NOT ${tmp1_build_type} STREQUAL "DEBUG")
-  add_definitions(-DNDEBUG)
-endif()
-
 set(MDCM_TARGETS_NAME MDCMTargets)
 
 include(${MDCM_SOURCE_DIR}/CMake/InstallMacros.cmake)

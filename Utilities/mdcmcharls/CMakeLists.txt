@@ -32,6 +32,10 @@ if(NOT BUILD_SHARED_LIBS)
   target_compile_definitions(${CHARLS_LIBRARY_NAME} PUBLIC CHARLS_STATIC)
 endif()
 
+# Safely add NDEBUG
+target_compile_definitions(
+  ${CHARLS_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+
 set_target_properties(${CHARLS_LIBRARY_NAME} PROPERTIES VERSION ${CHARLS_VERSION} SOVERSION ${CHARLS_MAJOR_VERSION})
 target_compile_definitions(${CHARLS_LIBRARY_NAME} PRIVATE CHARLS_LIBRARY_BUILD)
 target_compile_features(${CHARLS_LIBRARY_NAME} PUBLIC cxx_std_14)

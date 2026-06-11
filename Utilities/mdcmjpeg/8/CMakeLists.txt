@@ -3,6 +3,9 @@
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 add_library(${JPEG_LIBRARY_NAME}8 ${JPEG_SOURCES})
 set_target_properties(${JPEG_LIBRARY_NAME}8 PROPERTIES ${JPEG_LIBRARY_PROPERTIES})
+# Safely add NDEBUG
+target_compile_definitions(
+  ${JPEG_LIBRARY_NAME}8 PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
 
 if(NOT JPEG_INSTALL_NO_LIBRARIES)
   install(TARGETS ${JPEG_LIBRARY_NAME}8

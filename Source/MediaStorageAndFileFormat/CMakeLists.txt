@@ -110,7 +110,9 @@ else()
 endif()
 
 add_library(mdcmmsff ${MSFF_SRCS})
-
+# Safely add NDEBUG
+target_compile_definitions(
+  mdcmmsff PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
 target_link_libraries(mdcmmsff PUBLIC mdcmdsed mdcmdict)
 target_link_libraries(mdcmmsff PRIVATE ${MDCM_LJPEG_LIBRARIES} ${MDCM_OPENJPEG_LIBRARIES})
 target_link_libraries(mdcmmsff PRIVATE ${MDCM_CHARLS_LIBRARIES})

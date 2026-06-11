@@ -13,6 +13,9 @@ set(DICT_SRCS
   mdcmCSAHeaderDefaultDicts.cxx)
 
 add_library(mdcmdict ${DICT_SRCS})
+# Safely add NDEBUG
+target_compile_definitions(
+  mdcmdict PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
 target_link_libraries(mdcmdict PRIVATE mdcmdsed)
 set_target_properties(mdcmdict PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 
