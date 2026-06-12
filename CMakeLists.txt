@@ -49,6 +49,47 @@ set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}"
 
 ########################################################################
 #
+# C/C++ flags; no changes, this is informational to prevent potential errors.
+#
+#
+get_cmake_property(TMP_IS_MULTI_CONFIG_GENERATOR GENERATOR_IS_MULTI_CONFIG)
+if(TMP_IS_MULTI_CONFIG_GENERATOR)
+  foreach(TMP_MCCONFIG IN LISTS CMAKE_CONFIGURATION_TYPES)
+    if((NOT "${TMP_MCCONFIG}" STREQUAL "Debug") AND
+       (NOT "${TMP_MCCONFIG}" STREQUAL "Release") AND
+       (NOT "${TMP_MCCONFIG}" STREQUAL "RelWithDebInfo") AND
+       (NOT "${TMP_MCCONFIG}" STREQUAL "MinSizeRel"))
+      message(WARNING "Non-standard " ${TMP_MCCONFIG} " configuration")
+    endif()
+    if(NOT "${TMP_MCCONFIG}" STREQUAL "")
+      message(STATUS "Found configuration: ${MCCONFIG}")
+      string(TOUPPER ${TMP_MCCONFIG} TMPMC_BUILD_TYPE)
+      message(STATUS "  CXX " ${MCCONFIG} " flags: " "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_}${TMPMC_BUILD_TYPE}")
+      message(STATUS "  C " ${MCCONFIG} " flags: " "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_}${TMPMC_BUILD_TYPE}")
+    else()
+      message(WARNING "Empty configuration in CMAKE_CONFIGURATION_TYPES?")
+    endif()
+  endforeach()
+else()
+  if(CMAKE_BUILD_TYPE)
+    string(TOUPPER ${CMAKE_BUILD_TYPE} TMP_BUILD_TYPE)
+    set(TMP_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${TMP_BUILD_TYPE}}")
+    set(TMP_C_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${TMP_BUILD_TYPE}}")
+    message(STATUS "CXX flags: " ${TMP_CXX_FLAGS})
+    message(STATUS "C flags: " ${TMP_C_FLAGS})
+  else()
+    message(WARNING "CMAKE_BUILD_TYPE is not set, this is not recommended")
+    message(STATUS "CXX flags: " ${CMAKE_CXX_FLAGS})
+    message(STATUS "C flags: " ${CMAKE_C_FLAGS})
+  endif()
+endif()
+#
+#
+#
+########################################################################
+
+########################################################################
+#
 # C++ standard, currently minimum required is C++14.
 #
 #
