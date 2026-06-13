@@ -75,8 +75,7 @@ if(WIN32)
     target_compile_definitions(${OPENJPEG_LIBRARY_NAME} PRIVATE OPJ_STATIC)
   endif()
   # Safely add NDEBUG
-  target_compile_definitions(
-    ${OPENJPEG_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+  target_compile_definitions(${OPENJPEG_LIBRARY_NAME} PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
   set(INSTALL_LIBS ${OPENJPEG_LIBRARY_NAME})
 else()
   add_library(${OPENJPEG_LIBRARY_NAME} ${OPENJPEG_SRCS})
@@ -84,8 +83,7 @@ else()
     target_compile_definitions(${OPENJPEG_LIBRARY_NAME} PRIVATE OPJ_STATIC)
   endif()
   # Safely add NDEBUG
-  target_compile_definitions(
-    ${OPENJPEG_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+  target_compile_definitions(${OPENJPEG_LIBRARY_NAME} PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
   set(INSTALL_LIBS ${OPENJPEG_LIBRARY_NAME})
 endif()
 

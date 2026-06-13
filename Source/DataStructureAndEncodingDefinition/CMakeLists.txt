@@ -42,8 +42,7 @@ endif()
 
 add_library(mdcmdsed ${DSED_SRCS})
 # Safely add NDEBUG
-target_compile_definitions(
-  mdcmdsed PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+target_compile_definitions(mdcmdsed PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 target_link_libraries(mdcmdsed PUBLIC mdcmcommon)
 # zlib stuff are actually included (template) so we need to link them here.
 target_link_libraries(mdcmdsed PRIVATE ${MDCM_ZLIB_LIBRARIES})

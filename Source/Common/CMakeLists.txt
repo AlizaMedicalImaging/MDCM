@@ -64,8 +64,7 @@ endif()
 add_library(mdcmcommon ${Common_SRCS})
 
 # Safely add NDEBUG
-target_compile_definitions(
-  mdcmcommon PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+target_compile_definitions(mdcmcommon PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 
 if(UNIX)
   target_link_libraries(mdcmcommon PRIVATE ${CMAKE_DL_LIBS})

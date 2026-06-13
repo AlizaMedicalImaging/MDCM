@@ -91,8 +91,7 @@ add_library(${ZLIB_LIBRARY_NAME} ${ZLIB_SRCS})
 
 set_target_properties(${ZLIB_LIBRARY_NAME} PROPERTIES ${MDCM_LIBRARY_PROPERTIES})
 set_target_properties(${ZLIB_LIBRARY_NAME} PROPERTIES LINKER_LANGUAGE C)
-target_compile_definitions(
-  ${ZLIB_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+target_compile_definitions(${ZLIB_LIBRARY_NAME} PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 
 if(NOT ZLIB_INSTALL_NO_LIBRARIES)
   install(TARGETS ${ZLIB_LIBRARY_NAME}

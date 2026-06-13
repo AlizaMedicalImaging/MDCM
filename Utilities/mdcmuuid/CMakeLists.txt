@@ -107,8 +107,7 @@ set_target_properties(${UUID_LIBRARY_NAME} PROPERTIES ${MDCM_LIBRARY_PROPERTIES}
 endif()
 
 # Safely add NDEBUG
-target_compile_definitions(
-  ${UUID_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+target_compile_definitions(${UUID_LIBRARY_NAME} PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 
 if(WIN32 AND NOT CYGWIN)
   target_link_libraries(${UUID_LIBRARY_NAME} iphlpapi)

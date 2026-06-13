@@ -33,8 +33,7 @@ if(NOT BUILD_SHARED_LIBS)
 endif()
 
 # Safely add NDEBUG
-target_compile_definitions(
-  ${CHARLS_LIBRARY_NAME} PRIVATE $<$<OR:$<CONFIG:Release>,$<CONFIG:RelWithDebInfo>,$<CONFIG:MinSizeRel>>:NDEBUG>)
+target_compile_definitions(${CHARLS_LIBRARY_NAME} PRIVATE $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 
 set_target_properties(${CHARLS_LIBRARY_NAME} PROPERTIES VERSION ${CHARLS_VERSION} SOVERSION ${CHARLS_MAJOR_VERSION})
 target_compile_definitions(${CHARLS_LIBRARY_NAME} PRIVATE CHARLS_LIBRARY_BUILD)
