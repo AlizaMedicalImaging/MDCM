@@ -50,7 +50,7 @@ set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}"
 ##########################################################################
 #
 #
-# C/C++ flags
+# C/C++ flags (this section is for informational purposes only)
 #
 #
 #
@@ -64,41 +64,39 @@ set(MDCM_LIBRARY_PROPERTIES ${MDCM_LIBRARY_PROPERTIES} VERSION "${MDCM_VERSION}"
 get_cmake_property(TMP_IS_MULTI_CONFIG_GENERATOR GENERATOR_IS_MULTI_CONFIG)
 if(TMP_IS_MULTI_CONFIG_GENERATOR)
   foreach(TMP_MCCONFIG IN LISTS CMAKE_CONFIGURATION_TYPES)
-    string(TOUPPER ${TMP_MCCONFIG} TMP_MCCONGIG_UPPER)
-    if((NOT "${TMP_MCCONGIG_UPPER}" STREQUAL "DEBUG") AND
-       (NOT "${TMP_MCCONGIG_UPPER}" STREQUAL "RELEASE") AND
-       (NOT "${TMP_MCCONGIG_UPPER}" STREQUAL "RELWITHDEBINFO") AND
-       (NOT "${TMP_MCCONGIG_UPPER}" STREQUAL "MINSIZEREL"))
-      message(STATUS "Non-standard " ${TMP_MCCONFIG} " configuration")
-    endif()
-    if(NOT "${TMP_MCCONFIG}" STREQUAL "")
+    if(NOT ${TMP_MCCONFIG} STREQUAL "")
+      string(TOUPPER ${TMP_MCCONFIG} TMP_MCCONGIG_UPPER)
+      if((NOT ${TMP_MCCONGIG_UPPER} STREQUAL "DEBUG") AND
+         (NOT ${TMP_MCCONGIG_UPPER} STREQUAL "RELEASE") AND
+         (NOT ${TMP_MCCONGIG_UPPER} STREQUAL "RELWITHDEBINFO") AND
+         (NOT ${TMP_MCCONGIG_UPPER} STREQUAL "MINSIZEREL"))
+        message(STATUS "Non-standard ${TMP_MCCONFIG} configuration")
+      endif()
       message(STATUS "Configuration: ${TMP_MCCONFIG}")
-      message(STATUS "  CXX flags: " "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${TMP_MCCONGIG_UPPER}}")
-      message(STATUS "  C flags: "   "${CMAKE_C_FLAGS}   ${CMAKE_C_FLAGS_${TMP_MCCONGIG_UPPER}}")
+      message(STATUS "  CXX flags: ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${TMP_MCCONGIG_UPPER}}")
+      message(STATUS "  C flags:   ${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${TMP_MCCONGIG_UPPER}}")
     else()
-      message(WARNING "Empty configuration in CMAKE_CONFIGURATION_TYPES?")
-      message(STATUS "  CXX flags: " "${CMAKE_CXX_FLAGS}")
-      message(STATUS "  C flags: "   "${CMAKE_C_FLAGS}")
+      message(WARNING "Empty configuration in CMAKE_CONFIGURATION_TYPES")
     endif()
   endforeach()
 else()
   if(CMAKE_BUILD_TYPE)
     string(TOUPPER ${CMAKE_BUILD_TYPE} TMP_BUILD_TYPE)
-    if((NOT "${TMP_BUILD_TYPE}" STREQUAL "DEBUG") AND
-       (NOT "${TMP_BUILD_TYPE}" STREQUAL "RELEASE") AND
-       (NOT "${TMP_BUILD_TYPE}" STREQUAL "RELWITHDEBINFO") AND
-       (NOT "${TMP_BUILD_TYPE}" STREQUAL "MINSIZEREL"))
-      message(STATUS "Non-standard " ${CMAKE_BUILD_TYPE} " configuration")
+    if((NOT ${TMP_BUILD_TYPE} STREQUAL "DEBUG") AND
+       (NOT ${TMP_BUILD_TYPE} STREQUAL "RELEASE") AND
+       (NOT ${TMP_BUILD_TYPE} STREQUAL "RELWITHDEBINFO") AND
+       (NOT ${TMP_BUILD_TYPE} STREQUAL "MINSIZEREL"))
+      message(STATUS "Non-standard ${CMAKE_BUILD_TYPE} configuration")
     endif()
     set(TMP_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${TMP_BUILD_TYPE}}")
-    set(TMP_C_FLAGS   "${CMAKE_C_FLAGS}   ${CMAKE_C_FLAGS_${TMP_BUILD_TYPE}}")
-	message(STATUS "Configuration " ${CMAKE_BUILD_TYPE})
-    message(STATUS "  CXX flags: " "${TMP_CXX_FLAGS}")
-    message(STATUS "  C flags: "   "${TMP_C_FLAGS}")
+    set(TMP_C_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${TMP_BUILD_TYPE}}")
+    message(STATUS "Configuration ${CMAKE_BUILD_TYPE}")
+    message(STATUS "  CXX flags: ${TMP_CXX_FLAGS}")
+    message(STATUS "  C flags:   ${TMP_C_FLAGS}")
   else()
     message(WARNING "CMAKE_BUILD_TYPE is not set")
-    message(STATUS "  CXX flags: " "${CMAKE_CXX_FLAGS}")
-    message(STATUS "  C flags: "   "${CMAKE_C_FLAGS}")
+    message(STATUS "  CXX flags: ${CMAKE_CXX_FLAGS}")
+    message(STATUS "  C flags:   ${CMAKE_C_FLAGS}")
   endif()
 endif()
 #
@@ -171,16 +169,16 @@ if(MDCM_NO_MESSAGES)
 endif()
 
 if(NOT EXECUTABLE_OUTPUT_PATH)
-  set(EXECUTABLE_OUTPUT_PATH ${MDCM_BINARY_DIR}/bin CACHE PATH "Output directory for executables")
+  set(EXECUTABLE_OUTPUT_PATH "${MDCM_BINARY_DIR}/bin" CACHE PATH "Output directory for executables")
   mark_as_advanced(EXECUTABLE_OUTPUT_PATH)
 endif()
 if(NOT LIBRARY_OUTPUT_PATH)
-  set(LIBRARY_OUTPUT_PATH ${MDCM_BINARY_DIR}/bin CACHE PATH "Output directory for libraries")
+  set(LIBRARY_OUTPUT_PATH "${MDCM_BINARY_DIR}/bin" CACHE PATH "Output directory for libraries")
   mark_as_advanced(LIBRARY_OUTPUT_PATH)
 endif()
 
-include(${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake)
-include(${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake)
+include("${CMAKE_ROOT}/Modules/CheckIncludeFile.cmake")
+include("${CMAKE_ROOT}/Modules/CheckIncludeFiles.cmake")
 macro(CHECK_INCLUDE_FILE_CONCAT FILE VARIABLE)
   CHECK_INCLUDE_FILES("${UUID_INCLUDES};${FILE}" ${VARIABLE})
   if(${VARIABLE})
@@ -195,7 +193,7 @@ string(TOLOWER ${PROJECT_NAME} projname)
 #
 if(NOT MDCM_INSTALL_LIBDIR)
   if(NOT CMAKE_INSTALL_LIBDIR)
-    set(MDCM_INSTALL_LIBDIR "lib")
+    set(MDCM_INSTALL_LIBDIR lib)
   else()
     set(MDCM_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
   endif()
@@ -213,7 +211,7 @@ endif()
 ##########################################################################
 
 if(NOT MDCM_INSTALL_BIN_DIR)
-  set(MDCM_INSTALL_BIN_DIR "bin")
+  set(MDCM_INSTALL_BIN_DIR bin)
 endif()
 
 if(NOT MDCM_INSTALL_DATA_DIR)
@@ -286,14 +284,14 @@ if(MDCM_USE_SYSTEM_ZLIB)
   include_directories(${ZLIB_INCLUDE_DIR})
   set(MDCM_ZLIB_LIBRARIES ${ZLIB_LIBRARIES})
 else()
-  set(MDCM_ZLIB_LIBRARIES "mdcmzlib")
+  set(MDCM_ZLIB_LIBRARIES mdcmzlib)
 endif()
 
 if(MDCM_USE_SYSTEM_UUID)
   find_package(UUID REQUIRED)
   set(MDCM_UUID_LIBRARIES ${UUID_LIBRARIES})
 else()
-  set(MDCM_UUID_LIBRARIES "mdcmuuid")
+  set(MDCM_UUID_LIBRARIES mdcmuuid)
 endif()
 
 if(MDCM_USE_SYSTEM_OPENSSL)
