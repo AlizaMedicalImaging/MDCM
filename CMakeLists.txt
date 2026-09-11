@@ -266,7 +266,7 @@ set(MDCM_LJPEG_LIBRARIES mdcmjpeg8 mdcmjpeg12 mdcmjpeg16)
 
 if(MDCM_USE_SYSTEM_CHARLS)
   find_package(CharLS REQUIRED)
-  set(MDCM_CHARLS_LIBRARIES ${CHARLS_LIBRARIES})
+  set(MDCM_CHARLS_LIBRARIES ${CHARLS_LIBRARY})
 else()
   set(MDCM_CHARLS_LIBRARIES mdcmcharls)
 endif()
