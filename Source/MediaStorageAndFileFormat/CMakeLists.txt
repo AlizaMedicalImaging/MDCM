@@ -57,34 +57,30 @@ if(NOT MDCM_USE_SYSTEM_OPENJPEG)
   if(NOT BUILD_SHARED_LIBS)
     set_source_files_properties(mdcmJPEG2000Codec.cxx
       PROPERTIES
-      COMPILE_FLAGS -DOPJ_STATIC)
+      COMPILE_DEFINITIONS OPJ_STATIC)
   endif()
 endif()
 
-#FIXME
-if(NOT BUILD_SHARED_LIBS)
-  set_source_files_properties(mdcmJPEGLSCodec.cxx
-    PROPERTIES
-    COMPILE_DEFINITIONS CHARLS_STATIC)
-else()
-  set_source_files_properties(mdcmJPEGLSCodec.cxx
-    PROPERTIES
-    COMPILE_FLAGS -DCHARLS_DLL)
+if(NOT MDCM_USE_SYSTEM_CHARLS)
+  if(NOT BUILD_SHARED_LIBS)
+    set_source_files_properties(mdcmJPEGLSCodec.cxx
+      PROPERTIES
+      COMPILE_DEFINITIONS CHARLS_STATIC)
+  endif()
 endif()
-#
 
-#FIXME
 include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}
   "${MDCM_SOURCE_DIR}/Source/Common"
   "${MDCM_BINARY_DIR}/Source/Common"
   "${MDCM_SOURCE_DIR}/Source/DataStructureAndEncodingDefinition"
+  "${MDCM_SOURCE_DIR}/Source/MediaStorageAndFileFormat"
   "${MDCM_SOURCE_DIR}/Source/DataDictionary"
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  "${MDCM_SOURCE_DIR}/Utilities"
-  "${MDCM_BINARY_DIR}/Utilities")
+  "${MDCM_BINARY_DIR}/Utilities"
+  "${MDCM_SOURCE_DIR}/Utilities")
 
 if(MDCM_USE_SYSTEM_CHARLS)
-  include_directories(${CHARLS_INCLUDE_DIRS})
+  include_directories(${CHARLS_INCLUDE_DIR})
 else()
   include_directories("${MDCM_BINARY_DIR}/Utilities/mdcmcharls")
 endif()
