@@ -74,7 +74,6 @@ include_directories(
   "${MDCM_SOURCE_DIR}/Source/Common"
   "${MDCM_BINARY_DIR}/Source/Common"
   "${MDCM_SOURCE_DIR}/Source/DataStructureAndEncodingDefinition"
-  "${MDCM_SOURCE_DIR}/Source/MediaStorageAndFileFormat"
   "${MDCM_SOURCE_DIR}/Source/DataDictionary"
   "${MDCM_BINARY_DIR}/Utilities"
   "${MDCM_SOURCE_DIR}/Utilities")
