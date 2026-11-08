@@ -42,7 +42,7 @@ Altered by: Mathieu Malaterre 2008, for GDCM project
             when reading deflate bit stream in DICOM special handling of \0 is needed
             also when writing deflate back to disk, the add_footer must be called
 
-Altered by: Mikhail Isakov 2020, for MDCM project
+Altered by: Mikhail Isakov 2020, 2026 for MDCM project
 */
 
 //*****************************************************************************
@@ -176,7 +176,7 @@ basic_zip_streambuf<charT, traits>::flush(void)
       {
         // Copy to the beginning of the stream
         std::streamsize theDiff = written_byte_size - remainder;
-        memcpy(_output_buffer.data(), &(_output_buffer[static_cast<unsigned int>(theDiff)]), remainder);
+        memmove(_output_buffer.data(), &(_output_buffer[static_cast<unsigned int>(theDiff)]), remainder);
       }
 
       _zip_stream.avail_out = static_cast<uInt>(_output_buffer.size() - remainder);
@@ -262,8 +262,7 @@ basic_zip_streambuf<charT, traits>::zip_to_stream(char_type * buffer, std::strea
       {
         // Copy to the beginning of the stream
         std::streamsize theDiff = written_byte_size - remainder;
-        // assert(theDiff > 0 && theDiff < std::numeric_limits<unsigned int>::max());
-        memcpy(_output_buffer.data(), &_output_buffer[static_cast<unsigned int>(theDiff)], remainder);
+        memmove(_output_buffer.data(), &_output_buffer[static_cast<unsigned int>(theDiff)], remainder);
       }
 
       _zip_stream.avail_out = static_cast<uInt>(_output_buffer.size() - remainder);
@@ -329,7 +328,7 @@ basic_unzip_streambuf<charT, traits>::underflow(void)
   if (n_putback > 4)
     n_putback = 4;
 
-  memcpy(_buffer.data() + (4 - n_putback), this->gptr() - n_putback, n_putback * sizeof(char_type));
+  memmove(_buffer.data() + (4 - n_putback), this->gptr() - n_putback, n_putback * sizeof(char_type));
 
   std::streamsize num =
     unzip_from_stream(_buffer.data() + 4, static_cast<std::streamsize>((_buffer.size() - 4) * sizeof(char_type)));
