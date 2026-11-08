@@ -33,7 +33,11 @@
 #include "mdcm_openjpeg.h"
 
 #define MDCM_JPEG2000_USE_RDBUF
+
 //#define MDCM_JPEG2000_VERBOSE
+
+// S. https://github.com/malaterre/GDCM/pull/240 (modified)
+#define MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
 
 #define J2K_CFMT 0
 #define JP2_CFMT 1
@@ -241,8 +245,16 @@ bool parsej2k_imp(const char * const stream, const size_t file_size, bool * loss
       if (!r || l < 2)
         break;
       lenmarker = static_cast<size_t>(l) - 2;
+#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
+      if (lenmarker > cur_size)	
+        break;
+#endif
       if (marker == COD)
       {
+#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
+        if (cur_size < 10)	
+          break;
+#endif
         const uint8_t MCTransformation = *(cur + 4);
         if (MCTransformation == 0x0)
         {
@@ -309,9 +321,16 @@ bool parsejp2_imp(const char * const stream, const size_t file_size, bool * loss
       {
         len64 = file_size - start + 8;
       }
-      assert(len64 >= 8);
+#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
+      if (len64 < 8)
+        break;
+#endif
       return parsej2k_imp(cur, len64 - 8, lossless, mct);
     }
+#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
+    if (len64 < 8 || (len64 - 8) > cur_size)
+      break;
+#endif
     const size_t lenmarker = len64 - 8;
     cur += lenmarker;
   }
