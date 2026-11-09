@@ -35,19 +35,7 @@ namespace mdcm
 {
 
 class DataSet;
-/**
- * Class to represent an Item
- * A component of the value of a Data Element that is of Value Representation
- * Sequence of Items.
- * An Item contains a Data Set .
- * See PS 3.5 7.5.1 Item Encoding Rules
- * Each Item of a Data Element of VR SQ shall be encoded as a DICOM Standart
- * Data Element with a specific Data Element Tag of Value (FFFE,E000). The Item
- * Tag is followed by a 4 byte Item Length field encoded in one of the
- * following two ways Explicit/ Implicit
- * ITEM: A component of the Value of a Data Element that is of Value
- * Representation Sequence of Items. An Item contains a Data Set.
- */
+
 class MDCM_EXPORT Item : public DataElement
 {
 public:
@@ -67,7 +55,35 @@ public:
 
   template <typename TDE>
   VL
-  GetLength() const;
+  GetLength() const
+  {
+    if (ValueLengthField.IsUndefined())
+    {
+      assert(!NestedDataSet.GetLength<TDE>().IsUndefined());
+      // Item Start             4
+      // Item Length            4
+      // DataSet                ?
+      // Item End Delimitation  4
+      // Item End Length        4
+      assert(NestedDataSet.GetLength<TDE>() % 2 == 0);
+      return TagField.GetLength() /* 4 */ + ValueLengthField.GetLength() /* 4 */
+             + NestedDataSet.GetLength<TDE>() + 4 + 4;
+    }
+    else
+    {
+      // Item Start             4
+      // Item Length            4
+      // DataSet                ?
+      const VL nestedlen = NestedDataSet.GetLength<TDE>();
+      // The following line is commented out, since we could be in the case where
+      // we are computing the actual length of an implicit dataset, from an
+      // initially read explicit dataset in which case the two length cannot
+      // related to each other
+      // assert( ValueLengthField == nestedlen );
+      assert(nestedlen % 2 == 0);
+      return TagField.GetLength() /* 4 */ + ValueLengthField.GetLength() /* 4 */ + nestedlen;
+    }
+  }
 
   void
   InsertDataElement(const DataElement & de)
@@ -85,15 +101,12 @@ public:
     return NestedDataSet.GetDataElement(t);
   }
 
-  // Completely defines it with the nested dataset
-  // destroy anything present
   void
   SetNestedDataSet(const DataSet & nested)
   {
     NestedDataSet = nested;
   }
 
-  // Return a const ref to the Nested Data Set
   const DataSet &
   GetNestedDataSet() const
   {
@@ -116,7 +129,6 @@ public:
   std::istream &
   Read(std::istream & is)
   {
-    // Superclass
     {
       DataSet & nested = NestedDataSet;
       nested.Clear();
@@ -165,7 +177,7 @@ public:
         }
         catch (const ParseException &)
         {
-          // MR_Philips_Intera_PrivateSequenceExplicitVR_in_SQ_2001_e05f_item_wrong_lgt_use_NOSHADOWSEQ.dcm
+          // MM: MR_Philips_Intera_PrivateSequenceExplicitVR_in_SQ_2001_e05f_item_wrong_lgt_use_NOSHADOWSEQ.dcm
           // You have to byteswap the length but not the tag...sigh
           mdcmWarningMacro("Attempt to read nested Item without byte-swapping the Value Length");
           start -= is.tellg();
@@ -174,7 +186,7 @@ public:
           nested.Clear();
           nested.template ReadNested<TDE, SwapperNoOp>(is);
           ByteSwapFilter bsf(nested);
-          // Tag are read in big endian, need to byteswap them back
+          // MM: Tags are read in big endian, need to byteswap them back
           bsf.SetByteSwapTag(true);
           bsf.ByteSwap();
         }
@@ -185,7 +197,7 @@ public:
           assert(0);
         }
       }
-      else /* if(ValueLengthField.IsUndefined()) */
+      else
       {
         DataSet & nested = NestedDataSet;
         nested.Clear();
@@ -196,12 +208,14 @@ public:
       }
       return is;
     }
+#if 0
     // http://groups.google.com/group/comp.protocols.dicom/msg/c07efcf5e759fc83
     // Bug_Philips_ItemTag_3F3F.dcm
     if (TagField == Tag(0x3f3f, 0x3f00))
     {
-      // TagField = Tag(0xfffe, 0xe000);
+      TagField = Tag(0xfffe, 0xe000);
     }
+#endif
 #endif
     if (TagField != Tag(0xfffe, 0xe000) && TagField != Tag(0xfffe, 0xe0dd))
     {
@@ -214,10 +228,9 @@ public:
       assert(0 && "Should not happen");
       return is;
     }
-    // Self
     if (TagField == Tag(0xfffe, 0xe0dd))
     {
-      // Some file written by MDCM 1.0 were written with 0xFFFFFFFF instead of 0x0
+      // Some buggy files written by GDCM 1.0 have 0xFFFFFFFF instead of 0x0.
       if (ValueLengthField)
       {
         mdcmDebugMacro("ValueLengthField is not 0 but " << ValueLengthField);
@@ -230,7 +243,7 @@ public:
       assert(nested.IsEmpty());
       nested.template ReadNested<TDE, TSwap>(is);
     }
-    else /* if(ValueLengthField.IsUndefined()) */
+    else
     {
       assert(!ValueLengthField.IsUndefined());
       DataSet & nested = NestedDataSet;
@@ -246,7 +259,7 @@ public:
   Write(std::ostream & os) const
   {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
-    if (TagField == Tag(0x3f3f, 0x3f00) && false)
+    if (false && TagField == Tag(0x3f3f, 0x3f00)) // Disabled workaround for Philips bug?
     {
       Tag t(0xfffe, 0xe000);
       t.Write<TSwap>(os);
@@ -255,7 +268,6 @@ public:
 #endif
     {
       assert(TagField == Tag(0xfffe, 0xe000) || TagField == Tag(0xfffe, 0xe0dd));
-      // Not sure how this happen
       if (TagField == Tag(0xfffe, 0xe0dd))
       {
         mdcmWarningMacro("SeqDelItem found in sequence with defined length");
@@ -286,7 +298,6 @@ public:
         return os;
       }
     }
-    // Self
     NestedDataSet.Write<TDE, TSwap>(os);
     if (ValueLengthField.IsUndefined())
     {
@@ -299,6 +310,7 @@ public:
   }
 
   /*
+  MM:
   There are three special SQ related Data Elements that are not ruled by the VR encoding rules conveyed
   by the Transfer Syntax. They shall be encoded as Implicit VR. These special Data Elements are Item
   (FFFE,E000), Item Delimitation Item (FFFE,E00D), and Sequence Delimitation Item (FFFE,E0DD).
@@ -312,10 +324,6 @@ public:
   }
 
 private:
-  /* NESTED DATA SET  a Data Set contained within a Data Element of an other Data Set.
-   * May be nested recursively.
-   * Only Data Elements with VR = SQ  may, themselves, contain Data Sets
-   */
   DataSet NestedDataSet{};
 };
 
@@ -329,7 +337,5 @@ operator<<(std::ostream & os, const Item & val)
 }
 
 } // end namespace mdcm
-
-#include "mdcmItem.hxx"
 
 #endif // MDCMITEM_H
