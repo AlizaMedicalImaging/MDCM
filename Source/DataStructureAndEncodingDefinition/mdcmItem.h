@@ -23,9 +23,10 @@
 #ifndef MDCMITEM_H
 #define MDCMITEM_H
 
+#include "mdcmParseDepthGuard.h"
+#include "mdcmParseException.h"
 #include "mdcmDataElement.h"
 #include "mdcmDataSet.h"
-#include "mdcmParseException.h"
 #include "mdcmSwapper.h"
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
 #  include "mdcmByteSwapFilter.h"
@@ -129,6 +130,7 @@ public:
   std::istream &
   Read(std::istream & is)
   {
+    ParseDepthGuard depth_guard;
     {
       DataSet & nested = NestedDataSet;
       nested.Clear();
@@ -147,7 +149,7 @@ public:
     if (TagField == Tag(0xfeff, 0x00e0) || TagField == Tag(0xfeff, 0xdde0))
     {
       mdcmWarningMacro("ByteSwaping Private SQ: " << TagField);
-      // Invert previously read TagField since wrong endianness:
+      // Invert previously read TagField, wrong endianness
       TagField = Tag(SwapperDoOp::Swap(TagField.GetGroup()), SwapperDoOp::Swap(TagField.GetElement()));
       assert(TagField == Tag(0xfffe, 0xe000) || TagField == Tag(0xfffe, 0xe0dd));
       if (!ValueLengthField.Read<SwapperDoOp>(is))
@@ -155,7 +157,7 @@ public:
         assert(0 && "Should not happen");
         return is;
       }
-      // Some file written by GDCM 1.0 we writting 0xFFFFFFFF instead of 0x0
+      // Some files written by GDCM 1.0 have 0xFFFFFFFF instead of 0x0
       if (TagField == Tag(0xfffe, 0xe0dd))
       {
         if (ValueLengthField)
@@ -175,10 +177,14 @@ public:
           ByteSwapFilter bsf(nested);
           bsf.ByteSwap();
         }
+        catch (const ParseDepthException &)
+        {
+          throw;
+        }
         catch (const ParseException &)
         {
-          // MM: MR_Philips_Intera_PrivateSequenceExplicitVR_in_SQ_2001_e05f_item_wrong_lgt_use_NOSHADOWSEQ.dcm
-          // You have to byteswap the length but not the tag...sigh
+          // MR_Philips_Intera_PrivateSequenceExplicitVR_in_SQ_2001_e05f_item_wrong_lgt_use_NOSHADOWSEQ.dcm
+          // MM: You have to byteswap the length but not the tag...sigh
           mdcmWarningMacro("Attempt to read nested Item without byte-swapping the Value Length");
           start -= is.tellg();
           assert(start < 0);
