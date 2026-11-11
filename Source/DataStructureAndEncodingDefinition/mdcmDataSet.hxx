@@ -25,6 +25,7 @@
 #include "mdcmByteValue.h"
 #include "mdcmPrivateTag.h"
 #include "mdcmParseException.h"
+#include "mdcmParseDepthGuard.h"
 #include <cstring>
 
 namespace mdcm
@@ -43,6 +44,11 @@ DataSet::ReadNested(std::istream & is)
     {
       InsertDataElement(de);
     }
+  }
+  catch (const ParseDepthException &)
+  {
+    mdcmDebugMacro("DataSet::ReadNested: ParseDepthException");
+    throw std::logic_error("Parse depth exception in DataSet::ReadNested");
   }
   catch (const ParseException & pe)
   {
@@ -407,6 +413,11 @@ DataSet::ReadWithLength(std::istream & is, VL & length)
         }
       }
     }
+  }
+  catch (const ParseDepthException &)
+  {
+    mdcmDebugMacro("DataSet::ReadWithLength: ParseDepthException");
+    throw std::logic_error("Parse depth exception in DataSet::ReadWithLength");
   }
   catch (const ParseException & pe)
   {
