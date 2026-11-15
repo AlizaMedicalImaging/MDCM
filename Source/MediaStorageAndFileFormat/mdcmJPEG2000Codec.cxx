@@ -246,13 +246,13 @@ bool parsej2k_imp(const char * const stream, const size_t file_size, bool * loss
         break;
       lenmarker = static_cast<size_t>(l) - 2;
 #ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
-      if (lenmarker > cur_size)	
+      if (lenmarker > cur_size)
         break;
 #endif
       if (marker == COD)
       {
 #ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
-        if (cur_size < 10)	
+        if (cur_size < 10)
           break;
 #endif
         const uint8_t MCTransformation = *(cur + 4);
@@ -798,7 +798,7 @@ rawtoimage(const char *        inputbuffer,
   {
     numcomps = 3;
     color_space = CLRSPC_SRGB;
-    // Does OpenJPEG support CLRSPC_SYCC?
+    // What is with CLRSPC_SYCC or CLRSPC_EYCC? It looks like input should be only RGB.
   }
   else
   {
@@ -2202,10 +2202,20 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     profiles. Note in particular that the JP2 file header is not sent in the JPEG
     2000 bitstream that is encapsulated in DICOM.
     */
+	//
+    // S. comment before SetMCT function.
     if (mct)
-      PI = PhotometricInterpretation::YBR_RCT;
+    {
+      if (reversible)
+        PI = PhotometricInterpretation::YBR_RCT;
+      else
+        PI = PhotometricInterpretation::YBR_ICT;
+    }
     else
+    {
       PI = PhotometricInterpretation::RGB;
+      // What is with YBR_FULL?
+    }
     this->PF.SetSamplesPerPixel(3);
   }
 #ifdef MDCM_JPEG2000_VERBOSE
@@ -2220,11 +2230,93 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
   case CLRSPC_CMYK:
     std::cout << "CLRSPC_CMYK" << std::endl;
     break;
-  case CLRSPC_EYCC:
-    std::cout << "CLRSPC_EYCC" << std::endl;
-    break;
   case CLRSPC_SYCC:
+    /*
+    Yes, OpenJPEG supports OPJ_CLRSPC_SYCC, though how it handles the
+    data depends on whether you use the core library or its command-line tools.
+    [1] (https://www.openjpeg.org/doxygen/openjpeg_8h.html)
+    
+    How OpenJPEG Handles OPJ_CLRSPC_SYCC
+    
+    - Container & Metadata Support. When reading or writing .jp2 files,
+    OpenJPEG maps OPJ_CLRSPC_SYCC directly to the JPEG 2000 standard enumerated
+    color space code 18 (sYCC) inside the file's Color Specification (colr) box.
+    [1] (https://harvardwiki.atlassian.net/wiki/spaces/DigitalImaging/pages/58757884)
+    [2] (https://www.openjpeg.org/doxygen/jp2_8h.html)
+    
+    - Core Library (libopenjp2). The core codec library decodes and encodes the raw
+    YCbCr component planes as-is without altering the color space. It preserves any
+    chroma subsampling (such as 4:2:0 or 4:2:2) in the opj_image_comp_t component
+    dimensions (dx, dy, w, h), leaving color space conversion and chroma upsampling
+    to the calling application.
+    [1] (https://www.openjpeg.org/doxygen/jp2_8h.html)
+    
+    - Command-Line Utilities (opj_decompress / opj_compress). The bundled command-line
+    tools include helper routines (such as color_sycc_to_rgb) to convert sYCC to RGB when
+    outputting to formats like PNG or BMP. You can also control this behavior using CLI flags
+    like -force-rgb or -upsample.
+    [1] (https://github.com/uclouvain/openjpeg/wiki/DocJ2KCodec)
+    
+    - Raw Codestreams (.j2k). Raw J2K codestreams do not carry a color space header box.
+    When decoding a .j2k file, image->color_space will default to OPJ_CLRSPC_UNSPECIFIED
+    unless your application explicitly sets or infers OPJ_CLRSPC_SYCC.
+    [1] (https://www.openjpeg.org/doxygen/openjpeg_8h.html)
+    
+    Important Caveat When Encoding
+    
+    - Disable MCT. If you encode an image tagged with OPJ_CLRSPC_SYCC, make sure
+    Multiple Component Transformation (parameters.tcp_mct) is set to 0.
+    MCT is designed to convert RGB into YCbCr during compression—applying it to
+    data that is already in sYCC will corrupt the colors.
+    [1] (https://gdal.org/en/stable/drivers/raster/jp2openjpeg.html)
+    [2] (https://github.com/pydicom/pylibjpeg-openjpeg/blob/main/openjpeg/utils.py)
+    */
     std::cout << "CLRSPC_SYCC" << std::endl;
+    break;
+  case CLRSPC_EYCC:
+    /*
+    Yes, OpenJPEG supports OPJ_CLRSPC_EYCC (Extended YCbCr / e-YCC), though full
+    read and write container support requires a recent version of the library.
+    It was added to the OPJ_COLOR_SPACE enum in OpenJPEG 2.1, and writing EYCC
+    color metadata into JP2 containers was added in OpenJPEG 2.5.
+    [1] (https://www.openjpeg.org/abi-check/headers_diff/openjpeg/2.0.1/2.1/diff.html)
+    [2] (https://sources.debian.org/src/openjpeg2/2.5.4-1.1/NEWS.md)
+    
+    Level of Support Across OpenJPEG
+    
+    - Enum & Header Definition. OPJ_CLRSPC_EYCC (4) has been defined in openjpeg.h
+    since version 2.1.
+    [1] (https://www.openjpeg.org/abi-check/headers_diff/openjpeg/2.0.1/2.1/diff.html)
+    
+    - JP2 Container Reading & Writing. OpenJPEG's JP2 parser maps OPJ_CLRSPC_EYCC
+    to the JPEG 2000 enumerated color space code 24 (e-YCC) in the Color Specification
+    (colr) box. In versions prior to 2.5, OpenJPEG could recognize EYCC when reading
+    JP2 files, while support for writing enumcs for EYCC and CMYK during encoding was
+    added in OpenJPEG 2.5.
+    [1] (https://www.openjpeg.org/doxygen/jp2_8h.html)
+    [2] (https://www.openjpeg.org/doxygen/jp2_8c.html)
+    [3] (https://sources.debian.org/src/openjpeg2/2.5.4-1.1/NEWS.md)
+    
+    - Core Codec Behavior (libopenjp2). Just like OPJ_CLRSPC_SYCC, the core library
+    encodes and decodes the raw e-YCC component planes without performing color space
+    conversion. Your application receives the raw luma and chroma planes and is
+    responsible for converting them to RGB.
+    [1] (https://www.openjpeg.org/doxygen/jp2_8h.html)
+    
+    - Command-Line Tools (opj_decompress). OpenJPEG's CLI utilities include a
+    dedicated conversion routine (color_eycc_to_rgb) to convert OPJ_CLRSPC_EYCC
+    images to RGB when decompressing to standard image formats like PNG, BMP, or TIFF.
+    
+    Key Difference from OPJ_CLRSPC_SYCC
+    
+    - Gamut & Conversion Math. While sYCC (OPJ_CLRSPC_SYCC) is tied to the standard
+    sRGB color gamut, e-YCC (OPJ_CLRSPC_EYCC, defined in IEC 61966-2-4 / xvYCC)
+    supports an extended gamut with wider chroma ranges. When converting
+    OPJ_CLRSPC_EYCC to RGB in your own application, you must use the extended
+    YCC-to-RGB transformation equations rather than standard BT.601 sYCC
+    formulas to avoid clipping out-of-gamut colors.
+    */
+    std::cout << "CLRSPC_EYCC" << std::endl;
     break;
   case CLRSPC_UNKNOWN:
     std::cout << "CLRSPC_UNKNOWN" << std::endl;
@@ -2238,16 +2330,12 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
   }
 #endif
   assert(PI != PhotometricInterpretation::UNKNOWN);
-  // FIXME
   //
-  //
-  // Guessing PhotometricInterpretation by header should be reviewed.
-  //
-  // Removed guessing transfer syntax by header (unused),
-  // commented for possible future implementation.
+  // Removed guessing transfer syntax by header (unused!),
+  // left commented for possible future implementation.
   // HT must be taken into acout too.
   /*
-  // const bool bmct = false;
+  const bool bmct = false;
   if (bmct)
   {
     if (reversible)
@@ -2257,14 +2345,9 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     else
     {
       //ts = TransferSyntax::JPEG2000Part2;
-      if (PI == PhotometricInterpretation::YBR_RCT)
-      {
-        PI = PhotometricInterpretation::YBR_ICT;
-      }
     }
   }
   else
-  */
   {
     if (reversible)
     {
@@ -2273,12 +2356,9 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     else
     {
       //ts = TransferSyntax::JPEG2000;
-      if (PI == PhotometricInterpretation::YBR_RCT)
-      {
-        PI = PhotometricInterpretation::YBR_ICT;
-      }
     }
   }
+  */
   //
   //
   //
