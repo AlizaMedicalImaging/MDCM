@@ -1,5 +1,6 @@
 set(DSED_SRCS
   mdcmByteValue.cxx
+  mdcmParseDepthGuard.cxx
   mdcmDataElement.cxx
   mdcmDataSet.cxx
   mdcmExplicitDataElement.cxx
