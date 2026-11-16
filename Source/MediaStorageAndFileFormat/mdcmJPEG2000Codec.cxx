@@ -34,7 +34,7 @@
 
 #define MDCM_JPEG2000_USE_RDBUF
 
-//#define MDCM_JPEG2000_VERBOSE
+#define MDCM_JPEG2000_VERBOSE
 
 // S. https://github.com/malaterre/GDCM/pull/240 (modified)
 #define MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
@@ -785,6 +785,7 @@ rawtoimage(const char *        inputbuffer,
   (void)fragment_size;
   int                  w, h;
   int                  numcomps;
+  // Raw J2K codestreams do not carry a color space header box.
   OPJ_COLOR_SPACE      color_space;
   opj_image_cmptparm_t cmptparm[3]; // maximum of 3 components
   opj_image_t *        image = nullptr;
@@ -798,7 +799,7 @@ rawtoimage(const char *        inputbuffer,
   {
     numcomps = 3;
     color_space = CLRSPC_SRGB;
-    // What is with CLRSPC_SYCC or CLRSPC_EYCC? It looks like input should be only RGB.
+    // MDCM also can handle YBR_FULL input (4:4:4 -> no chrome subsampling).
   }
   else
   {
@@ -2202,7 +2203,7 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     profiles. Note in particular that the JP2 file header is not sent in the JPEG
     2000 bitstream that is encapsulated in DICOM.
     */
-	//
+    //
     // S. comment before SetMCT function.
     if (mct)
     {
@@ -2214,11 +2215,15 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     else
     {
       PI = PhotometricInterpretation::RGB;
-      // What is with YBR_FULL?
+      // YBR_FULL?
     }
     this->PF.SetSamplesPerPixel(3);
   }
 #ifdef MDCM_JPEG2000_VERBOSE
+  /*
+  Raw J2K codestreams do not carry a color space header box. When decoding a .j2k file,
+  image->color_space will default to OPJ_CLRSPC_UNSPECIFIED.
+  */
   switch(image->color_space)
   {
   case CLRSPC_GRAY:
@@ -2331,7 +2336,7 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
 #endif
   assert(PI != PhotometricInterpretation::UNKNOWN);
   //
-  // Removed guessing transfer syntax by header (unused!),
+  // Removed guessing a transfer syntax by the header (unused),
   // left commented for possible future implementation.
   // HT must be taken into acout too.
   /*
