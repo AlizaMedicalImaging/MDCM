@@ -91,6 +91,10 @@ VR16ExplicitDataElement::ReadPreValue(std::istream & is)
       return is;
     }
   }
+  catch (const mdcm::ParseDepthException &)
+  {
+    throw;
+  }
   catch (const std::logic_error &)
   {
     VRField = VR::INVALID;
@@ -202,6 +206,10 @@ VR16ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
           assert(0);
         }
       }
+      catch (const mdcm::ParseDepthException &)
+      {
+        throw;
+      }
       catch (const std::exception &)
       {
         // MM: Must be one of those non-cp246 file...
@@ -284,6 +292,10 @@ VR16ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
         ByteSwapFilter bsf(ds);
         bsf.ByteSwap();
       }
+    }
+    catch (const mdcm::ParseDepthException &)
+    {
+      throw;
     }
     catch (const std::exception & ex)
     {

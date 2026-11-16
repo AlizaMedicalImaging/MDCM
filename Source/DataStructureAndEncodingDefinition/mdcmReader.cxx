@@ -384,6 +384,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
     {
       F->GetHeader().GetPreamble().Read(is);
     }
+    catch (const mdcm::ParseDepthException &)
+    {
+      throw;
+    }
     catch (const std::exception &)
     {
       // return to beginning of file, hopefully this file is simply missing preamble
@@ -406,6 +410,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
           hasmetaheader = true;
           assert(!F->GetHeader().IsEmpty());
         }
+        catch (const mdcm::ParseDepthException &)
+        {
+          throw;
+        }
         catch (const std::exception & ex)
         {
           mdcmWarningMacro(ex.what());
@@ -416,6 +424,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
           try
           {
             F->GetHeader().ReadCompat(is);
+          }
+          catch (const mdcm::ParseDepthException &)
+          {
+            throw;
           }
           catch (const std::exception & ex2)
           {
@@ -428,6 +440,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
       {
         F->GetHeader().ReadCompat(is);
       }
+    }
+    catch (const mdcm::ParseDepthException &)
+    {
+      throw;
     }
     catch (const std::exception &)
     {
@@ -503,7 +519,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
         }
       }
     }
-    // Only catch parse exception at this point
+    catch (const mdcm::ParseDepthException &)
+    {
+      throw;
+    }
     catch (const ParseException & ex)
     {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
@@ -587,6 +606,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
             F->GetDataSet().Insert(ide);
             caller.template ReadCommon<VR16ExplicitDataElement, SwapperNoOp>(is);
           }
+          catch (const mdcm::ParseDepthException &)
+          {
+            throw;
+          }
           catch (const std::logic_error &)
           {
             try
@@ -615,6 +638,10 @@ Reader::InternalReadCommon(const T_Caller & caller)
               mdcmWarningMacro("Attempt to read file with explicit/implicit");
               F->GetDataSet().Clear();
               caller.template ReadCommon<ExplicitImplicitDataElement, SwapperNoOp>(is);
+            }
+            catch (const mdcm::ParseDepthException &)
+            {
+              throw;
             }
             catch (const std::exception &)
             {
@@ -669,6 +696,11 @@ Reader::InternalReadCommon(const T_Caller & caller)
       success = false;
     }
     caller.Check(success, *Stream);
+  }
+  catch (const mdcm::ParseDepthException &)
+  {
+    mdcmAlwaysWarnMacro("ParseDepthException in Reader");
+    success = false;
   }
   catch (...)
   {

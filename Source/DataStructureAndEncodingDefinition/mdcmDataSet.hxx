@@ -44,6 +44,10 @@ DataSet::ReadNested(std::istream & is)
       InsertDataElement(de);
     }
   }
+  catch (const mdcm::ParseDepthException &)
+  {
+    throw;
+  }
   catch (const ParseException & pe)
   {
     if (pe.GetLastElement().GetTag() == Tag(0xfffe, 0xe0dd))
@@ -407,6 +411,10 @@ DataSet::ReadWithLength(std::istream & is, VL & length)
         }
       }
     }
+  }
+  catch (const mdcm::ParseDepthException &)
+  {
+    throw;
   }
   catch (const ParseException & pe)
   {

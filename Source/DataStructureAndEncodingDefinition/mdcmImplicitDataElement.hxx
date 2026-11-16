@@ -159,6 +159,10 @@ ImplicitDataElement::ReadValue(std::istream & is, bool readvalues)
                            "TransferSyntax=Implicit for tag: "
                            << TagField);
         }
+        catch (const mdcm::ParseDepthException &)
+        {
+          throw;
+        }
         catch (const std::logic_error &)
         {
           // MR_ELSCINT1_00e1_1042_SQ_feff_00e0_Item.dcm
@@ -415,6 +419,10 @@ ImplicitDataElement::ReadValueWithLength(std::istream & is, VL & length, bool re
           mdcmAlwaysWarnMacro("Illegal: Explicit SQ found in a file with "
                               "TransferSyntax=Implicit for tag: "
                               << TagField);
+        }
+        catch (const mdcm::ParseDepthException &)
+        {
+          throw;
         }
         catch (const std::logic_error &)
         {

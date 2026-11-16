@@ -176,6 +176,10 @@ public:
         {
           item.Read<TDE, TSwap>(is);
         }
+        catch (const ParseDepthException &)
+        {
+          throw;
+        }
         catch (const std::logic_error & ex)
         {
           if (strcmp(ex.what(), "Changed Length") == 0)
