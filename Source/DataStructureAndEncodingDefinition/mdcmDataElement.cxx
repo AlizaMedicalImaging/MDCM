@@ -175,6 +175,10 @@ DataElement::GetValueAsSQ() const
       SmartPointer<SequenceOfItems> sqi = sq;
       return sqi;
     }
+    catch (const mdcm::ParseDepthException &)
+    {
+      ;
+    }
     catch (const std::logic_error &)
     {
       // fix a broken dicom implementation for Philips

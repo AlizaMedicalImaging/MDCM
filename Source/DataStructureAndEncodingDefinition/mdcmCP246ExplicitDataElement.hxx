@@ -79,6 +79,10 @@ CP246ExplicitDataElement::ReadPreValue(std::istream & is)
       return is;
     }
   }
+  catch (const mdcm::ParseDepthException &)
+  {
+    throw;
+  }
   catch (const std::exception &)
   {
     mdcmWarningMacro("Assuming 16 bits VR for Tag=" << TagField << " in order to read a buggy DICOM file.");
@@ -143,6 +147,10 @@ CP246ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
           assert(0);
         }
       }
+      catch (const mdcm::ParseDepthException &)
+      {
+        throw;
+      }
       catch (const std::exception &)
       {
         // MM: Must be one of those non-cp246 file,
@@ -201,6 +209,10 @@ CP246ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
       {
         assert(0 && "Should not happen");
       }
+    }
+    catch (const mdcm::ParseDepthException &)
+    {
+      throw;
     }
     catch (const std::exception &)
     {

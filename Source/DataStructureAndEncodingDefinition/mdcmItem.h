@@ -130,7 +130,7 @@ public:
   std::istream &
   Read(std::istream & is)
   {
-    //ParseDepthGuard depth_guard; TODO
+    ParseDepthGuard depth_guard;
     {
       DataSet & nested = NestedDataSet;
       nested.Clear();
@@ -177,10 +177,10 @@ public:
           ByteSwapFilter bsf(nested);
           bsf.ByteSwap();
         }
-        //catch (const ParseDepthException &) TODO
-        //{
-        //  throw;
-        //}
+        catch (const ParseDepthException &)
+        {
+          throw;
+        }
         catch (const ParseException &)
         {
           // MR_Philips_Intera_PrivateSequenceExplicitVR_in_SQ_2001_e05f_item_wrong_lgt_use_NOSHADOWSEQ.dcm

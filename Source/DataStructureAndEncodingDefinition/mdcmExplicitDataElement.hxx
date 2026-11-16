@@ -106,6 +106,10 @@ ExplicitDataElement::ReadPreValue(std::istream & is)
       return is;
     }
   }
+  catch (const mdcm::ParseDepthException &)
+  {
+    throw;
+  }
   catch (const std::logic_error &)
   {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
@@ -208,6 +212,10 @@ ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
           assert(0);
         }
       }
+      catch (const mdcm::ParseDepthException &)
+      {
+        throw;
+      }
       catch (const std::exception &)
       {
         // Must be one of those non-cp246 file,
@@ -272,6 +280,10 @@ ExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
         ByteSwapFilter bsf(ds);
         bsf.ByteSwap();
       }
+    }
+    catch (const mdcm::ParseDepthException &)
+    {
+      throw;
     }
     catch (const std::exception & ex)
     {

@@ -86,6 +86,10 @@ UNExplicitDataElement::ReadPreValue(std::istream & is)
       return is;
     }
   }
+  catch (const mdcm::ParseDepthException &)
+  {
+    throw;
+  }
   catch (const std::logic_error &)
   {
 #ifdef MDCM_SUPPORT_BROKEN_IMPLEMENTATION
@@ -157,6 +161,10 @@ UNExplicitDataElement::ReadValue(std::istream & is, bool readvalues)
         {
           assert(0);
         }
+      }
+      catch (const mdcm::ParseDepthException &)
+      {
+        throw;
       }
       catch (const std::exception &)
       {
