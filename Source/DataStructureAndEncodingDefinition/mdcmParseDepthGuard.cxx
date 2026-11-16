@@ -1,4 +1,5 @@
 #include "mdcmParseDepthGuard.h"
+#include "mdcmParseException.h"
 #include "mdcmTrace.h"
 
 namespace
@@ -14,13 +15,10 @@ ParseDepthGuard::ParseDepthGuard()
 {
   // Check before incrementing: failed construction needs no counter cleanup,
   // and the counter cannot wrap past the limit.
-#if 0
-  std::cout << "ParseDepthGuard: parse_depth (before increment) = " << parse_depth << std::endl;
-#endif
   if (parse_depth >= parse_depth_limit)
   {
     mdcmAlwaysWarnMacro("Nesting depth limit (" << parse_depth_limit << ") exceeded while parsing data set");
-    throw ParseDepthException("");
+    throw ParseDepthException("Nesting depth limit exceeded");
   }
   ++parse_depth;
 }

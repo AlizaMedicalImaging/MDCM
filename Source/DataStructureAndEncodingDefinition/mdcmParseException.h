@@ -59,6 +59,12 @@ private:
   DataElement LastElement;
 };
 
+class MDCM_EXPORT ParseDepthException : public ParseException
+{
+public:
+  using ParseException::ParseException;
+};
+
 } // end namespace mdcm
 
 #endif
