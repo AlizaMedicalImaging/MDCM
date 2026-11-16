@@ -34,7 +34,7 @@
 
 #define MDCM_JPEG2000_USE_RDBUF
 
-#define MDCM_JPEG2000_VERBOSE
+//#define MDCM_JPEG2000_VERBOSE
 
 // S. https://github.com/malaterre/GDCM/pull/240 (modified)
 #define MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
@@ -416,7 +416,7 @@ opj_stream_t * OPJ_CALLCONV
 /*
  * Divide an integer by a power of 2 and round upwards.
  *
- * a divided by 2^b
+ * 'a' divided by 2^b
  */
 int int_ceildivpow2(int a, int b)
 {
@@ -546,7 +546,7 @@ rawtoimage_fill2(const T *     inputbuffer,
     }
   }
 #if 1
-  // BitsAllocated 24 is allowed by DICOM, currently not supported, may be later.
+  // BitsAllocated 24 is allowed by DICOM, currently not supported, maybe later.
   else if ((bitsallocated == 32 /* || bitsallocated == 24 */) && (bitsstored <= bitsallocated) && (bitsstored <= 31))
   {
     const uint32_t pmask = static_cast<uint32_t>(0xffffffffULL >> (bitsallocated - bitsstored));
@@ -639,8 +639,7 @@ rawtoimage_fill2(const T *     inputbuffer,
     }
   }
 /*
-  // BitsAllocated 40 is allowed by DICOM, currently not supported and
-  // OpenJPEG can currently work with max. prec. 31.
+  // BitsAllocated 40 is allowed by DICOM, currently not supported.
   else if (bitsallocated == 40 && bitsstored <= 31)
   {
     const uint64_t pmask = static_cast<uint64_t>(0xffffffffffffffffULL >> (bitsallocated - bitsstored));
@@ -799,7 +798,7 @@ rawtoimage(const char *        inputbuffer,
   {
     numcomps = 3;
     color_space = CLRSPC_SRGB;
-    // MDCM also can handle YBR_FULL input (4:4:4 -> no chrome subsampling).
+    // TODO: MDCM also can handle YBR_FULL input (4:4:4 -> no chroma subsampling).
   }
   else
   {
@@ -2106,6 +2105,7 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
   {
     opj_stream_destroy(cio);
     opj_destroy_codec(dinfo);
+    opj_image_destroy(image);
     return false;
   }
   bool reversible = false;
