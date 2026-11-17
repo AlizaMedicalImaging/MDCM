@@ -537,10 +537,7 @@ ImageChangeTransferSyntax::TryJPEG2000Codec(const DataElement & pixelde, const B
     output.SetPlanarConfiguration(0);
     if (input.GetPixelFormat().GetSamplesPerPixel() == 3)
     {
-      if (ForceYBRFull ||
-          input_pi == PhotometricInterpretation::YBR_FULL ||
-          input_pi == PhotometricInterpretation::YBR_FULL_422 ||
-          input_pi == PhotometricInterpretation::YBR_PARTIAL_422)
+      if (ForceYBRFull || input_pi == PhotometricInterpretation::YBR_FULL)
       {
         if (mct)
         {
@@ -549,7 +546,7 @@ ImageChangeTransferSyntax::TryJPEG2000Codec(const DataElement & pixelde, const B
         }
         output.SetPhotometricInterpretation(PhotometricInterpretation::YBR_FULL);
       }
-      else
+      else if (input_pi == PhotometricInterpretation::RGB)
       {
         if (mct)
         {
@@ -562,6 +559,11 @@ ImageChangeTransferSyntax::TryJPEG2000Codec(const DataElement & pixelde, const B
         {
           output.SetPhotometricInterpretation(PhotometricInterpretation::RGB);
         }
+      }
+      else
+      {
+        mdcmAlwaysWarnMacro("Input photometric interpretation is not supported");
+        return false;
       }
     }
     else

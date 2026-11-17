@@ -545,7 +545,6 @@ rawtoimage_fill2(const T *     inputbuffer,
       }
     }
   }
-#if 1
   // BitsAllocated 24 is allowed by DICOM, currently not supported, maybe later.
   else if ((bitsallocated == 32 /* || bitsallocated == 24 */) && (bitsstored <= bitsallocated) && (bitsstored <= 31))
   {
@@ -732,7 +731,6 @@ rawtoimage_fill2(const T *     inputbuffer,
     }
   }
 */
-#endif
 }
 
 template <typename T>
@@ -778,14 +776,13 @@ rawtoimage(const char *        inputbuffer,
            int                 highbit,
            int                 sign,
            int                 quality,
-           int                 pc)
+           int                 pc,
+           bool                ybr_full)
 {
   (void)quality;
   (void)fragment_size;
-  int                  w, h;
   int                  numcomps;
-  // Raw J2K codestreams do not carry a color space header box.
-  OPJ_COLOR_SPACE      color_space;
+  OPJ_COLOR_SPACE      color_space; // Raw J2K codestreams do not carry a color space header box!
   opj_image_cmptparm_t cmptparm[3]; // maximum of 3 components
   opj_image_t *        image = nullptr;
   const void * vinputbuffer = static_cast<const void*>(inputbuffer);
@@ -797,8 +794,12 @@ rawtoimage(const char *        inputbuffer,
   else if (sample_pixel == 3)
   {
     numcomps = 3;
-    color_space = CLRSPC_SRGB;
-    // TODO: MDCM also can handle YBR_FULL input (4:4:4 -> no chroma subsampling).
+    // Raw J2K codestreams will have OPJ_CLRSPC_UNSPECIFIED!
+    if (ybr_full)
+      // YBR_FULL input (4:4:4 -> no chroma subsampling, 'dx' and 'dy' will be checked below)
+      color_space = CLRSPC_SYCC;
+    else
+      color_space = CLRSPC_SRGB;
   }
   else
   {
@@ -813,25 +814,22 @@ rawtoimage(const char *        inputbuffer,
   // eg. fragment_size == 63532 and 181 * 117 * 3 * 8 == 63531
   assert(((fragment_size + 1) / 2) * 2 ==
          ((static_cast<size_t>(image_height) * image_width * numcomps * (bitsallocated / 8) + 1) / 2) * 2);
-  int subsampling_dx = parameters->subsampling_dx;
-  int subsampling_dy = parameters->subsampling_dy;
-  // FIXME
-  w = image_width;
-  h = image_height;
-  // Initialize image components
+  const int subsampling_dx = parameters->subsampling_dx;
+  const int subsampling_dy = parameters->subsampling_dy;
+  if (sample_pixel == 3 && !(subsampling_dx == 1 && subsampling_dy == 1))
+  {
+    // For 4:2:2 (YBR_FULL_422) : dx = 2, dy = 1, w = ceil(image_width / 2)
+    // For 4:2:0 : dx = 2, dy = 2, w = ceil(image_width / 2), h = ceil(image_height / 2)
+    mdcmAlwaysWarnMacro("Only RGB and YBR_FULL (4:4:4, no subsampling) are supported");
+  }
+  const int w = image_width;
+  const int h = image_height;
   memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
+  // Allow compression of 32 BitsAllocated images, prec 1-31 is supported with OpenJPEG 2.5.2
+  const int prec_tmp = (bitsallocated == 32) ? bitsstored : bitsallocated;
   for (int i = 0; i < numcomps; ++i)
   {
-    // Allow compression of 32 BitsAllocated images,
-    // prec 1-31 is supported with OpenJPEG 2.5.2
-    if (bitsallocated == 32)
-    {
-      cmptparm[i].prec = bitsstored;
-    }
-    else
-    {
-      cmptparm[i].prec = bitsallocated;
-    }
+    cmptparm[i].prec = prec_tmp;
 #if ((OPJ_VERSION_MAJOR == 2 && OPJ_VERSION_MINOR <= 3) || OPJ_VERSION_MAJOR < 2)
     cmptparm[i].bpp = bitsallocated;
 #endif
@@ -841,16 +839,13 @@ rawtoimage(const char *        inputbuffer,
     cmptparm[i].w = w;
     cmptparm[i].h = h;
   }
-  // Create the image
   image = opj_image_create(numcomps, &cmptparm[0], color_space);
   if (!image)
     return nullptr;
-  // Set image offset and reference grid
   image->x0 = parameters->image_offset_x0;
   image->y0 = parameters->image_offset_y0;
   image->x1 = parameters->image_offset_x0 + (w - 1) * subsampling_dx + 1;
   image->y1 = parameters->image_offset_y0 + (h - 1) * subsampling_dy + 1;
-  // Set image data
   if (bitsallocated <= 8)
   {
     if (sign)
@@ -914,7 +909,7 @@ rawtoimage(const char *        inputbuffer,
           static_cast<const uint32_t *>(vinputbuffer), w, h, numcomps, image, pc, bitsallocated, bitsstored, highbit, sign);
       }
     }
-    else // This code should be unreachable now, may be later for BitAllocated 24.
+    else // This code should be unreachable now, maybe later for BitAllocated 24.
     {
       if (sign)
       {
@@ -1257,7 +1252,7 @@ JPEG2000Codec::Decode2(const DataElement & in, char * out_buffer, size_t len)
   }
   else if (NumberOfDimensions == 3)
   {
-    /* I cannot figure out how to use openjpeg to support multiframes
+    /* MM: I cannot figure out how to use openjpeg to support multiframes
      * as encoded in DICOM
      * MM: Hack. If we are lucky enough the number of encapsulated fragments actually match
      * the number of Z frames.
@@ -1332,12 +1327,10 @@ JPEG2000Codec::Decode2(const DataElement & in, char * out_buffer, size_t len)
   return false;
 }
 
-// Compress into JPEG2000
 bool
 JPEG2000Codec::Code(const DataElement & in, DataElement & out)
 {
   out = in;
-  // Create a Sequence Of Fragments
   SmartPointer<SequenceOfFragments> sq = new SequenceOfFragments;
   const unsigned int *              dims = this->GetDimensions();
   const int                         image_width = dims[0];
@@ -1360,7 +1353,7 @@ JPEG2000Codec::Code(const DataElement & in, DataElement & out)
     if (!b)
       return false;
     Fragment frag;
-    assert(cbyteCompressed <= rgbyteCompressed.size()); // default alloc would be bogus
+    assert(cbyteCompressed <= rgbyteCompressed.size()); // MM: default alloc would be bogus
     frag.SetByteValue(rgbyteCompressed.data(), static_cast<uint32_t>(cbyteCompressed));
     sq->AddFragment(frag);
   }
@@ -1449,6 +1442,14 @@ JPEG2000Codec::SetReversible(bool b)
     Internals->coder_param.irreversible = 1;
 }
 
+bool
+JPEG2000Codec::GetReversible() const
+{
+  if (Internals->coder_param.irreversible == 0)
+    return true;
+  return false;
+}
+
 /*
 "The JPEG 2000 bit stream specifies whether or not a reversible or
 irreversible multi-component (color) transformation [ISO 15444-1 Annex G],
@@ -1488,19 +1489,21 @@ JPEG2000Codec::SetMCT(bool mct)
 }
 
 bool
-JPEG2000Codec::GetReversible() const
-{
-  if (Internals->coder_param.irreversible == 0)
-    return true;
-  return false;
-}
-
-bool
 JPEG2000Codec::GetMCT() const
 {
   if (Internals->coder_param.tcp_mct == 1)
     return true;
   return false;
+}
+
+void JPEG2000Codec::SetYbrFull(bool t)
+{
+  ybr_full = t;
+}
+
+bool JPEG2000Codec::GetYbrFull() const
+{
+  return ybr_full;
 }
 
 bool
@@ -1588,7 +1591,7 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   opj_image_t *     image = nullptr;
   unsigned char *   src = reinterpret_cast<unsigned char *>(dummy_buffer);
   size_t file_length = buf_size;
-  // OpenJPEG is very picky when there is a trailing 00 at the end of the JPC,
+  // MM: OpenJPEG is very picky when there is a trailing 00 at the end of the JPC,
   // so we need to make sure to remove it.
   // See for example: DX_J2K_0Padding.dcm, D_CLUNIE_CT1_J2KR.dcm
   // Marker 0xffd9 EOI End of Image (JPEG 2000 EOC End of codestream).
@@ -1605,7 +1608,6 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   {
     return std::make_pair<char *, size_t>(nullptr, 0);
   }
-  // Set decoding parameters to default values
   opj_set_default_decoder_parameters(&parameters);
   if ((file_length >= 12) && (memcmp(src, JP2_RFC3745_MAGIC, 12) == 0)
 #if 0
@@ -1634,7 +1636,6 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
     parameters.decod_format = J2K_CFMT;
   }
   parameters.cod_format = PGX_DFMT;
-  // Get a decoder handle
   switch (parameters.decod_format)
   {
     case J2K_CFMT:
@@ -1658,7 +1659,7 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   fsrc->mem = fsrc->cur = reinterpret_cast<char *>(src);
   fsrc->len = file_length;
   OPJ_UINT32 * s[2];
-  // The following hack is used for the file: DX_J2K_0Padding.dcm,
+  // MM: The following hack is used for the file: DX_J2K_0Padding.dcm,
   // see the function j2k_read_sot in openjpeg (line: 5946)
   // to deal with zero length Psot.
   //
@@ -1668,7 +1669,6 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   s[1] = nullptr;
   opj_set_error_handler(dinfo, mdcm_error_callback, s);
   cio = opj_stream_create_memory_stream(fsrc, OPJ_J2K_STREAM_CHUNK_SIZE, true);
-  // Setup the decoder decoding parameters using user parameters
   OPJ_BOOL bResult;
   bResult = opj_setup_decoder(dinfo, &parameters);
   if (!bResult)
@@ -1683,11 +1683,12 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   {
     opj_destroy_codec(dinfo);
     opj_stream_destroy(cio);
+    opj_image_destroy(image);
     mdcmErrorMacro("opj_setup_decoder failure");
     return std::make_pair<char *, size_t>(nullptr, 0);
   }
 #if 0
-  // Optional if you want decode the entire image
+  // MM: Optional if you want decode the entire image
   opj_set_decode_area(dinfo,
                       image,
                       (OPJ_INT32)parameters.DA_x0,
@@ -1700,6 +1701,7 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   {
     opj_destroy_codec(dinfo);
     opj_stream_destroy(cio);
+    opj_image_destroy(image);
     return std::make_pair<char *, size_t>(nullptr, 0);
   }
   bResult = bResult && (image != nullptr);
@@ -1708,6 +1710,7 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   {
     opj_destroy_codec(dinfo);
     opj_stream_destroy(cio);
+    opj_image_destroy(image);
     return std::make_pair<char *, size_t>(nullptr, 0);
   }
   bool reversible = false;
@@ -1756,7 +1759,6 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
       std::cout << "YBR_ICT, but is reversible" << std::endl;;
   }
 #endif
-  // Close the byte stream
   opj_stream_destroy(cio);
   const size_t len =
     static_cast<size_t>(Dimensions[0]) * Dimensions[1] * (PF.GetBitsAllocated() / 8) * image->numcomps;
@@ -1789,7 +1791,6 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
       return std::make_pair<char*, size_t>(nullptr, 0);
     }
     // ELSCINT1_JP2vsJ2K.dcm
-    // -> prec = 12, bpp = 0, sgnd = 0
     if (comp->sgnd != PF.GetPixelRepresentation())
     {
       PF.SetPixelRepresentation(static_cast<uint16_t>(comp->sgnd));
@@ -1918,9 +1919,6 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
     (void)n;
 #endif
   }
-  // Compute the proper number of resolutions to use.
-  // This is mostly done for images smaller than 64 pixels
-  // along any dimension.
   unsigned int numberOfResolutions = 0;
   unsigned int tw = image_width >> 1;
   unsigned int th = image_height >> 1;
@@ -1930,13 +1928,11 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
     tw >>= 1;
     th >>= 1;
   }
-  // Clamp the number of resolutions to 6
   if (numberOfResolutions > 6)
   {
     numberOfResolutions = 6;
   }
   parameters.numresolution = numberOfResolutions;
-  // Decode the source image
   image = rawtoimage(inputdata,
                      &parameters,
                      inputlength,
@@ -1948,20 +1944,18 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
                      highbit,
                      sign,
                      quality,
-                     this->GetPlanarConfiguration());
+                     this->GetPlanarConfiguration(),
+                     ybr_full);
   if (!image)
   {
     free(parameters.cp_comment);
     return false;
   }
-  // Encode the destination image
   parameters.cod_format = J2K_CFMT; // J2K format output
   size_t         codestream_length;
   opj_codec_t *  cinfo = nullptr;
   opj_stream_t * cio = nullptr;
-  // Get a J2K compressor handle
   cinfo = opj_create_compress(CODEC_J2K);
-  // Setup the encoder parameters using the current image and using user parameters
   opj_setup_encoder(cinfo, &parameters, image);
   myfile   mysrc;
   myfile * fsrc = &mysrc;
@@ -1977,7 +1971,6 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
   }
   fsrc->mem = fsrc->cur = buffer_j2k;
   fsrc->len = 0; // inputlength
-  // Open a byte stream for writing, allocate memory for all tiles
   cio = opj_stream_create_memory_stream(fsrc, OPJ_J2K_STREAM_CHUNK_SIZE, false);
   if (!cio)
   {
@@ -1985,7 +1978,6 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
     free(parameters.cp_comment);
     return false;
   }
-  // Encode the image
   bool ok = (opj_start_compress(cinfo, image, cio) == OPJ_TRUE) ? true : false;
   ok = ok && opj_encode(cinfo, cio);
   ok = ok && opj_end_compress(cinfo, cio);
@@ -2017,12 +2009,9 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
     memcpy(outdata, mysrc.mem, codestream_length);
   }
   delete[] buffer_j2k;
-  // Close and free the byte stream
   opj_stream_destroy(cio);
-  // Free remaining compression structures
   opj_destroy_codec(cinfo);
   complen = codestream_length;
-  // Free user parameters structure
   free(parameters.cp_comment);
 #if 1
   // TODO check, seems to be always null here
@@ -2205,6 +2194,9 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     */
     //
     // S. comment before SetMCT function.
+    //
+    // Not sure why guessing PhotometricInterpretation here could be useful,
+    // it should be taken from DICOM. FIXME remove it.
     if (mct)
     {
       if (reversible)
@@ -2214,8 +2206,13 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     }
     else
     {
-      PI = PhotometricInterpretation::RGB;
-      // YBR_FULL?
+      // Can not guess YBR_FULL, it the opj_image_comp_t component dimensions (dx, dy, w, h)
+      // for YBR_FULL 4:4:4 are the exact same as those for RGB because 4:4:4 has no chroma subsampling
+      // and j2k stream has OPJ_CLRSPC_UNSPECIFIED.
+      if (image->color_space == CLRSPC_SYCC)
+        PI = PhotometricInterpretation::YBR_FULL;
+      else
+        PI = PhotometricInterpretation::RGB;
     }
     this->PF.SetSamplesPerPixel(3);
   }
