@@ -28,11 +28,7 @@ namespace mdcm
 {
 
 class JPEG2000Internals;
-/*
- * the class will produce JPC (JPEG 2000 codestream), since some private implementor
- * are using full jp2 file the decoder tolerate jp2 input
- * this is an implementation of an ImageCodec
- */
+
 class MDCM_EXPORT JPEG2000Codec : public ImageCodec
 {
   friend class Bitmap;
@@ -66,12 +62,16 @@ public:
   SetNumberOfResolutions(unsigned int);
   void
   SetReversible(bool);
+  bool
+  GetReversible() const;
   void
   SetMCT(bool);
   bool
-  GetReversible() const;
-  bool
   GetMCT() const;
+  void
+  SetYbrFull(bool);
+  bool
+  GetYbrFull() const;
 
 protected:
   bool
@@ -96,6 +96,7 @@ private:
   CodeFrameIntoBuffer(char *, size_t, size_t &, const char *, size_t);
   bool
   GetHeaderInfo(const char *, size_t);
+  bool ybr_full{};
   JPEG2000Internals * Internals;
 };
 
