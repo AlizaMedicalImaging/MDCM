@@ -65,6 +65,12 @@ public:
   using ParseException::ParseException;
 };
 
+class MDCM_EXPORT ParseLengthException : public ParseException
+{
+public:
+  using ParseException::ParseException;
+};
+
 } // end namespace mdcm
 
 #endif

@@ -55,6 +55,7 @@ bool ImageHelper::WorkaroundCornellBug = false;
 bool ImageHelper::WorkaroundPredictorBug = false;
 bool ImageHelper::JpegPreserveYBRfull = true;
 bool ImageHelper::FixJpegBits = false;
+bool ImageHelper::CheckLength = true;
 
 static double
 SetNDigits(double x, int n)
@@ -609,6 +610,18 @@ bool
 ImageHelper::GetFixJpegBits()
 {
   return FixJpegBits;
+}
+
+void
+ImageHelper::SetCheckLength(bool b)
+{
+  CheckLength = b;
+}
+
+bool
+ImageHelper::GetCheckLength()
+{
+  return CheckLength;
 }
 
 bool

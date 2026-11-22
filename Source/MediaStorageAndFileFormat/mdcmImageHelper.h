@@ -87,6 +87,10 @@ public:
   SetFixJpegBits(bool);
   static bool
   GetFixJpegBits();
+  static void
+  SetCheckLength(bool);
+  static bool
+  GetCheckLength();
   static std::vector<unsigned int>
   GetDimensionsValue(const File &);
   static void
@@ -146,6 +150,7 @@ private:
   static bool WorkaroundPredictorBug;
   static bool JpegPreserveYBRfull;
   static bool FixJpegBits;
+  static bool CheckLength;
 };
 
 } // end namespace mdcm
