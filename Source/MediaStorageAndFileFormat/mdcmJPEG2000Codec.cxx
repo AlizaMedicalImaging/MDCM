@@ -36,9 +36,6 @@
 
 //#define MDCM_JPEG2000_VERBOSE
 
-// S. https://github.com/malaterre/GDCM/pull/240 (modified)
-#define MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
-
 #define J2K_CFMT 0
 #define JP2_CFMT 1
 #define JPT_CFMT 2
@@ -231,11 +228,10 @@ bool read64(const char ** input, size_t * len, uint64_t * ret)
 
 bool parsej2k_imp(const char * const stream, const size_t file_size, bool * lossless, bool * mct)
 {
-  uint16_t     marker;
-  size_t       lenmarker;
   const char * cur = stream;
   size_t       cur_size = file_size;
   *lossless = false;
+  uint16_t     marker;
   while (read16(&cur, &cur_size, &marker))
   {
     if (!hasnolength(marker))
@@ -243,18 +239,14 @@ bool parsej2k_imp(const char * const stream, const size_t file_size, bool * loss
       uint16_t   l;
       const bool r = read16(&cur, &cur_size, &l);
       if (!r || l < 2)
-        break;
-      lenmarker = static_cast<size_t>(l) - 2;
-#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
+        return false;
+      const size_t lenmarker = static_cast<size_t>(l) - 2;
       if (lenmarker > cur_size)
-        break;
-#endif
+        return false;
       if (marker == COD)
       {
-#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
         if (cur_size < 10)
-          break;
-#endif
+          return false;
         const uint8_t MCTransformation = *(cur + 4);
         if (MCTransformation == 0x0)
         {
@@ -296,22 +288,22 @@ bool parsej2k_imp(const char * const stream, const size_t file_size, bool * loss
 
 bool parsejp2_imp(const char * const stream, const size_t file_size, bool * lossless, bool * mct)
 {
-  uint32_t     marker;
-  uint64_t     len64; // ref
-  uint32_t     len32; // local 32bits op
+  uint64_t     len64; // MM: ref
+  uint32_t     len32; // MM: local 32bits op
   const char * cur = stream;
   size_t       cur_size = file_size;
+  uint32_t     marker;
   while (read32(&cur, &cur_size, &len32))
   {
     const bool b0 = read32(&cur, &cur_size, &marker);
     if (!b0)
-      break;
+      return false;
     len64 = len32;
-    if (len32 == 1) // 64bits?
+    if (len32 == 1) // MM: 64bits?
     {
       const bool b = read64(&cur, &cur_size, &len64);
-      assert(b);
-      (void)b;
+      if (!b || len64 < 8)
+        return false;
       len64 -= 8;
     }
     if (marker == JP2C)
@@ -321,18 +313,15 @@ bool parsejp2_imp(const char * const stream, const size_t file_size, bool * loss
       {
         len64 = file_size - start + 8;
       }
-#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
-      if (len64 < 8)
-        break;
-#endif
+      if (len64 < 8 || (len64 - 8) > cur_size)
+        return false;
       return parsej2k_imp(cur, len64 - 8, lossless, mct);
     }
-#ifdef MDCM_JPEG2000_FIX_HEAP_OUT_OF_BOUNDS
     if (len64 < 8 || (len64 - 8) > cur_size)
-      break;
-#endif
+      return false;
     const size_t lenmarker = len64 - 8;
     cur += lenmarker;
+    cur_size -= lenmarker;
   }
   return false;
 }
@@ -811,21 +800,24 @@ rawtoimage(const char *        inputbuffer,
     mdcmAlwaysWarnMacro("JPEG2000: Bits Allocated not supported " << bitsallocated);
     return nullptr;
   }
-  // eg. fragment_size == 63532 and 181 * 117 * 3 * 8 == 63531
+  // MM: eg. fragment_size == 63532 and 181 * 117 * 3 * 8 == 63531
   assert(((fragment_size + 1) / 2) * 2 ==
          ((static_cast<size_t>(image_height) * image_width * numcomps * (bitsallocated / 8) + 1) / 2) * 2);
   const int subsampling_dx = parameters->subsampling_dx;
   const int subsampling_dy = parameters->subsampling_dy;
   if (sample_pixel == 3 && !(subsampling_dx == 1 && subsampling_dy == 1))
   {
-    // For 4:2:2 (YBR_FULL_422) : dx = 2, dy = 1, w = ceil(image_width / 2)
-    // For 4:2:0 : dx = 2, dy = 2, w = ceil(image_width / 2), h = ceil(image_height / 2)
-    mdcmAlwaysWarnMacro("Only RGB and YBR_FULL (4:4:4, no subsampling) are supported");
+    // For 4:2:2 (YBR_FULL_422) : dx = 2, dy = 1, w = ceil(image_width / 2).
+    // For 4:2:0 : dx = 2, dy = 2, w = ceil(image_width / 2), h = ceil(image_height / 2).
+    // For both YBR_ICT and YBR_RCT in JPEG 2000 / DICOM, there is no chroma subsampling
+    // (4:4:4 sampling) because the JPEG 2000 multi-component transform (MCT) operates
+    // pixel-by-pixel across all three components simultaneously.
+    mdcmAlwaysWarnMacro("JPEG2000: chroma subsampling is not supported");
   }
   const int w = image_width;
   const int h = image_height;
   memset(&cmptparm[0], 0, 3 * sizeof(opj_image_cmptparm_t));
-  // Allow compression of 32 BitsAllocated images, prec 1-31 is supported with OpenJPEG 2.5.2
+  // prec 1-31 is supported with OpenJPEG 2.5.2, so bitsstored should be <= 31.
   const int prec_tmp = (bitsallocated == 32) ? bitsstored : bitsallocated;
   for (int i = 0; i < numcomps; ++i)
   {
@@ -886,18 +878,16 @@ rawtoimage(const char *        inputbuffer,
   }
   else if (bitsallocated <= 32)
   {
+    // For bitsallocated 32 this should be always true, max prec. is 31 for OpenJPEG.
+    // BitsAllocated 24 and 40 are allowed by DICOM, but currently not supported.
+#if 0
+    std::cout << "Trying to encode OpenJPEG with Bits Allocated " << bitsallocated
+              << ", Bits Stored " << bitsstored
+              << ", High Bit " << highbit
+              << ", Pixel Representation " << sign << std::endl;
+#endif
     if (bitsallocated != bitsstored)
     {
-      // For bitsallocated 32 this should be always true,
-      // max prec. is 31 for OpenJPEG.
-      // BitsAllocated 24 and 40 are allowed by DICOM,
-      // but currently not supported.
-#if 0
-      std::cout << "Trying to encode OpenJPEG with Bits Allocated " << bitsallocated
-                << ", Bits Stored " << bitsstored
-                << ", High Bit " << highbit
-                << ", Pixel Representation " << sign << std::endl;
-#endif
       if (sign)
       {
         rawtoimage_fill2<int32_t>(
@@ -1434,8 +1424,8 @@ JPEG2000Codec::SetNumberOfResolutions(unsigned int nres)
 void
 JPEG2000Codec::SetReversible(bool b)
 {
-  // 1 : use the irreversible DWT 9-7, 0 : use lossless compression (default)
   LossyFlag = !b;
+  // 1 : use the irreversible DWT 9-7, 0 : use lossless compression (default)
   if (b)
     Internals->coder_param.irreversible = 0;
   else
@@ -1858,6 +1848,7 @@ JPEG2000Codec::DecodeByStreamsCommon(char * dummy_buffer, size_t buf_size)
   return std::make_pair(raw, len);
 }
 
+// J2K output
 bool
 JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
                                    size_t       outlen,
@@ -1883,8 +1874,8 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
   const int            highbit = pf.GetHighBit();
   const int            sign = pf.GetPixelRepresentation();
   const int            quality = 100;
-  // Input_buffer is ONE image
-  opj_cparameters_t parameters; // compression parameters
+  // MM: Input_buffer is ONE image
+  opj_cparameters_t parameters;
   opj_image_t *     image = nullptr;
   memcpy(&parameters, &(Internals->coder_param), sizeof(parameters));
   if ((parameters.cp_disto_alloc || parameters.cp_fixed_alloc || parameters.cp_fixed_quality) &&
@@ -1894,7 +1885,7 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
     return false;
   }
   //
-  // If no rate entered, lossless by default
+  // MM: If no rate entered, lossless by default
   //
   if (parameters.tcp_numlayers == 0)
   {
@@ -1951,7 +1942,7 @@ JPEG2000Codec::CodeFrameIntoBuffer(char *       outdata,
     free(parameters.cp_comment);
     return false;
   }
-  parameters.cod_format = J2K_CFMT; // J2K format output
+  parameters.cod_format = J2K_CFMT;
   size_t         codestream_length;
   opj_codec_t *  cinfo = nullptr;
   opj_stream_t * cio = nullptr;
@@ -2197,6 +2188,7 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     //
     // Not sure why guessing PhotometricInterpretation here could be useful,
     // it should be taken from DICOM. FIXME remove it.
+    // IMHO
     if (mct)
     {
       if (reversible)
@@ -2206,9 +2198,10 @@ JPEG2000Codec::GetHeaderInfo(const char * dummy_buffer, size_t buf_size)
     }
     else
     {
-      // Can not guess YBR_FULL, it the opj_image_comp_t component dimensions (dx, dy, w, h)
-      // for YBR_FULL 4:4:4 are the exact same as those for RGB because 4:4:4 has no chroma subsampling
-      // and j2k stream has OPJ_CLRSPC_UNSPECIFIED.
+      // For YBR_FULL 4 the opj_image_comp_t component dimensions (dx, dy, w, h)
+      // are the same as those for RGB because 4:4:4 has no chroma subsampling.
+      // Probably unreachable because j2k stream has OPJ_CLRSPC_UNSPECIFIED.
+      // TODO check how avoid guessing of PhotometricInterpretation here.
       if (image->color_space == CLRSPC_SYCC)
         PI = PhotometricInterpretation::YBR_FULL;
       else
